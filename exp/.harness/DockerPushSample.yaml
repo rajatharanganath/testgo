@@ -100,7 +100,7 @@ pipeline:
                                         spec:
                                             script: |-
                                                 echo <+codebase.prNumber>
-                                                echo test
+                                                echo test1
                                     environmentVariables: []
                                     outputVariables: []
                                     executionTarget: {}
