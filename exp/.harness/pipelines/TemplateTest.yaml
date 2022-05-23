@@ -61,7 +61,7 @@ pipeline:
                                     shell: Sh
                                     command: |-
                                         echo test
-                                        echo test2
+                                        echo test3
     variables:
         - name: MAGIC
           type: String
