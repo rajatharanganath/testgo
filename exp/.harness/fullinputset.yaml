@@ -1,0 +1,18 @@
+inputSet:
+  identifier: "fullinputset"
+  name: "full-input-set"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest2"
+  pipeline:
+    identifier: "TemplateTest"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "main"
+    variables:
+    - name: "MAGIC"
+      type: "String"
+      value: "a"
