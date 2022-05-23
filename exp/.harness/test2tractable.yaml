@@ -40,13 +40,14 @@ pipeline:
                                         #!/bin/sh
                                         echo <+codebase.targetBranch>
                                         echo <+codebase.sourceBranch>
-                                        export LATEST_BRANCH="master"
+                                        LATEST_BRANCH="master"
                                         if [ <+codebase.targetBranch> == "master" ]
                                         then
-                                           export LATEST_BRANCH="heelotag, master"
+                                            LATEST_BRANCH="heelotag, master"
                                         else
-                                           export LATEST_BRANCH="hellotag, non-master"
+                                            LATEST_BRANCH="hellotag, non-master"
                                         fi
+                                        export LATEST_BRANCH
                                     outputVariables:
                                         - name: LATEST_BRANCH
         - stage:
