@@ -22,7 +22,10 @@ pipeline:
                       spec:
                           connectorRef: rajathak8
                           namespace: rajatha-delegate-april
+                          annotations:
+                              ASSUME_ROLE_ARN: <+input>
                           automountServiceAccountToken: false
+                          nodeSelector: {}
                           containerSecurityContext:
                               runAsUser: "1000"
                   execution:
