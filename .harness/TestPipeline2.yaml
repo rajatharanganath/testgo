@@ -19,7 +19,7 @@ pipeline:
                   infrastructure:
                       type: KubernetesDirect
                       spec:
-                          connectorRef: account.K8sConnectorPrBrer6BRv
+                          connectorRef: RajathaK8
                           namespace: rajatha-delegate-pr-env
                           automountServiceAccountToken: true
                           nodeSelector: {}
