@@ -1,0 +1,50 @@
+pipeline:
+    name: Testpipline
+    identifier: Testpipline
+    projectIdentifier: RajathaTest
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: RajathaGitHub
+                build: <+input>
+    stages:
+        - stage:
+              name: stg1
+              identifier: stg1
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: account.K8sConnectorPrBrer6BRv
+                          namespace: default
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: step1
+                                identifier: step1
+                                spec:
+                                    connectorRef: account.harnessImage
+                                    image: alpine
+                                    shell: Sh
+                                    command: |-
+                                        echo <+codebase.commitSha>
+                                        echo <+codebase.targetBranch>
+                                        echo <+codebase.sourceBranch>
+                                        echo <+codebase.prNumber>
+                                        echo <+codebase.prTitle>
+                                        echo <+codebase.commitRef>
+                                        echo <+codebase.repoUrl>
+                                        echo <+codebase.gitUserId>
+                                        echo <+codebase.gitUserEmail>
+                                        echo <+codebase.gitUser>
+                                        echo <+codebase.gitUserAvatar>
+                                        echo <+codebase.pullRequestLink>
+                                        echo <+codebase.pullRequestBody>
+                                        echo <+codebase.state>
