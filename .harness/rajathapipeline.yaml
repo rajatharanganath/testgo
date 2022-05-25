@@ -34,3 +34,22 @@ pipeline:
                                     image: alpine
                                     shell: Sh
                                     command: echo test2
+        - stage:
+              name: safdsf
+              identifier: safdsf
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      useFromStage: stg1
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: zfdsdf
+                                identifier: zfdsdf
+                                spec:
+                                    connectorRef: account.harnessImage
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo master_build
