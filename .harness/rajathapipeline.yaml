@@ -33,7 +33,7 @@ pipeline:
                                     connectorRef: account.harnessImage
                                     image: alpine
                                     shell: Sh
-                                    command: echo test2dsf
+                                    command: echo test2dsfsdf
         - stage:
               name: safdsf
               identifier: safdsf
