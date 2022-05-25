@@ -1,0 +1,36 @@
+pipeline:
+    name: asd
+    identifier: asd
+    projectIdentifier: RajathaTest
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: RajathaGitHub
+                build: <+input>
+    stages:
+        - stage:
+              name: test
+              identifier: test
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: RajathaK8
+                          namespace: default
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: asd
+                                identifier: asd
+                                spec:
+                                    connectorRef: account.harnessImage
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo test
