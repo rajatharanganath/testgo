@@ -1,0 +1,36 @@
+pipeline:
+    name: rajathapipeline
+    identifier: rajathapipeline
+    projectIdentifier: RajathaTest
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: RajathaGitHub
+                build: <+input>
+    stages:
+        - stage:
+              name: stg1
+              identifier: stg1
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: RajathaK8
+                          namespace: rajatha-delegate-pr-env
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: step1
+                                identifier: step1
+                                spec:
+                                    connectorRef: account.harnessImage
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo test
