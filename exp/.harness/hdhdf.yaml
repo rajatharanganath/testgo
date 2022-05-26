@@ -22,3 +22,7 @@ inputSet:
             spec:
               annotations:
                 ASSUME_ROLE_ARN: "kgjkgkj"
+    variables:
+    - name: "MAGIC"
+      type: "String"
+      value: "b"
