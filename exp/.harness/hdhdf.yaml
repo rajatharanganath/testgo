@@ -1,0 +1,24 @@
+inputSet:
+  identifier: "hdhdf"
+  name: "hdhdf"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest2"
+  pipeline:
+    identifier: "TemplateTest"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "main1"
+    stages:
+    - stage:
+        identifier: "stage1"
+        type: "CI"
+        spec:
+          infrastructure:
+            type: "KubernetesDirect"
+            spec:
+              annotations:
+                ASSUME_ROLE_ARN: "kgjkgkj"
