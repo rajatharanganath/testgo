@@ -1,0 +1,47 @@
+pipeline:
+    name: TestPipeLineWithInputSet
+    identifier: TestPipeLineWithInputSet
+    projectIdentifier: RajathaDemo
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    stages:
+        - stage:
+              name: stage1
+              identifier: stage1
+              type: CI
+              spec:
+                  cloneCodebase: false
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: RajathaK8
+                          namespace: rajatha-pr-demo
+                          automountServiceAccountToken: false
+                          nodeSelector: {}
+                          containerSecurityContext:
+                              runAsUser: "1000"
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: test
+                                identifier: test
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: alpine
+                                    shell: Sh
+                                    command: |-
+                                        echo "<+<+pipeline.variables.MAGIC>.toLowerCase()>"
+                                        echo pr-<+codebase.prNumber>
+              when:
+                  pipelineStatus: Success
+              failureStrategies: []
+    variables:
+        - name: MAGIC
+          type: String
+          value: <+input>
