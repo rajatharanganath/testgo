@@ -27,7 +27,7 @@ pipeline:
                                 name: test
                                 identifier: test
                                 spec:
-                                    connectorRef: dockerrajatha
+                                    connectorRef: account.harnessImage
                                     image: alpine
                                     shell: Sh
                                     command: |-
