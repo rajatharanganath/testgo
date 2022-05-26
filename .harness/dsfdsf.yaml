@@ -28,4 +28,4 @@ pipeline:
                                     connectorRef: account.harnessImage
                                     image: alpine
                                     shell: Sh
-                                    command: echo test-rajatha-26th-may-1220am
+                                    command: echo test-rajatha-26th-may-1223am
