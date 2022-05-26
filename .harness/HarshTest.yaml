@@ -2,6 +2,7 @@ pipeline:
     name: HarshTest
     identifier: HarshTest
     projectIdentifier: RajathaTest
+    description: kjfkdj
     orgIdentifier: default
     tags: {}
     stages:
