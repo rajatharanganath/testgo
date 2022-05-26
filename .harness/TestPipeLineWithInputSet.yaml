@@ -4,11 +4,6 @@ pipeline:
     projectIdentifier: RajathaDemo
     orgIdentifier: default
     tags: {}
-    properties:
-        ci:
-            codebase:
-                connectorRef: githubrajatha
-                build: <+input>
     stages:
         - stage:
               name: stage1
