@@ -1,0 +1,31 @@
+pipeline:
+    name: dsfdsf
+    identifier: dsfdsf
+    projectIdentifier: RajathaTest
+    orgIdentifier: default
+    tags: {}
+    stages:
+        - stage:
+              name: xzcxzc
+              identifier: xzcxzc
+              type: CI
+              spec:
+                  cloneCodebase: false
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: RajathaK8
+                          namespace: xzCc
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: xzcxz
+                                identifier: xzcxz
+                                spec:
+                                    connectorRef: account.harnessImage
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo test-rajatha-26th-may-1220am
