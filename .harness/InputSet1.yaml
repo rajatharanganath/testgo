@@ -8,4 +8,4 @@ inputSet:
     variables:
     - name: "MAGIC"
       type: "String"
-      value: "MAGIN_INPUTSET_705pm"
+      value: "MAGIN_INPUTSET_711pm"
