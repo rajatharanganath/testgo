@@ -31,6 +31,6 @@ pipeline:
                                 identifier: testing
                                 spec:
                                     connectorRef: account.harnessImage
-                                    image: alpine
+                                    image: <+input>
                                     shell: Sh
-                                    command: echo test
+                                    command: <+input>
