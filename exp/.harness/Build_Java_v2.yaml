@@ -1,0 +1,98 @@
+template:
+    name: Build Java
+    identifier: Build_Java
+    versionLabel: v2
+    type: Stage
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    spec:
+        type: CI
+        spec:
+            cloneCodebase: true
+            execution:
+                steps:
+                    - step:
+                          type: Run
+                          name: Build
+                          identifier: Build
+                          spec:
+                              connectorRef: account.harnessImage
+                              image: maven:3.8.2-amazoncorretto-17
+                              shell: Sh
+                              command: |-
+                                  pwd
+
+                                  ls -ltr
+
+                                  mvn clean package -Dmaven.repo.local=/harness/repository
+
+                                  export version=`mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout -Dmaven.repo.local=/harness/repository`
+
+                                  export release="<+codebase.branch>-$version-<+pipeline.sequenceId>"
+
+                                  curl http://nexus.harness-demo.site/
+                              privileged: false
+                              envVariables:
+                                  MONGO_AUTH: <+secrets.getValue("account.mongodbauth")>
+                              outputVariables:
+                                  - name: version
+                                  - name: release
+                              resources:
+                                  limits:
+                                      memory: 2Gi
+                                      cpu: "1"
+                    - step:
+                          name: Sonar
+                          identifier: Sonar
+                          type: Plugin
+                          spec:
+                              connectorRef: account.harnessImage
+                              image: plugins/sonarqube-scanner:v1.0.2
+                              privileged: false
+                              reports:
+                                  type: JUnit
+                                  spec:
+                                      paths:
+                                          - sonarResults.xml
+                              settings:
+                                  sonar_host: http://35.238.17.215
+                                  sonar_token: 9be106a1849c3b98f5beb1cc4b916674432944e0
+                                  sources: <+input>
+                                  binaries: <+input>
+                                  level: DEBUG
+                                  sonar_name: <+stage.variables.serviceName>
+                                  sonar_key: <+stage.variables.serviceName>
+                              imagePullPolicy: Always
+                              resources:
+                                  limits:
+                                      memory: 2Gi
+                                      cpu: "1"
+                          failureStrategies:
+                              - onFailure:
+                                    errors:
+                                        - AllErrors
+                                    action:
+                                        type: Ignore
+                    - step:
+                          type: BuildAndPushDockerRegistry
+                          name: Push Nexus Image
+                          identifier: Push_Nexus_Image
+                          spec:
+                              connectorRef: account.Nexus_Santander_POV
+                              repo: nexus.harness-demo.site:444/<+stage.variables.imageName>
+                              tags:
+                                  - <+execution.steps.Build.output.outputVariables.release>
+            infrastructure:
+                type: KubernetesDirect
+                spec:
+                    connectorRef: account.SantanderOpenshift
+                    namespace: harness-ci-buildfarm
+                    automountServiceAccountToken: true
+        variables:
+            - name: serviceName
+              type: String
+              value: <+input>
+            - name: imageName
+              type: String
+              value: <+input>
