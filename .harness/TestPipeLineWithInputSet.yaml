@@ -10,7 +10,7 @@ pipeline:
               identifier: stage1
               type: CI
               spec:
-                  cloneCodebase: false
+                  cloneCodebase: true
                   infrastructure:
                       type: KubernetesDirect
                       spec:
@@ -40,3 +40,8 @@ pipeline:
         - name: MAGIC
           type: String
           value: <+input>
+    properties:
+        ci:
+            codebase:
+                connectorRef: testappandrepo
+                build: <+input>
