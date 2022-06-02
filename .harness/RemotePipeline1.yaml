@@ -14,7 +14,7 @@ pipeline:
                   infrastructure:
                       type: KubernetesDirect
                       spec:
-                          connectorRef: account.cidelegatebuildfarm
+                          connectorRef: account.cidelegate
                           namespace: harness-delegate-ng
                           automountServiceAccountToken: true
                           nodeSelector: {}
