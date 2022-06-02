@@ -1,0 +1,36 @@
+pipeline:
+    name: Testnonmain
+    identifier: Testnonmain
+    projectIdentifier: RajathaQA
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: RajathaGitHub
+                build: <+input>
+    stages:
+        - stage:
+              name: sdfdsf
+              identifier: sdfdsf
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: <+input>
+                          namespace: <+input>
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: dsffd
+                                identifier: dsffd
+                                spec:
+                                    connectorRef: account.selfSignedDockerRegistry
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo test
