@@ -15,7 +15,7 @@ pipeline:
                       type: KubernetesDirect
                       spec:
                           connectorRef: account.cidelegate
-                          namespace: harness-delegate-ng
+                          namespace: harness-qa-delegate
                           automountServiceAccountToken: true
                           nodeSelector: {}
                   execution:
