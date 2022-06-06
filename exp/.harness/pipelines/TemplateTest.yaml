@@ -41,9 +41,16 @@ pipeline:
                                     command: |-
                                         echo "<+<+pipeline.variables.MAGIC>.toLowerCase()>"
                                         echo pr-<+codebase.prNumber>
+                                    resources:
+                                        limits:
+                                            cpu: <+stage.variables.memory>
               when:
                   pipelineStatus: Success
               failureStrategies: []
+              variables:
+                  - name: memory
+                    type: String
+                    value: 2Gi
         - stage:
               name: stg2
               identifier: stg2
