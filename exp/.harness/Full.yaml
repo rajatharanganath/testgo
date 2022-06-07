@@ -1,0 +1,32 @@
+inputSet:
+  identifier: "Full"
+  name: "Full"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest2"
+  pipeline:
+    identifier: "TNHUREMOTE"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "main1"
+    stages:
+    - stage:
+        identifier: "Build"
+        type: "CI"
+        spec:
+          infrastructure:
+            type: "KubernetesDirect"
+            spec:
+              connectorRef: "rajathak8"
+              namespace: "default1"
+          execution:
+            steps:
+            - step:
+                identifier: "RUN"
+                type: "Run"
+                spec:
+                  connectorRef: "dockerrajatha"
+                  image: "nginx"
