@@ -12,6 +12,6 @@ connector:
       type: UsernamePassword
       spec:
         username: rajatharanganath
-        passwordRef: rajatharanganath1
+        passwordRef: rajathadocker
     delegateSelectors:
     - rajatha-delegate-april
