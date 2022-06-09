@@ -1,0 +1,131 @@
+pipeline:
+    name: StepVariables
+    identifier: StepVariables
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    storeType: ""
+    remoteType: create
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    stages:
+        - stage:
+              name: build
+              identifier: build
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: rajatha-delegate-april
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          containerSecurityContext:
+                              allowPrivilegeEscalation: false
+                              runAsUser: "1000"
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: run
+                                identifier: run
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: golang:1.15
+                                    shell: Sh
+                                    command: |-
+                                        #!/bin/sh
+                                        echo <+codebase.targetBranch>
+                                        echo <+codebase.sourceBranch>
+                                        export LATEST_BRANCH="master"
+                                        if [ <+codebase.targetBranch> == "master" ]
+                                        then
+                                           export LATEST_BRANCH="heelotag, master"
+                                        else
+                                           export LATEST_BRANCH="hellotag, non-master"
+                                        fi
+                                    outputVariables:
+                                        - name: LATEST_BRANCH
+        - stage:
+              name: stg2
+              identifier: stg2
+              type: CI
+              spec:
+                  cloneCodebase: false
+                  infrastructure:
+                      useFromStage: build
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: stg2
+                                identifier: stg2
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo <+pipeline.stages.build.spec.execution.steps.run.output.outputVariables.LATEST_BRANCH>
+        - stage:
+              name: cdstg
+              identifier: cdstg
+              description: ""
+              type: Deployment
+              spec:
+                  serviceConfig:
+                      serviceRef: lscjf
+                      serviceDefinition:
+                          spec:
+                              variables: []
+                          type: Kubernetes
+                  infrastructure:
+                      environmentRef: dev
+                      infrastructureDefinition:
+                          type: KubernetesDirect
+                          spec:
+                              connectorRef: rajathak8
+                              namespace: rajatha-delegate-april
+                              releaseName: release-<+INFRA_KEY>
+                      allowSimultaneousDeployments: false
+                  execution:
+                      steps:
+                          - step:
+                                name: Rollout Deployment
+                                identifier: rolloutDeployment
+                                type: K8sRollingDeploy
+                                timeout: 10m
+                                spec:
+                                    skipDryRun: false
+                          - step:
+                                type: ShellScript
+                                name: stp1
+                                identifier: stp1
+                                spec:
+                                    shell: Bash
+                                    onDelegate: true
+                                    source:
+                                        type: Inline
+                                        spec:
+                                            script: echo <+pipeline.stages.build.spec.execution.steps.run.output.outputVariables.LATEST_BRANCH>
+                                    environmentVariables: []
+                                    outputVariables: []
+                                    executionTarget: {}
+                                timeout: 10m
+                      rollbackSteps:
+                          - step:
+                                name: Rollback Rollout Deployment
+                                identifier: rollbackRolloutDeployment
+                                type: K8sRollingRollback
+                                timeout: 10m
+                                spec: {}
+              tags: {}
+              failureStrategies:
+                  - onFailure:
+                        errors:
+                            - AllErrors
+                        action:
+                            type: StageRollback
