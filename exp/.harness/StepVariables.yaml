@@ -81,7 +81,7 @@ pipeline:
                       serviceDefinition:
                           spec:
                               variables: []
-                          type: Kubernetes
+                          type: Ssh
                   infrastructure:
                       environmentRef: dev
                       infrastructureDefinition:
@@ -94,16 +94,9 @@ pipeline:
                   execution:
                       steps:
                           - step:
-                                name: Rollout Deployment
-                                identifier: rolloutDeployment
-                                type: K8sRollingDeploy
-                                timeout: 10m
-                                spec:
-                                    skipDryRun: false
-                          - step:
                                 type: ShellScript
-                                name: stp1
-                                identifier: stp1
+                                name: dsfdf
+                                identifier: dsfdf
                                 spec:
                                     shell: Bash
                                     onDelegate: true
@@ -115,13 +108,7 @@ pipeline:
                                     outputVariables: []
                                     executionTarget: {}
                                 timeout: 10m
-                      rollbackSteps:
-                          - step:
-                                name: Rollback Rollout Deployment
-                                identifier: rollbackRolloutDeployment
-                                type: K8sRollingRollback
-                                timeout: 10m
-                                spec: {}
+                      rollbackSteps: []
               tags: {}
               failureStrategies:
                   - onFailure:
