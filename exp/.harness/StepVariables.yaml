@@ -36,7 +36,7 @@ pipeline:
                                 identifier: run
                                 spec:
                                     connectorRef: dockerrajatha
-                                    image: <+event.payload>
+                                    image: alpine
                                     shell: Sh
                                     command: |-
                                         #!/bin/sh
