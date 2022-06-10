@@ -1,0 +1,150 @@
+template:
+    name: Shared Library
+    identifier: Shared_Library
+    versionLabel: v1
+    type: Stage
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    spec:
+        type: CI
+        spec:
+            cloneCodebase: true
+            sharedPaths:
+                - /var/lib/docker
+                - /var/run
+            serviceDependencies:
+                - type: Service
+                  spec:
+                      connectorRef: account.aws
+                      image: 189235394101.dkr.ecr.ap-southeast-2.amazonaws.com/dind-build-image:master-5
+                      privileged: true
+                      resources:
+                          limits:
+                              memory: 8G
+                              cpu: 2000m
+                  name: Docker in Docker
+                  identifier: Docker_in_Docker
+                  description: Start DinD to work around authentication issues in the "Push to ECR Step" - it doesn't support our AssumeRole way of auth.
+            infrastructure:
+                type: KubernetesDirect
+                spec:
+                    connectorRef: account.opscluster
+                    namespace: harness-workers
+                    automountServiceAccountToken: true
+                    nodeSelector: {}
+            execution:
+                steps:
+                    - step:
+                          type: Run
+                          name: Gradle Build
+                          identifier: Gradle_Build
+                          spec:
+                              connectorRef: account.aws
+                              image: 189235394101.dkr.ecr.ap-southeast-2.amazonaws.com/gradle:6.8.3-jdk8
+                              shell: Sh
+                              command: |
+                                  apiCmd=""
+                                  if [ "<+stage.variables.publish_API_docs>" = "true" ] ; then
+                                    apiCmd="extractApiAsLib"
+                                  fi
+                                  ./gradlew -Pnexus_password=${BUILD_PASSWORD} --no-daemon -Pnexus_user=${BUILD_USER} build dependencyCheckAnalyze ${apiCmd}
+                              reports:
+                                  type: JUnit
+                                  spec:
+                                      paths:
+                                          - "**/build/test-results/test/*.xml"
+                              resources:
+                                  limits:
+                                      memory: 20G
+                                      cpu: 5000m
+                    - step:
+                          type: Run
+                          when:
+                              stageStatus: Success
+                              condition: <+stage.variables.publish_API_docs> == "true"
+                          spec:
+                              connectorRef: account.aws
+                              image: 189235394101.dkr.ecr.ap-southeast-2.amazonaws.com/node:12.13.1-alpine
+                              command: npx @redocly/openapi-cli lint lib-api/${publish_API_name}/api-specification.yaml
+                          name: Lint API Documentation
+                          identifier: Lint_API_Documentation
+                          failureStrategies: []
+                    - step:
+                          type: Run
+                          spec:
+                              connectorRef: account.aws
+                              image: 189235394101.dkr.ecr.ap-southeast-2.amazonaws.com/dind-build-image-gradle:master-10
+                              shell: Sh
+                              command: |-
+                                  if grep componentTest build.gradle > /dev/null ; then
+
+                                    session=$(aws sts assume-role --role-arn "arn:aws:iam::189235394101:role/AssumedPowerUser" --role-session-name harness-session)
+                                    export AWS_ACCESS_KEY_ID=$(echo $session | jq -r .Credentials.AccessKeyId)
+                                    export AWS_SECRET_ACCESS_KEY=$(echo $session | jq -r .Credentials.SecretAccessKey)
+                                    export AWS_SESSION_TOKEN=$(echo $session | jq -r .Credentials.SessionToken)
+
+                                    ./gradlew --configure-on-demand -Pnexus_password=${BUILD_PASSWORD} -Pnexus_user=${BUILD_USER} componentTest
+                                  fi
+                              reports:
+                                  type: JUnit
+                                  spec:
+                                      paths:
+                                          - "**/build/test-results/test/*.xml"
+                              envVariables:
+                                  AWS_SECRET_ACCESS_KEY: <+stage.variables.aws_secret_access_key>
+                                  AWS_ACCESS_KEY_ID: <+stage.variables.aws_access_key_id>
+                                  AWS_DEFAULT_REGION: ap-southeast-2
+                              resources:
+                                  limits:
+                                      memory: 16G
+                                      cpu: 4000m
+                          name: Component Tests
+                          identifier: Component_Tests
+                          when:
+                              stageStatus: Success
+                          failureStrategies: []
+                    - step:
+                          type: Run
+                          when:
+                              stageStatus: Success
+                              condition: <+stage.variables.publish_API_docs> == "true"
+                          spec:
+                              connectorRef: account.aws
+                              image: 189235394101.dkr.ecr.ap-southeast-2.amazonaws.com/node:12.13.1-alpine
+                              command: |-
+                                  if [ "<+codebase.branch>" = "master" ] ; then
+                                    branchNameDescriptor=$(echo "<+codebase.branch>" | tr / -)
+                                    npx @redocly/openapi-cli push --upsert "lib-api/${publish_API_name}/api-specification.yaml" "@tradeledger/${publish_API_name}@v1" ${branchNameDescriptor}
+                                  fi 
+                                  npx redoc-cli bundle "lib-api/${publish_API_name}/api-specification.yaml" -o "api-specification.html"
+                              resources:
+                                  limits:
+                                      memory: 1024M
+                                      cpu: 1000m
+                          name: Publish API Documentation
+                          identifier: Publish_API_Documentation
+                          failureStrategies: []
+        variables:
+            - name: BUILD_USER
+              type: Secret
+              value: account.nexususer
+            - name: BUILD_PASSWORD
+              type: Secret
+              value: account.nexuspassword
+            - name: publish_API_docs
+              type: String
+              default: "false"
+              value: <+input>.allowedValues(true,false)
+            - name: publish_API_name
+              type: String
+              value: <+input>
+            - name: aws_secret_access_key
+              type: Secret
+              value: account.harnessawssecretaccesskey
+            - name: aws_access_key_id
+              type: Secret
+              value: account.harnessawsaccesskeyid
+            - name: REDOCLY_API_KEY
+              type: Secret
+              value: Redocly_API_key
