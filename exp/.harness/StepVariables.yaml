@@ -51,6 +51,10 @@ pipeline:
                                         fi
                                     outputVariables:
                                         - name: LATEST_BRANCH
+              variables:
+                  - name: stageVar
+                    type: String
+                    value: <+input>.allowedValues(100gi,200gi,300gi,400gi)
         - stage:
               name: stg2
               identifier: stg2
