@@ -51,9 +51,6 @@ pipeline:
                                         fi
                                     outputVariables:
                                         - name: LATEST_BRANCH
-                                    resources:
-                                        limits:
-                                            cpu: <+input>.allowedValues(100mi,200mi)
               variables:
                   - name: stageVar
                     type: String
