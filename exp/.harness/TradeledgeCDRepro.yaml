@@ -1,0 +1,15 @@
+pipeline:
+    name: TradeledgeCDRepro
+    identifier: TradeledgeCDRepro
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    storeType: ""
+    remoteType: create
+    tags: {}
+    stages:
+        - stage:
+              name: stg
+              identifier: stg
+              template:
+                  templateRef: CDTemplate
+                  versionLabel: v1
