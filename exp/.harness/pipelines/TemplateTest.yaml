@@ -20,7 +20,7 @@ pipeline:
                   infrastructure:
                       type: KubernetesDirect
                       spec:
-                          connectorRef: account.k8s
+                          connectorRef: k8s
                           namespace: rajatha-delegate-april
                           annotations:
                               ASSUME_ROLE_ARN: <+input>
