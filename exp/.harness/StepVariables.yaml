@@ -119,4 +119,4 @@ pipeline:
     variables:
         - name: magic
           type: String
-          value: <+input>.allowedValues(ab,bc,dc)
+          value: <+input>.allowedValues(110gi,200gi,300gi)
