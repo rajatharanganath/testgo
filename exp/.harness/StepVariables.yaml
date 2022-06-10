@@ -119,4 +119,4 @@ pipeline:
     variables:
         - name: magic
           type: String
-          value: <+input>.allowedValues(a,b,c)
+          value: <+input>.allowedValues(ab,bc,dc)
