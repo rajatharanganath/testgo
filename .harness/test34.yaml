@@ -1,10 +1,18 @@
 inputSet:
   identifier: "test34"
   name: "test34"
+  tags: {}
   orgIdentifier: "default"
   projectIdentifier: "RajathaQA"
   pipeline:
     identifier: "TNHUREMOTE2"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "test34"
     stages:
     - stage:
         identifier: "Build"
