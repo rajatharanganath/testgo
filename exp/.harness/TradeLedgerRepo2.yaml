@@ -18,3 +18,14 @@ pipeline:
               template:
                   templateRef: Stage1
                   versionLabel: v1
+                  templateInputs:
+                      type: CI
+                      spec:
+                          execution:
+                              steps:
+                                  - step:
+                                        identifier: run
+                                        type: Run
+                                        spec:
+                                            image: <+input>
+                                            command: <+input>
