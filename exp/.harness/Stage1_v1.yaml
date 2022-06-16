@@ -25,6 +25,6 @@ template:
                           identifier: run
                           spec:
                               connectorRef: dockerrajatha
-                              image: alpine
+                              image: <+input>
                               shell: Sh
-                              command: echo test
+                              command: <+input>
