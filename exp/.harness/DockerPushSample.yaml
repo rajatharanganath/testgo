@@ -65,14 +65,6 @@ pipeline:
                                         - <+pipeline.sequenceId>
                                         - <+execution.steps.run.output.outputVariables.LATEST_BRANCH>
                                         - pr-<+codebase.prNumber>
-                          - step:
-                                type: ArtifactoryUpload
-                                name: xzcxsD
-                                identifier: xzcxsD
-                                spec:
-                                    connectorRef: <+input>
-                                    target: <+input>
-                                    sourcePath: <+input>
         - stage:
               name: stg2
               identifier: stg2
