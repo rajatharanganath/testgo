@@ -59,7 +59,7 @@ pipeline:
                                 name: build and push
                                 identifier: build_and_push
                                 spec:
-                                    connectorRef: dockerrajatha
+                                    connectorRef: <+input>
                                     repo: rajatharanganath/ciquickstart
                                     tags:
                                         - <+pipeline.sequenceId>
