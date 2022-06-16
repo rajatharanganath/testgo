@@ -65,6 +65,16 @@ pipeline:
                                         - <+pipeline.sequenceId>
                                         - <+execution.steps.run.output.outputVariables.LATEST_BRANCH>
                                         - pr-<+codebase.prNumber>
+                          - step:
+                                type: BuildAndPushECR
+                                name: asfdsg
+                                identifier: asfdsg
+                                spec:
+                                    connectorRef: testaws
+                                    region: <+input>
+                                    account: <+input>
+                                    imageName: <+input>
+                                    tags: <+input>
         - stage:
               name: stg2
               identifier: stg2
