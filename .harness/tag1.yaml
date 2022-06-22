@@ -1,0 +1,14 @@
+inputSet:
+  identifier: "tag1"
+  name: "tag1"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaQA"
+  pipeline:
+    identifier: "TNHUREMOTE2"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "tag"
+            spec:
+              tag: "<+trigger.tag>"
