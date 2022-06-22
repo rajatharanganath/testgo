@@ -1,0 +1,23 @@
+inputSet:
+  identifier: "is12"
+  name: "is12"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaQA"
+  pipeline:
+    identifier: "TNHUREMOTE2"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "is12"
+    stages:
+    - stage:
+        identifier: "Build"
+        type: "CI"
+        spec:
+          infrastructure:
+            type: "KubernetesDirect"
+            spec:
+              connectorRef: "account.Testconnector"
