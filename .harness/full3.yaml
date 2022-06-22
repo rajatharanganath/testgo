@@ -1,0 +1,32 @@
+inputSet:
+  identifier: "full3"
+  name: "full3"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaQA"
+  pipeline:
+    identifier: "TNHUtest2notdefaultbranch"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "PR"
+            spec:
+              number: "<+trigger.prNumber>"
+    stages:
+    - stage:
+        identifier: "Build"
+        type: "CI"
+        spec:
+          infrastructure:
+            type: "KubernetesDirect"
+            spec:
+              connectorRef: "account.klkl"
+              namespace: "full3"
+          execution:
+            steps:
+            - step:
+                identifier: "Run"
+                type: "Run"
+                spec:
+                  connectorRef: "account.DockerArtifactory1"
+                  image: "full3"
