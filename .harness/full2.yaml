@@ -1,0 +1,32 @@
+inputSet:
+  identifier: "full2"
+  name: "full2"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaQA"
+  pipeline:
+    identifier: "TNHUtest2notdefaultbranch"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "PR"
+            spec:
+              number: "<+trigger.prNumber>"
+    stages:
+    - stage:
+        identifier: "Build"
+        type: "CI"
+        spec:
+          infrastructure:
+            type: "KubernetesDirect"
+            spec:
+              connectorRef: "account.klkl"
+              namespace: "full2"
+          execution:
+            steps:
+            - step:
+                identifier: "Run"
+                type: "Run"
+                spec:
+                  connectorRef: "account.selfSignedDockerRegistry"
+                  image: "full2"
