@@ -1,0 +1,23 @@
+inputSet:
+  identifier: "partial1"
+  name: "partial1"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaQA"
+  pipeline:
+    identifier: "TNHUtest2notdefaultbranch"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "PR"
+            spec:
+              number: "<+trigger.prNumber>"
+    stages:
+    - stage:
+        identifier: "Build"
+        type: "CI"
+        spec:
+          infrastructure:
+            type: "KubernetesDirect"
+            spec:
+              connectorRef: "account.klkl"
