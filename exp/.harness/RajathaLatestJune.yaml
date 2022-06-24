@@ -15,8 +15,10 @@ connector:
           username: rajatharanganath
           tokenRef: rajatharanganath
     apiAccess:
-      type: Token
+      type: GithubApp
       spec:
-        tokenRef: rajatharanganath
+        installationId: '"22688558"'
+        applicationId: '"167730"'
+        privateKeyRef: rajatharanganath
     executeOnDelegate: false
     type: Repo
