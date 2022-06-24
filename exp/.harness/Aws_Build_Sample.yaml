@@ -9,4 +9,4 @@ connector:
     credential:
       type: Irsa
     delegateSelectors:
-    - rajatha-delegate-april
+    - harness-ci-qe
