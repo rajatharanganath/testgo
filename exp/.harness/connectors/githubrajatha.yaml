@@ -13,7 +13,7 @@ connector:
         type: UsernameToken
         spec:
           username: rajatharanganath
-          tokenRef: rajathaspringboot
+          tokenRef: rajatharanganath
     apiAccess:
       type: Token
       spec:
