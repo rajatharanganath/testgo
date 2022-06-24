@@ -52,6 +52,8 @@ pipeline:
                                         echo <+codebase.pullRequestLink>
                                         echo <+codebase.pullRequestBody>
                                         echo <+codebase.state>
+                                        echo <+codebase.branch>
+                                        echo <+codebase.commitSha>
                           - step:
                                 type: Run
                                 name: run
