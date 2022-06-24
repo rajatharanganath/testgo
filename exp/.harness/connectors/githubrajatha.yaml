@@ -17,7 +17,7 @@ connector:
     apiAccess:
       type: Token
       spec:
-        tokenRef: rajathaspringboot
+        tokenRef: rajatharanganath
     delegateSelectors:
     - rajatha-delegate-april
     executeOnDelegate: true
