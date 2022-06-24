@@ -28,6 +28,7 @@ pipeline:
                           containerSecurityContext:
                               allowPrivilegeEscalation: false
                               runAsUser: "1000"
+                          os: Linux
                   execution:
                       steps:
                           - step:
@@ -49,6 +50,7 @@ pipeline:
                                         else
                                            export LATEST_BRANCH="hellotag, non-master"
                                         fi
+                                        echo <+codebase.branch> 
                                     outputVariables:
                                         - name: LATEST_BRANCH
               variables:
