@@ -6,11 +6,6 @@ pipeline:
     storeType: ""
     remoteType: create
     tags: {}
-    properties:
-        ci:
-            codebase:
-                connectorRef: githubrajatha
-                build: <+input>
     stages:
         - stage:
               name: build
@@ -242,3 +237,5 @@ pipeline:
         - name: magic
           type: String
           value: <+input>.allowedValues(110gi,200gi,300gi,400GI)
+    connectorRef: ""
+    filePath: StepVariables.yaml
