@@ -95,7 +95,7 @@ pipeline:
               identifier: stg2
               type: CI
               spec:
-                  cloneCodebase: false
+                  cloneCodebase: true
                   infrastructure:
                       useFromStage: build
                   execution:
