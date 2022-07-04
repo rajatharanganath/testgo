@@ -38,6 +38,25 @@ pipeline:
                                     image: alpine
                                     shell: Sh
                                     command: echo test
+        - stage:
+              name: stg2
+              identifier: stg2
+              type: CI
+              spec:
+                  cloneCodebase: false
+                  infrastructure:
+                      useFromStage: zsfdsf
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: sdfdsf
+                                identifier: sdfdsf
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: <+input>
+                                    shell: Sh
+                                    command: dsfgsadg
     properties:
         ci:
             codebase:
