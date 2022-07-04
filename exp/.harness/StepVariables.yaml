@@ -59,7 +59,12 @@ pipeline:
               spec:
                   cloneCodebase: true
                   infrastructure:
-                      useFromStage: build
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: sdfdsf
+                          nodeSelector: {}
+                          os: Linux
                   execution:
                       steps:
                           - step:
