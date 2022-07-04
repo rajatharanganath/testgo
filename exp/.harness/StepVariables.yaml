@@ -214,6 +214,9 @@ pipeline:
                             - AllErrors
                         action:
                             type: StageRollback
+              when:
+                  pipelineStatus: Success
+                  condition: <+stage.pipeline.variables.magic> == "RAJATHA"
     variables:
         - name: magic
           type: String
