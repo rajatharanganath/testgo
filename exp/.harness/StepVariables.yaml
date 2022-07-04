@@ -12,7 +12,7 @@ pipeline:
               identifier: build
               type: CI
               spec:
-                  cloneCodebase: false
+                  cloneCodebase: true
                   infrastructure:
                       type: KubernetesDirect
                       spec:
@@ -57,7 +57,7 @@ pipeline:
               identifier: stg2
               type: CI
               spec:
-                  cloneCodebase: false
+                  cloneCodebase: true
                   infrastructure:
                       useFromStage: build
                   execution:
@@ -237,5 +237,8 @@ pipeline:
         - name: magic
           type: String
           value: <+input>.allowedValues(110gi,200gi,300gi,400GI)
-    connectorRef: ""
-    filePath: StepVariables.yaml
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
