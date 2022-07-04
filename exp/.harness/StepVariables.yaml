@@ -53,30 +53,6 @@ pipeline:
                     type: String
                     value: <+input>.allowedValues(100gi,200gi,300gi,400gi)
         - stage:
-              name: stg2
-              identifier: stg2
-              type: CI
-              spec:
-                  cloneCodebase: true
-                  infrastructure:
-                      type: KubernetesDirect
-                      spec:
-                          connectorRef: rajathak8
-                          namespace: sdfdsf
-                          nodeSelector: {}
-                          os: Linux
-                  execution:
-                      steps:
-                          - step:
-                                type: Run
-                                name: stg2
-                                identifier: stg2
-                                spec:
-                                    connectorRef: dockerrajatha
-                                    image: alpine
-                                    shell: Sh
-                                    command: echo <+pipeline.stages.build.spec.execution.steps.run.output.outputVariables.LATEST_BRANCH>
-        - stage:
               name: cdstg
               identifier: cdstg
               description: ""
