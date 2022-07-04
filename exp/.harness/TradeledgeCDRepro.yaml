@@ -43,3 +43,4 @@ pipeline:
             codebase:
                 connectorRef: githubrajatha
                 build: <+input>
+    allowStageExecutions: true
