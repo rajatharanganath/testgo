@@ -1,0 +1,16 @@
+template:
+    name: Step1
+    identifier: Step1
+    versionLabel: "1.0"
+    type: Step
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    spec:
+        type: Run
+        description: Test
+        spec:
+            connectorRef: dockerrajatha
+            image: alpine
+            shell: Sh
+            command: echo "Template Test"
