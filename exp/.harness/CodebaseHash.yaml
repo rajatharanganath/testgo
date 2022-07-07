@@ -54,55 +54,7 @@ pipeline:
                                         - name: STATUS
                                 when:
                                     stageStatus: Success
-                                    condition: "false"
                                 failureStrategies: []
-                          - step:
-                                type: Run
-                                name: codebasehash
-                                identifier: codebasehashcheck
-                                spec:
-                                    connectorRef: gcpplatform
-                                    image: us.gcr.io/platform-205701/ubi/cie-agents/java-go-cie-agent:latest
-                                    shell: Sh
-                                    command: |-
-                                        #us.gcr.io/platform-205701/cie-agent-harness-core-jdk11:latest
-
-                                        set -e
-
-                                        bash scripts/bazel/generate_credentials.sh || true
-
-                                        echo build --google_credentials=platform-bazel-cache-dev.json > bazelrc.gcp
-
-                                        cat <<EOT > bazelrc.cache
-                                        #Remote cache configuration
-                                        #build --remote_cache=${REMOTE_CACHE}
-                                        #build --remote_upload_local_results=false
-                                        #build --incompatible_remote_results_ignore_disk=true
-                                        build --experimental_guard_against_concurrent_changes
-                                        EOT
-
-                                        echo "import bazelrc.remote" > .bazelrc
-                                        echo try-import bazelrc.cache >> .bazelrc
-                                        echo try-import bazelrc.gcp >> .bazelrc
-                                        echo >> .bazelrc
-
-                                        ${GCP_BAZEL_CACHE_CRED_PATH}
-
-                                        export ghprbTargetBranch=<+trigger.targetBranch>
-                                        echo "TARGET BRANCH = <+trigger.targetBranch>"
-
-                                        # if [ <+steps.checkifrequired.output.outputVariables.STATUS> = 1 ]; then
-                                            scripts/codebase/codebase-hash-check.sh 260-delegate 270-delegate-service-app
-                                        # else
-                                        #     echo "INFO: Changes have been approved by Delegate Team, Hence further checking is not required."
-                                        #     exit 0
-                                        # fi
-                                    privileged: false
-                                    resources:
-                                        limits:
-                                            memory: 27G
-                                            cpu: "8"
-                                description: Check for CodeBaseHash for 260-delegate and 270-delegate-service-app modules
               variables:
                   - name: JFROG_USERNAME
                     type: Secret
