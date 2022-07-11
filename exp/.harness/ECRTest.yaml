@@ -1,0 +1,72 @@
+pipeline:
+    name: ECRTest
+    identifier: ECRTest
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    stages:
+        - stage:
+              name: CI Golden Stage
+              identifier: upload
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: rajatha-delegate-april
+                          serviceAccountName: delegate-admin
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: CreateDockerFile
+                                identifier: CreateDockerFile
+                                spec:
+                                    connectorRef: account.CItestDockerConnectorLSN382HqAz
+                                    image: alpine:latest
+                                    shell: Sh
+                                    command: |-
+                                        touch harnessDockerfileui
+                                        cat > harnessDockerfileui <<- EOM
+                                        FROM alpine:latest AS dev-env
+                                        ARG foo
+                                        RUN echo "$foo bar"
+                                        ENTRYPOINT ["pwd"]
+
+                                        FROM alpine:latest AS release-env
+                                        ARG hello
+                                        RUN echo "$hello world"
+                                        ENTRYPOINT ["ls"]
+                                        EOM
+                                        cat harnessDockerfileui
+                                    resources:
+                                        limits:
+                                            memory: 100M
+                          - step:
+                                type: BuildAndPushECR
+                                name: EcsPushStep
+                                identifier: EcsPushStep
+                                spec:
+                                    connectorRef: AWSIRSA
+                                    region: us-east-2
+                                    account: "734046833946"
+                                    imageName: harnesscie-advanced-testingui
+                                    tags:
+                                        - "1.0"
+                                    dockerfile: harnessDockerfileui
+                                    buildArgs:
+                                        foo: bar
+                                    resources:
+                                        limits:
+                                            memory: 100M
+    variables: []
