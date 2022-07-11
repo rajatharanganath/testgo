@@ -54,8 +54,8 @@ pipeline:
                                             memory: 100M
                           - step:
                                 type: SaveCacheS3
-                                name: Restore Cache from S3
-                                identifier: Restore_Cache_from_S3
+                                name: Save Cache to S3
+                                identifier: Save_Cache_to_S3
                                 spec:
                                     connectorRef: AWSKey
                                     region: us-east-2
@@ -66,8 +66,8 @@ pipeline:
                                     archiveFormat: Tar
                           - step:
                                 type: SaveCacheS3
-                                name: Save Cache to S3
-                                identifier: Save_Cache_to_S3
+                                name: Restore Cache from S3
+                                identifier: Restore_Cache_from_S3
                                 spec:
                                     connectorRef: AWSKey
                                     region: us-east-2
