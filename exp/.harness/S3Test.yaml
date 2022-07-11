@@ -53,21 +53,19 @@ pipeline:
                                         limits:
                                             memory: 100M
                           - step:
-                                type: SaveCacheS3
-                                name: Save Cache to S3
-                                identifier: Save_Cache_to_S3
+                                type: RestoreCacheS3
+                                name: Restore from Cache
+                                identifier: Restore_from_Cache
                                 spec:
                                     connectorRef: AWSKey
-                                    region: us-east-2
+                                    region: us-east-1
                                     bucket: test-rajatha
                                     key: value-<+pipeline.executionId>
-                                    sourcePaths:
-                                        - harnessDockerfileui
                                     archiveFormat: Tar
                           - step:
                                 type: SaveCacheS3
-                                name: Restore Cache from S3
-                                identifier: Restore_Cache_from_S3
+                                name: Save Cache to S3
+                                identifier: Save_Cache_to_S3
                                 spec:
                                     connectorRef: AWSKey
                                     region: us-east-2
