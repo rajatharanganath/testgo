@@ -1,0 +1,12 @@
+connector:
+  name: AWSIRSA
+  identifier: AWSIRSA
+  description: ""
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: Aws
+  spec:
+    credential:
+      type: Irsa
+    delegateSelectors:
+    - rajatha-delegate-april
