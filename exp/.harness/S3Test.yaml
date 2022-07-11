@@ -74,4 +74,7 @@ pipeline:
                                     sourcePaths:
                                         - harnessDockerfileui
                                     archiveFormat: Tar
+                                when:
+                                    stageStatus: All
+                                failureStrategies: []
     variables: []
