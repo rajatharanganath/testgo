@@ -1,0 +1,12 @@
+connector:
+  name: AWSAssumeRoleK8
+  identifier: AWSAssumeRoleK8
+  description:
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: K8sCluster
+  spec:
+    credential:
+      type: InheritFromDelegate
+    delegateSelectors:
+    - rajatha-aws-assumerole
