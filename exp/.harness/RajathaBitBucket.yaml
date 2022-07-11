@@ -11,12 +11,12 @@ connector:
       spec:
         type: UsernamePassword
         spec:
-          username: rajathar
+          username: rajatha.ranganat@harness.io
           passwordRef: BitBucketAccessToken
     apiAccess:
       type: UsernameToken
       spec:
-        username: rajathar
+        username: rajatha.ranganat@harness.io
         tokenRef: BitBucketAccessToken
     delegateSelectors:
     - rajatha-delegate-april
