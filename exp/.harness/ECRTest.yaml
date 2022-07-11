@@ -57,7 +57,7 @@ pipeline:
                                 name: EcsPushStep
                                 identifier: EcsPushStep
                                 spec:
-                                    connectorRef: AWSIRSA
+                                    connectorRef: AWSKey
                                     region: us-east-2
                                     account: "734046833946"
                                     imageName: harnesscie-advanced-testingui
