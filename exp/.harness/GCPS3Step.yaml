@@ -1,0 +1,66 @@
+pipeline:
+    name: GCPS3Step
+    identifier: GCPS3Step
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    stages:
+        - stage:
+              name: CI Golden Stage
+              identifier: upload
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: AWSK8
+                          namespace: rajatha-delegate-ecr-prod
+                          serviceAccountName: delegate-admin
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: CreateDockerFile
+                                identifier: CreateDockerFile
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: alpine:latest
+                                    shell: Sh
+                                    command: |-
+                                        touch harnessDockerfileui
+                                        cat > harnessDockerfileui <<- EOM
+                                        FROM alpine:latest AS dev-env
+                                        ARG foo
+                                        RUN echo "$foo bar"
+                                        ENTRYPOINT ["pwd"]
+
+                                        FROM alpine:latest AS release-env
+                                        ARG hello
+                                        RUN echo "$hello world"
+                                        ENTRYPOINT ["ls"]
+                                        EOM
+                                        cat harnessDockerfileui
+                                    resources:
+                                        limits:
+                                            memory: 100M
+                          - step:
+                                type: SaveCacheGCS
+                                name: GCP Save
+                                identifier: GCP_Save
+                                spec:
+                                    connectorRef: GCPConnector
+                                    bucket: ci-automation-report
+                                    key: value-<+pipeline.executionId>
+                                    sourcePaths:
+                                        - harnessDockerfileui
+                                    archiveFormat: Tar
+    variables: []
