@@ -53,6 +53,30 @@ pipeline:
                     type: String
                     value: <+input>.allowedValues(100gi,200gi,300gi,400gi)
         - stage:
+              name: build2
+              identifier: build2
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: delegate
+                          nodeSelector: {}
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: stg2
+                                identifier: stg2
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo test
+        - stage:
               name: cdstg
               identifier: cdstg
               description: ""
