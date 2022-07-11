@@ -21,7 +21,7 @@ pipeline:
                       spec:
                           connectorRef: AWSK8
                           namespace: rajatha-delegate-april
-                          serviceAccountName: ""
+                          serviceAccountName: rajatha-delegate-ecr-prod:delegate-admin
                           automountServiceAccountToken: true
                           nodeSelector: {}
                           os: Linux
