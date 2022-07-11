@@ -32,7 +32,7 @@ pipeline:
                                 name: CreateDockerFile
                                 identifier: CreateDockerFile
                                 spec:
-                                    connectorRef: account.CItestDockerConnectorLSN382HqAz
+                                    connectorRef: dockerrajatha
                                     image: alpine:latest
                                     shell: Sh
                                     command: |-
