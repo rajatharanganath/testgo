@@ -1,0 +1,15 @@
+connector:
+  name: AWSKey
+  identifier: AWSKey
+  description: ""
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: Aws
+  spec:
+    credential:
+      type: ManualConfig
+      spec:
+        accessKey: AKIA2V2EZZUNMTYZZPJH
+        secretKeyRef: AWSAccesskey
+    delegateSelectors:
+    - rajatha-delegate-ecr-prod
