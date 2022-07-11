@@ -5,7 +5,7 @@ connector:
   projectIdentifier: RajathaTest2
   type: Bitbucket
   spec:
-    url: https://bitbucket.org/rajathar/testgo/src/rajatha-test/
+    url: https://bitbucket.org/rajathar/testgo
     authentication:
       type: Http
       spec:
