@@ -1,0 +1,24 @@
+connector:
+  name: RajathaBitBucket
+  identifier: RajathaBitBucket
+  description:
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: Bitbucket
+  spec:
+    url: https://bitbucket.org/rajathar/testgo/src/rajatha-test/
+    authentication:
+      type: Http
+      spec:
+        type: UsernamePassword
+        spec:
+          username: rajathar
+          passwordRef: BitBucketAccessToken
+    apiAccess:
+      type: UsernameToken
+      spec:
+        username: rajathar
+        tokenRef: BitBucketAccessToken
+    delegateSelectors:
+    - rajatha-delegate-april
+    type: Repo
