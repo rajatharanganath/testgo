@@ -1,0 +1,12 @@
+connector:
+  name: GCPConnector
+  identifier: GCPConnector
+  description:
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: Gcp
+  spec:
+    credential:
+      type: InheritFromDelegate
+    delegateSelectors:
+    - rajatha-delegate-april
