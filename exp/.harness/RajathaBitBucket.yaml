@@ -1,7 +1,6 @@
 connector:
   name: RajathaBitBucket
   identifier: RajathaBitBucket
-  description:
   orgIdentifier: default
   projectIdentifier: RajathaTest2
   type: Bitbucket
