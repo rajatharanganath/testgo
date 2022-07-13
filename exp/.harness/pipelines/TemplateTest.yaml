@@ -34,8 +34,8 @@ pipeline:
                                     image: alpine/git:latest
                                     shell: Sh
                                     command: |
-                                        ls -ltr *
                                         git --version 
+                                        cd /harness
                                         git config --add safe.directory /harness
                                         git tag <+pipeline.executionId>
                                 name: test
