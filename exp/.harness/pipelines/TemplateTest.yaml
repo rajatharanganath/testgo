@@ -35,6 +35,7 @@ pipeline:
                                     shell: Sh
                                     command: |
                                         ls -ltr /harness
+                                        apk add -U git
                                         git --version 
                                         git config --global --add safe.directory /harness
                                         git tag <+pipeline.executionId>
