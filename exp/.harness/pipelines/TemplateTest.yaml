@@ -37,6 +37,7 @@ pipeline:
                                         ls -ltr *
                                         git --version 
                                         git tag <+pipeline.executionId>
+                                        git config --global --add safe.directory /harness
                                 name: test
                                 identifier: test
                   cloneCodebase: true
