@@ -35,8 +35,8 @@ pipeline:
                                     shell: Sh
                                     command: |
                                         git --version 
-                                        cd /harness
-                                        git config --add safe.directory /harness/testgo
+                                        cd /harness/testgo
+                                        git config --add safe.directory /harness
                                         git tag <+pipeline.executionId>
                                 name: test
                                 identifier: test
