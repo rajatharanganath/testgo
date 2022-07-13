@@ -33,11 +33,11 @@ pipeline:
                                     connectorRef: dockerrajatha
                                     image: alpine/git:latest
                                     shell: Sh
-                                    command: |-
+                                    command: |
                                         ls -ltr *
                                         git --version 
-                                        git tag <+pipeline.executionId>
                                         git config --global --add safe.directory /harness
+                                        git tag <+pipeline.executionId>
                                 name: test
                                 identifier: test
                   cloneCodebase: true
