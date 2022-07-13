@@ -1,30 +1,27 @@
 pipeline:
-    variables: []
     stages:
         - stage:
               when:
                   pipelineStatus: Success
-              variables: []
               type: CI
               spec:
                   infrastructure:
                       type: KubernetesDirect
                       spec:
-                          connectorRef: rajathak8
+                          os: Linux
                           namespace: rajatha-delegate-april
-                          automountServiceAccountToken: false
-                          nodeSelector: {}
                           containerSecurityContext:
                               runAsUser: "10000"
-                          os: Linux
+                          connectorRef: rajathak8
+                          automountServiceAccountToken: false
                   execution:
                       steps:
                           - step:
                                 type: Run
                                 spec:
-                                    connectorRef: dockerrajatha
-                                    image: alpine/git:latest
                                     shell: Sh
+                                    image: alpine/git:latest
+                                    connectorRef: dockerrajatha
                                     command: |
                                         ls -ltra /harness
                                         git --version 
