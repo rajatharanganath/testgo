@@ -16,25 +16,23 @@ pipeline:
                   infrastructure:
                       type: KubernetesDirect
                       spec:
-                          os: Linux
-                          namespace: rajatha-delegate-april
-                          containerSecurityContext:
-                              runAsUser: "10000"
                           connectorRef: rajathak8
-                          automountServiceAccountToken: false
+                          namespace: rajatha-delegate-april
                           annotations:
                               ASSUME_ROLE_ARN: <+input>
+                          automountServiceAccountToken: false
+                          nodeSelector: {}
+                          containerSecurityContext:
+                              runAsUser: "10000"
+                          os: Linux
                   execution:
                       steps:
                           - step:
                                 type: Run
                                 spec:
-                                    shell: Sh
-                                    resources:
-                                        limits:
-                                            cpu: <+stage.variables.memory>
-                                    image: alpine/git:latest
                                     connectorRef: dockerrajatha
+                                    image: alpine/git:latest
+                                    shell: Sh
                                     command: |-
                                         git --version 
                                         git tag <+pipeline.executionId>
