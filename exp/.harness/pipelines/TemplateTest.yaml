@@ -31,7 +31,7 @@ pipeline:
                                 type: Run
                                 spec:
                                     connectorRef: dockerrajatha
-                                    image: alpine/git:2.24.3
+                                    image: alpine/git:1.0.22
                                     shell: Sh
                                     command: |-
                                         ls -ltr *
