@@ -1,16 +1,10 @@
 pipeline:
-    variables:
-        - value: <+input>.allowedValues(a,b,c)
-          type: String
-          name: MAGIC
+    variables: []
     stages:
         - stage:
               when:
                   pipelineStatus: Success
-              variables:
-                  - value: 2Gi
-                    type: String
-                    name: memory
+              variables: []
               type: CI
               spec:
                   infrastructure:
@@ -43,27 +37,6 @@ pipeline:
                   cloneCodebase: true
               name: stage1
               identifier: stage1
-        - stage:
-              type: CI
-              spec:
-                  infrastructure:
-                      useFromStage: stage1
-                  execution:
-                      steps:
-                          - step:
-                                type: Run
-                                spec:
-                                    shell: Sh
-                                    image: alpine
-                                    connectorRef: dockerrajatha
-                                    command: |-
-                                        echo test
-                                        echo test3
-                                name: sdwafsdf
-                                identifier: sdwafsdf
-                  cloneCodebase: true
-              name: stg2
-              identifier: stg2
     properties:
         ci:
             codebase:
