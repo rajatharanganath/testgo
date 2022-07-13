@@ -8,12 +8,14 @@ pipeline:
                   infrastructure:
                       type: KubernetesDirect
                       spec:
-                          os: Linux
-                          namespace: rajatha-delegate-april
-                          containerSecurityContext:
-                              runAsUser: "10000"
                           connectorRef: rajathak8
+                          namespace: rajatha-delegate-april
+                          runAsUser: ""
                           automountServiceAccountToken: false
+                          nodeSelector: {}
+                          containerSecurityContext:
+                              runAsUser: ""
+                          os: Linux
                   execution:
                       steps:
                           - step:
