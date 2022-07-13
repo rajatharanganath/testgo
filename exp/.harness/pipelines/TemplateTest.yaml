@@ -21,13 +21,13 @@ pipeline:
                           - step:
                                 type: Run
                                 spec:
-                                    shell: Sh
-                                    image: alpine/git:latest
                                     connectorRef: dockerrajatha
+                                    image: alpine/git:latest
+                                    shell: Sh
                                     command: |
                                         ls -ltra /harness
                                         git --version 
-                                        ##git config --global --add safe.directory /harness
+                                        git config --global --add safe.directory /harness
                                         git tag <+pipeline.executionId>
                                 name: test
                                 identifier: test
