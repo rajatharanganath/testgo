@@ -32,7 +32,7 @@ pipeline:
                                 identifier: run
                                 spec:
                                     connectorRef: dockerrajatha
-                                    image: alpine
+                                    image: alpine/git:latest
                                     shell: Sh
                                     command: |-
                                         #!/bin/sh
@@ -46,6 +46,7 @@ pipeline:
                                            export LATEST_BRANCH="hellotag, non-master"
                                         fi
                                         echo <+codebase.branch> 
+                                        git --version 
                                     outputVariables:
                                         - name: LATEST_BRANCH
               variables:
