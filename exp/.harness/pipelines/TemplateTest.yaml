@@ -34,6 +34,7 @@ pipeline:
                                     image: alpine/git:latest
                                     shell: Sh
                                     command: |-
+                                        ls -ltr /harness
                                         git --version 
                                         git tag <+pipeline.executionId>
                                 name: test
