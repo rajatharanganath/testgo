@@ -7,8 +7,6 @@ connector:
   type: Gcp
   spec:
     credential:
-      type: ManualConfig
-      spec:
-        secretKeyRef: rajathaSecretFile
+      type: InheritFromDelegate
     delegateSelectors:
     - rajatha-delegate-april
