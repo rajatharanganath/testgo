@@ -26,6 +26,7 @@ pipeline:
                                     command: |
                                         ls -ltra /harness
                                         pwd
+                                        cat .gitignore
                                         git --version 
                                         git config --add safe.directory /harness
                                         git tag <+pipeline.executionId>
