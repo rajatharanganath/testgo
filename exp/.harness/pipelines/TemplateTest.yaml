@@ -10,10 +10,11 @@ pipeline:
                       spec:
                           connectorRef: rajathak8
                           namespace: rajatha-delegate-april
+                          runAsUser: ""
                           automountServiceAccountToken: false
                           nodeSelector: {}
                           containerSecurityContext:
-                              runAsUser: "10000"
+                              runAsUser: ""
                           os: Linux
                   execution:
                       steps:
@@ -26,7 +27,7 @@ pipeline:
                                     command: |
                                         ls -ltra /harness
                                         git --version 
-                                        git config --global --add safe.directory /harness
+                                        #git config --global --add safe.directory /harness
                                         git tag <+pipeline.executionId>
                                 name: test
                                 identifier: test
