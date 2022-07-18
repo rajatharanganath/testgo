@@ -1,0 +1,52 @@
+pipeline:
+    name: PipelineWithService
+    identifier: PipelineWithService
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    stages:
+        - stage:
+              when:
+                  pipelineStatus: Success
+              type: CI
+              spec:
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: rajatha-delegate-april
+                          automountServiceAccountToken: false
+                          nodeSelector: {}
+                          containerSecurityContext:
+                              runAsUser: "10000"
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: alpine/git:latest
+                                    shell: Sh
+                                    command: |
+                                        ls -ltra /harness
+                                        git --version 
+                                        git config --global --add safe.directory /harness
+                                        git tag <+pipeline.executionId>
+                                name: test
+                                identifier: test
+                  cloneCodebase: true
+                  serviceDependencies:
+                      - identifier: Postgres
+                        name: Postgres
+                        type: Service
+                        spec:
+                            connectorRef: dockerrajatha
+                            image: postgres:14.3
+              name: stage1
+              identifier: stage1
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
