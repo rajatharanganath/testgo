@@ -32,6 +32,19 @@ pipeline:
                                         git tag <+pipeline.executionId>
                                 name: test
                                 identifier: test
+                          - step:
+                                type: Run
+                                name: stp2
+                                identifier: stp2
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo skip
+                                when:
+                                    stageStatus: Failure
+                                    condition: <+pipeline.name> == "RAJATHA"
+                                failureStrategies: []
                   cloneCodebase: true
               name: stage1
               identifier: stage1
