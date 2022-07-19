@@ -28,8 +28,8 @@ pipeline:
                                         pwd
                                         cat .gitignore
                                         git --version 
-                                        git config --add safe.directory /harness
-                                        git tag <+pipeline.executionId>
+                                        #git config --add safe.directory /harness
+                                        #git tag <+pipeline.executionId>
                                 name: test
                                 identifier: test
                           - step:
