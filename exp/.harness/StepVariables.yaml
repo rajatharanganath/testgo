@@ -49,6 +49,38 @@ pipeline:
                                         git --version 
                                     outputVariables:
                                         - name: LATEST_BRANCH
+                          - stepGroup:
+                                name: stg1
+                                identifier: stg1
+                                steps:
+                                    - parallel:
+                                          - step:
+                                                type: Run
+                                                name: dsgdfg
+                                                identifier: dsgdfg
+                                                spec:
+                                                    connectorRef: dockerrajatha
+                                                    image: alpine
+                                                    shell: Sh
+                                                    command: echo help1
+                                          - step:
+                                                type: Run
+                                                name: dsfdsf
+                                                identifier: dsfdsf
+                                                spec:
+                                                    connectorRef: dockerrajatha
+                                                    image: alpine
+                                                    shell: Sh
+                                                    command: echo help3
+                                    - step:
+                                          type: Run
+                                          name: dsasf
+                                          identifier: dsasf
+                                          spec:
+                                              connectorRef: dockerrajatha
+                                              image: alpine
+                                              shell: Sh
+                                              command: echo help2
               variables:
                   - name: stageVar
                     type: String
