@@ -92,12 +92,7 @@ pipeline:
               spec:
                   cloneCodebase: true
                   infrastructure:
-                      type: KubernetesDirect
-                      spec:
-                          connectorRef: rajathak8
-                          namespace: delegate
-                          nodeSelector: {}
-                          os: Linux
+                      useFromStage: build
                   execution:
                       steps:
                           - step:
