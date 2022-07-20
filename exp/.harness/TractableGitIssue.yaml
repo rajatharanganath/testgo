@@ -1,0 +1,42 @@
+pipeline:
+    name: TractableGitIssue
+    identifier: TractableGitIssue
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    stages:
+        - stage:
+              name: stg1
+              identifier: stg1
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: rajatha-delegate-april
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                name: step1
+                                identifier: step1
+                                template:
+                                    templateRef: TractableGitIssue
+                                    versionLabel: "1"
+                                    templateInputs:
+                                        type: Run
+                                        spec:
+                                            envVariables:
+                                                TAG_PREFIX: <+input>
+                                                DOCKER_IMAGE: <+input>
+                                                TAG_OVERRIDE: <+input>
+                                                ADD_GIT_TAG: <+input>
