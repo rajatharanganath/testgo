@@ -18,6 +18,4 @@ connector:
       spec:
         username: rajatha.ranganat@harness.io
         tokenRef: BitBucketAccessToken
-    delegateSelectors:
-    - rajatha-delegate-april
     type: Repo
