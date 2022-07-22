@@ -21,7 +21,7 @@ pipeline:
                       spec:
                           connectorRef: rajathak8
                           namespace: rajatha-delegate-april
-                          serviceAccountName: raghav-service-account
+                          serviceAccountName: ""
                           automountServiceAccountToken: true
                           nodeSelector: {}
                           os: Linux
