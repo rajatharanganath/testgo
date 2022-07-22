@@ -42,6 +42,6 @@ pipeline:
                                             i=$((i + 1))
                                             echo $i
                                             dd if=/dev/zero of=/root/file$i status=none bs=1M count=1K
-                                            ls -ltr
+                                            ls -ltr /root/file*
                                             df -h / | tail -n1
                                         done
