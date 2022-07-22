@@ -7,7 +7,7 @@ pipeline:
     properties:
         ci:
             codebase:
-                connectorRef: CI_QuickStart
+                connectorRef: githubrajatha
                 build: <+input>
     stages:
         - stage:
