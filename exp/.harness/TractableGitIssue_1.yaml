@@ -12,20 +12,15 @@ template:
             connectorRef: dockerrajatha
             image: bash:alpine3.15
             shell: Bash
-            command: "#!/bin/bash
-
+            command: |-
+                apk add -U git
+                #!/bin/bash
                 ls -ltr /harness​
 
-
-                DOCKER_TAG=\"<+​pipeline.executionId>\"
-
-                echo \"DOCKET_TAG=${DOCKER_TAG}\"
-
+                DOCKER_TAG="<+​pipeline.executionId>"
+                echo "DOCKET_TAG=${DOCKER_TAG}"
                 ​
-
                 git tag $DOCKER_TAG
-
-                \               "
             envVariables:
                 TAG_PREFIX: <+input>
                 DOCKER_IMAGE: <+input>
