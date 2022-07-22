@@ -11,10 +11,10 @@ template:
         spec:
             connectorRef: dockerrajatha
             image: alpine/git:latest
-            shell: Bash
+            shell: Sh
             command: |-
                 ##apk add -U git
-                #!/bin/bash
+                ##!/bin/bash
                 ls -ltr /harness​
 
                 DOCKER_TAG="<+​pipeline.executionId>"
