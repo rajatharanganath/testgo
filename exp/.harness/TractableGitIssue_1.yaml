@@ -16,9 +16,7 @@ template:
                 ##apk add -U git
                 #!/bin/bash
                 ls -ltr /harness​
-
                 whoami
-
                 DOCKER_TAG="<+​pipeline.executionId>"
                 echo "DOCKET_TAG=${DOCKER_TAG}"
                 git tag $DOCKER_TAG
