@@ -17,6 +17,9 @@ template:
                 ##!/bin/bash
                 ls -ltr /harness​
 
+                whoami
+                u2 ="$USERNAME" echo "User name $u"
+
                 DOCKER_TAG="<+​pipeline.executionId>"
                 echo "DOCKET_TAG=${DOCKER_TAG}"
                 u="$USER" echo "User name $u"
