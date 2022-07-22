@@ -14,52 +14,16 @@ template:
             shell: Bash
             command: "#!/bin/bash
 
-                ​
-
-                \                # Needed for git operations
-
-                \                apk add -U git
-
-                ​
-
-                \               \ 
-
-                \                PIPELINE_EXECUTION_ID=\"<+pipeline.executionId>\"
-
-                \                COMMIT_SHA=\"<+codebase.commitSha>\"
-
-                \                DEFAULT_BRANCH=\"<+codebase.branch>\"
-
-                \                SOURCE_BRANCH=\"<+codebase.sourceBranch>\"
-
-                \                CODEBASE_BRANCH=$DEFAULT_BRANCH && [ $SOURCE_BRANCH != \"null\"  ] && CODEBASE_BRANCH=$SOURCE_BRANCH
-
-                \                DOCKER_TAG=\"<+​pipeline.executionId>\"
+                ls -ltr /harness​
 
 
-                \                # Debug input values
+                DOCKER_TAG=\"<+​pipeline.executionId>\"
 
-                \                echo \"BUILD_TYPE=$BUILD_TYPE\"
-
-                \                echo \"DOCKER_IMAGE=${DOCKER_IMAGE}\"
-
-                \                echo \"TAG_OVERRIDE=${TAG_OVERRIDE}\"
-
-                \                echo \"TAG_PREFIX=${TAG_PREFIX}\"
-
-                \                echo \"ADD_GIT_TAG=${ADD_GIT_TAG}\"
-
-                \                echo \"PIPELINE_EXECUTION_ID=${PIPELINE_EXECUTION_ID}\"
-
-                \                echo \"COMMIT_SHA=${COMMIT_SHA}\"
-
-                \                echo \"CODEBASE_BRANCH=${CODEBASE_BRANCH}\"
-
-                \                echo \"DOCKET_TAG=${DOCKER_TAG}\"
+                echo \"DOCKET_TAG=${DOCKER_TAG}\"
 
                 ​
 
-                \                git tag $DOCKER_TAG
+                git tag $DOCKER_TAG
 
                 \               "
             envVariables:
