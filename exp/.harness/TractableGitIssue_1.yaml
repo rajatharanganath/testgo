@@ -10,7 +10,7 @@ template:
         type: Run
         spec:
             connectorRef: dockerrajatha
-            image: bash:alpine3.15
+            image: bash:alpine3.11
             shell: Bash
             command: |-
                 whoami
