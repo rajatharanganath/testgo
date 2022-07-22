@@ -37,6 +37,7 @@ pipeline:
                                     shell: Bash
                                     command: |-
                                         set +x
+                                        df /var/lib/docker
                                         ls -ltr /harness
                                         ls -ltr /addon
                                         tail -n 10 /proc/mounts
