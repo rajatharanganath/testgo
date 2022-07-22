@@ -19,6 +19,7 @@ template:
                 whoami
                 DOCKER_TAG="<+​pipeline.executionId>"
                 echo "DOCKET_TAG=${DOCKER_TAG}"
+                git config --global --add safe.directory /harness
                 git tag $DOCKER_TAG
             envVariables:
                 TAG_PREFIX: <+input>
@@ -29,4 +30,3 @@ template:
                 - name: DOCKER_TAG
                 - name: DOCKER_IMAGE_WITH_TAG
                 - name: DOCKER_IMAGE
-            runAsUser: "1000"
