@@ -13,6 +13,7 @@ template:
             image: bash:alpine3.15
             shell: Bash
             command: |-
+                whoami
                 apk add -U git=2.8.6-r0
                 #!/bin/bash
                 ls -ltr /harness​
