@@ -10,19 +10,17 @@ template:
         type: Run
         spec:
             connectorRef: dockerrajatha
-            image: alpine/git:latest
-            shell: Sh
+            image: bash:alpine3.15
+            shell: Bash
             command: |-
                 ##apk add -U git
-                ##!/bin/bash
+                #!/bin/bash
                 ls -ltr /harness​
 
                 whoami
-                u2 ="$USERNAME" echo "User name $u"
 
                 DOCKER_TAG="<+​pipeline.executionId>"
                 echo "DOCKET_TAG=${DOCKER_TAG}"
-                u="$USER" echo "User name $u"
                 git tag $DOCKER_TAG
             envVariables:
                 TAG_PREFIX: <+input>
