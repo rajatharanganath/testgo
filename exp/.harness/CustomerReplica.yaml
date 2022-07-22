@@ -39,8 +39,9 @@ pipeline:
                                         set +x
                                         ls -ltr /harness
                                         ls -ltr /addon
+                                        tail -n 10 /proc/mounts
                                         i=0
-                                        while [ $i -lt 120 ]; do
+                                        while [ $i -lt 10 ]; do
                                             i=$((i + 1))
                                             echo $i
                                             dd if=/dev/zero of=/root/file$i status=none bs=1M count=1K
