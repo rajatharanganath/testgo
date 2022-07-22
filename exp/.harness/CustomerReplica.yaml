@@ -37,6 +37,8 @@ pipeline:
                                     shell: Bash
                                     command: |-
                                         set +x
+                                        ls -ltr /harness
+                                        ls -ltr /addon
                                         i=0
                                         while [ $i -lt 120 ]; do
                                             i=$((i + 1))
