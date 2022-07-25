@@ -14,7 +14,7 @@ template:
             shell: Bash
             command: |-
                 whoami
-                apk add --no-cache -U git=2.8.6-r0
+                apk add --no-cache -U git
                 #!/bin/bash
                 ls -ltr /harness​
                 whoami
