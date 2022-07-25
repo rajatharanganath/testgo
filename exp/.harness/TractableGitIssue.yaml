@@ -23,6 +23,8 @@ pipeline:
                           namespace: rajatha-delegate-april
                           automountServiceAccountToken: true
                           nodeSelector: {}
+                          containerSecurityContext:
+                              runAsUser: "1000"
                           os: Linux
                   execution:
                       steps:
