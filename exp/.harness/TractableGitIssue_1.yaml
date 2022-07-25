@@ -20,6 +20,7 @@ template:
                 #whoami
                 DOCKER_TAG="<+​pipeline.executionId>"
                 echo "DOCKET_TAG=${DOCKER_TAG}"
+                echo $USERNAME
                 git init
                 #git config --global --add safe.directory /harness
                 git tag $DOCKER_TAG
