@@ -16,7 +16,7 @@ template:
                 #whoami
                 #apk add --no-cache -U git
                 ##!/bin/bash
-                ls -ltr /harness​
+                ls -ltra /harness​
                 #whoami
                 DOCKER_TAG="<+​pipeline.executionId>"
                 echo "DOCKET_TAG=${DOCKER_TAG}"
