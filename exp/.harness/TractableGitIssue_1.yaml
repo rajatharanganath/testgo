@@ -10,21 +10,14 @@ template:
         type: Run
         spec:
             connectorRef: dockerrajatha
-            image: ellerbrock/alpine-bash-git:latest
-            shell: Bash
+            image: alpine/git:latest
+            shell: Sh
             command: |-
-                #!/bin/bash
-                whoami
-                #apk add --no-cache -U git
-
                 ls -ltra /harness​
-                #whoami
                 DOCKER_TAG="<+​pipeline.executionId>"
                 echo "DOCKET_TAG=${DOCKER_TAG}"
-                echo "$UID"
-                cat /etc/passwd | cut -d":" -f1,3
                 git init
-                #git config --global --add safe.directory /harness
+                git config --global --add safe.directory /harness
                 git tag $DOCKER_TAG
             envVariables:
                 TAG_PREFIX: <+input>
