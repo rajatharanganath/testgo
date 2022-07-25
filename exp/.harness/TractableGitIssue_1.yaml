@@ -11,11 +11,11 @@ template:
         spec:
             connectorRef: dockerrajatha
             image: alpine/git:latest
-            shell: Bash
+            shell: Sh
             command: |-
                 #whoami
                 #apk add --no-cache -U git
-                #!/bin/bash
+                ##!/bin/bash
                 ls -ltr /harness​
                 #whoami
                 DOCKER_TAG="<+​pipeline.executionId>"
