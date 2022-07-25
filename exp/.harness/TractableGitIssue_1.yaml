@@ -21,7 +21,7 @@ template:
                 DOCKER_TAG="<+​pipeline.executionId>"
                 echo "DOCKET_TAG=${DOCKER_TAG}"
                 git init
-                git config --global --add safe.directory /harness
+                #git config --global --add safe.directory /harness
                 git tag $DOCKER_TAG
             envVariables:
                 TAG_PREFIX: <+input>
