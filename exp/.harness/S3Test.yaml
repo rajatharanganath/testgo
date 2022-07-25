@@ -19,8 +19,8 @@ pipeline:
                   infrastructure:
                       type: KubernetesDirect
                       spec:
-                          connectorRef: AWSK8
-                          namespace: rajatha-delegate-ecr-prod
+                          connectorRef: rajathak8
+                          namespace: rajatha-delegate-april
                           serviceAccountName: delegate-admin
                           automountServiceAccountToken: true
                           nodeSelector: {}
