@@ -13,9 +13,10 @@ template:
             image: alpine/git:latest
             shell: Bash
             command: |-
+                #!/bin/bash
                 whoami
                 #apk add --no-cache -U git
-                #!/bin/bash
+
                 ls -ltra /harness​
                 #whoami
                 DOCKER_TAG="<+​pipeline.executionId>"
