@@ -17,7 +17,7 @@ template:
                 #apk add --no-cache -U git
                 #!/bin/bash
                 ls -ltr /harness​
-                whoami
+                #whoami
                 DOCKER_TAG="<+​pipeline.executionId>"
                 echo "DOCKET_TAG=${DOCKER_TAG}"
                 #git config --global --add safe.directory /harness
