@@ -8,7 +8,7 @@ pipeline:
         ci:
             codebase:
                 connectorRef: AccountLevelRajatha
-                repoName: testapp
+                repoName: testapp-pipelinerepo
                 build: <+input>
     stages:
         - stage:
