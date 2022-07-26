@@ -16,6 +16,7 @@ template:
                 ls -ltra 
                 DOCKER_TAG="<+​pipeline.executionId>"
                 echo "DOCKET_TAG=${DOCKER_TAG}"
+                id
                 #cat ~/.gitconfig
                 #git init
                 #git config --global --add safe.directory /harness
