@@ -52,5 +52,6 @@ pipeline:
                                         	directory = /harness
                                         EOM
                                         cat .git/config
+                                        git config  --add safe.directory /harness2
                                         git status
                                         git tag $DOCKER_TAG
