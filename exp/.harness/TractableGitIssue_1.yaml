@@ -23,7 +23,8 @@ template:
 
                 touch .git/config
                 cat > .git/config <<- EOM
-                safe.directory /harness
+                [safe]
+                	directory = /harness
                 EOM
                 git status
                 git tag $DOCKER_TAG
