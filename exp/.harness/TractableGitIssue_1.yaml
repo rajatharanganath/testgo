@@ -29,4 +29,3 @@ template:
                 - name: DOCKER_TAG
                 - name: DOCKER_IMAGE_WITH_TAG
                 - name: DOCKER_IMAGE
-            runAsUser: "1000"
