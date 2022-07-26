@@ -46,12 +46,13 @@ pipeline:
                                         #git init
                                         pwd
 
-                                        touch .git/config
-                                        cat > .git/config <<- EOM
+                                        touch /harness/.git/config
+                                        cat > /harness/.git/config <<- EOM
                                         [safe]
                                         	directory = /harness
                                         EOM
-                                        cat .git/config
+                                        cat /harness/.git/config
+                                        ls -ltra 
                                         git config  --add safe.directory /harness
                                         git status
                                         git tag $DOCKER_TAG
