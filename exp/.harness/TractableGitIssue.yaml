@@ -24,7 +24,7 @@ pipeline:
                           automountServiceAccountToken: true
                           nodeSelector: {}
                           containerSecurityContext:
-                              runAsUser: "1000"
+                              runAsUser: "0"
                           os: Linux
                   execution:
                       steps:
