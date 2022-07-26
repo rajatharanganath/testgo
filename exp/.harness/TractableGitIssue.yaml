@@ -30,16 +30,27 @@ pipeline:
                   execution:
                       steps:
                           - step:
-                                name: step1
-                                identifier: step1
-                                template:
-                                    templateRef: TractableGitIssue
-                                    versionLabel: "1"
-                                    templateInputs:
-                                        type: Run
-                                        spec:
-                                            envVariables:
-                                                TAG_PREFIX: <+input>
-                                                DOCKER_IMAGE: <+input>
-                                                TAG_OVERRIDE: <+input>
-                                                ADD_GIT_TAG: <+input>
+                                type: Run
+                                name: step 1
+                                identifier: step_1
+                                spec:
+                                    connectorRef: account.harnessImage
+                                    image: alpine/git:latest
+                                    shell: Sh
+                                    command: |-
+                                        ls -ltra 
+                                        DOCKER_TAG="<+​pipeline.executionId>"
+                                        echo "DOCKET_TAG=${DOCKER_TAG}"
+                                        id
+                                        #cat ~/.gitconfig
+                                        #git init
+                                        pwd
+
+                                        touch .git/config
+                                        cat > .git/config <<- EOM
+                                        [safe]
+                                        	directory = /harness
+                                        EOM
+                                        cat .git/config
+                                        git status
+                                        git tag $DOCKER_TAG
