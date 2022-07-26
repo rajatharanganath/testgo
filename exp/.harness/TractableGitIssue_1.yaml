@@ -20,12 +20,12 @@ template:
                 #cat ~/.gitconfig
                 #git init
                 pwd
-                git status
+
                 touch .git/config
                 cat > .git/config <<- EOM
                 safe.directory /harness
                 EOM
-
+                git status
                 git tag $DOCKER_TAG
             envVariables:
                 TAG_PREFIX: <+input>
