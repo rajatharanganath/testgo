@@ -21,6 +21,7 @@ template:
                 #git init
                 touch .git/config
                 git config --add safe.directory /harness
+                pwd
                 git tag $DOCKER_TAG
             envVariables:
                 TAG_PREFIX: <+input>
