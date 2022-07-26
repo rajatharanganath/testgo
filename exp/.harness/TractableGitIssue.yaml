@@ -55,5 +55,6 @@ pipeline:
                                         #ls -ltra 
                                         #git config  --add safe.directory /harness
                                         #git status
-                                        git config --global --add safe.directory /harness
+                                        #git config --global --add safe.directory /harness
                                         git tag $DOCKER_TAG
+                                    runAsUser: "0"
