@@ -22,7 +22,9 @@ template:
                 pwd
                 git status
                 touch .git/config
-                git config --add safe.directory /harness
+                cat > .git/config <<- EOM
+                safe.directory /harness
+                EOM
 
                 git tag $DOCKER_TAG
             envVariables:
