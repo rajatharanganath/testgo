@@ -20,6 +20,7 @@ template:
                 #cat ~/.gitconfig
                 #git init
                 pwd
+                git status
                 touch .git/config
                 git config --add safe.directory /harness
 
