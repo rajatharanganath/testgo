@@ -13,7 +13,7 @@ template:
             image: alpine/git:latest
             shell: Sh
             command: |-
-                ls -ltra /harness​
+                ls -ltra harness​
                 DOCKER_TAG="<+​pipeline.executionId>"
                 echo "DOCKET_TAG=${DOCKER_TAG}"
                 cat ~/.gitconfig
