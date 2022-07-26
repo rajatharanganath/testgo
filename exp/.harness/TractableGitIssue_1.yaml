@@ -19,7 +19,8 @@ template:
                 id
                 #cat ~/.gitconfig
                 #git init
-                #git config --global --add safe.directory /harness
+                touch .git/config
+                git config --add safe.directory /harness
                 git tag $DOCKER_TAG
             envVariables:
                 TAG_PREFIX: <+input>
