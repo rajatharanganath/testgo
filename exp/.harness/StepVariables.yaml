@@ -47,6 +47,7 @@ pipeline:
                                         fi
                                         echo <+codebase.branch> 
                                         git --version 
+                                    envVariables: <+input>
                                     outputVariables:
                                         - name: LATEST_BRANCH
               variables:
