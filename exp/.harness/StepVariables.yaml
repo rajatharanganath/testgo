@@ -122,6 +122,24 @@ pipeline:
               when:
                   pipelineStatus: Success
                   condition: <+stage.pipeline.variables.magic> == "RAJATHA"
+        - stage:
+              name: stg4
+              identifier: stg4
+              template:
+                  templateRef: Stage1
+                  versionLabel: v1
+                  templateInputs:
+                      type: CI
+                      spec:
+                          execution:
+                              steps:
+                                  - step:
+                                        identifier: run
+                                        type: Run
+                                        spec:
+                                            image: <+input>
+                                            command: <+input>
+                                            envVariables: <+input>
     variables:
         - name: magic
           type: String
