@@ -268,7 +268,6 @@ pipeline:
     properties:
         ci:
             codebase:
-                connectorRef: account.Github
-                repoName: <+input>
+                connectorRef: githubrajatha
                 build: <+input>
     variables: []
