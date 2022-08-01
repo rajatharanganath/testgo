@@ -28,3 +28,4 @@ template:
                               image: <+input>
                               shell: Sh
                               command: <+input>
+                              envVariables: <+input>
