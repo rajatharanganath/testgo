@@ -27,7 +27,7 @@ pipeline:
                         name: postgres
                         type: Service
                         spec:
-                            connectorRef: account.Docker_Hub
+                            connectorRef: dockerrajatha
                             image: postgres:13.7-alpine
                             envVariables:
                                 POSTGRES_HOST_AUTH_METHOD: trust
@@ -35,7 +35,7 @@ pipeline:
                         name: docker_dind
                         type: Service
                         spec:
-                            connectorRef: account.Docker_Hub
+                            connectorRef: dockerrajatha
                             image: docker:dind
                             privileged: true
                             entrypoint:
@@ -173,7 +173,7 @@ pipeline:
                                                 name: Docker Build
                                                 identifier: Docker_Build
                                                 spec:
-                                                    connectorRef: account.Docker_Hub
+                                                    connectorRef: dockerrajatha
                                                     image: bentolor/docker-dind-awscli
                                                     shell: Bash
                                                     command: |-
