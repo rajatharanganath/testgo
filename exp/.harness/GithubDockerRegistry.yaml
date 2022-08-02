@@ -1,0 +1,17 @@
+connector:
+  name: GithubDockerRegistry
+  identifier: GithubDockerRegistry
+  description: ""
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: DockerRegistry
+  spec:
+    dockerRegistryUrl: ghcr.io
+    providerType: Other
+    auth:
+      type: UsernamePassword
+      spec:
+        username: rajatharanganath
+        passwordRef: rajatharanganath
+    delegateSelectors:
+    - rajatha-delegate-april
