@@ -31,7 +31,7 @@ pipeline:
                                 identifier: git_cmd
                                 spec:
                                     connectorRef: dockerrajatha
-                                    image: alpine/git
+                                    image: <+input>
                                     shell: Sh
                                     command: |-
                                         git config --global --add safe.directory /harness
