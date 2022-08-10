@@ -55,7 +55,7 @@ pipeline:
                         name: mysql
                         type: Service
                         spec:
-                            connectorRef: GithubDockerRegistry
+                            connectorRef: dockerrajatha
                             image: mysql:5
               variables:
                   - name: stageVar
