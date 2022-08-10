@@ -50,6 +50,13 @@ pipeline:
                                     envVariables: <+input>
                                     outputVariables:
                                         - name: LATEST_BRANCH
+                  serviceDependencies:
+                      - identifier: mysql
+                        name: mysql
+                        type: Service
+                        spec:
+                            connectorRef: GithubDockerRegistry
+                            image: mysql:5
               variables:
                   - name: stageVar
                     type: String
