@@ -52,6 +52,11 @@ pipeline:
                                         go get gotest.tools/gotestsum
                                         gotestsum --format=standard-verbose --junitfile unit-tests.xml || true
                                         CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags netgo
+                                    reports:
+                                        type: JUnit
+                                        spec:
+                                            paths:
+                                                - "*.xml"
                                     outputVariables:
                                         - name: LATEST_BRANCH
                           - step:
