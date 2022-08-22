@@ -1,40 +1,35 @@
 pipeline:
-    name: GitCloneIssue
-    identifier: GitCloneIssue
-    projectIdentifier: RajathaTest2
-    orgIdentifier: default
-    properties:
-        ci:
-            codebase:
-                connectorRef: githubrajatha
-                build: <+input>
-    stages:
-        - stage:
-              name: Stage1
-              identifier: Stage1
-              type: CI
-              spec:
-                  cloneCodebase: true
-                  infrastructure:
-                      type: KubernetesDirect
-                      spec:
-                          connectorRef: rajathak8
-                          namespace: rajatha-delegate-april
-                          automountServiceAccountToken: true
-                          nodeSelector: {}
-                          os: Linux
-                  execution:
-                      steps:
-                          - step:
-                                type: Run
-                                name: git cmd
-                                identifier: git_cmd
-                                spec:
-                                    connectorRef: dockerrajatha
-                                    image: <+input>
-                                    shell: Sh
-                                    command: |-
-                                        git config --global --add safe.directory /harness
-                                        git status
-                                        git branch
-                                        ls
+  name: GitCloneIssue
+  identifier: GitCloneIssue
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  stages:
+    - stage:
+        name: Stage1
+        identifier: Stage1
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: rajatha-delegate-april
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: git cmd
+                  identifier: git_cmd
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: <+input>
+                    shell: Sh
+                    command: |-
+                      git config --global --add safe.directory /harness
+                      git status
+                      git branch
+                      ls
