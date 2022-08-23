@@ -9,7 +9,7 @@ pipeline:
         identifier: Stage1
         type: CI
         spec:
-          cloneCodebase: false
+          cloneCodebase: true
           infrastructure:
             type: KubernetesDirect
             spec:
@@ -33,3 +33,8 @@ pipeline:
                       git status
                       git branch
                       ls
+  properties:
+    ci:
+      codebase:
+        connectorRef: githubrajatha
+        build: <+input>
