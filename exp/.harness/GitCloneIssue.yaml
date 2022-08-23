@@ -29,7 +29,7 @@ pipeline:
                     image: <+input>
                     shell: Sh
                     command: |-
-                      ##git config --global --add safe.directory /harness
+                      git config --global --add safe.directory /harness
                       git status
                       git branch
                       ls
