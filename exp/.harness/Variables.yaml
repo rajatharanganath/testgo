@@ -50,5 +50,5 @@ pipeline:
                     command: |-
                       #!/bin/sh
                       echo "<+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push.artifact-Build_and_Push.stepArtifacts.publishedImageArtifacts[0].tag>"
-                      echo "<+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push["artifact-Build_and_Push"].stepArtifacts.publishedImageArtifacts[0].tag>"
-                      echo "<+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push>"
+                      #echo "<+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push["artifact-Build_and_Push"].stepArtifacts.publishedImageArtifacts[0].tag>"
+                      #echo "<+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push>"
