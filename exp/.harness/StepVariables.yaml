@@ -58,7 +58,9 @@ pipeline:
                     connectorRef: dockerrajatha
                     image: alpine
                     shell: Sh
-                    command: echo "<+pipeline.stages.build.spec.execution.steps.run.stepArtifacts.image>"
+                    command: |-
+                      echo "<+pipeline.stages.build.spec.execution.steps.run.artifact-run.stepArtifacts.image>"
+                      echo "<+pipeline.stages.build.spec.execution.steps.run["artifact-run"].stepArtifacts.image>"
           serviceDependencies:
             - identifier: mysql
               name: mysql
