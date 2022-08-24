@@ -36,7 +36,7 @@ pipeline:
                   identifier: Build_and_Push
                   spec:
                     connectorRef: dockerrajatha
-                    repo: fjunior87/busybox
+                    repo: rajatharanganath/ciquickstart
                     tags:
                       - latest
               - step:
