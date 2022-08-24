@@ -108,7 +108,7 @@ pipeline:
                     source:
                       type: Inline
                       spec:
-                        script: echo <+pipeline.stages.stg2.spec.execution.steps.step2.artifact-step2>
+                        script: echo <+execution.steps.step1.timeout>
                     environmentVariables: []
                     outputVariables: []
                     executionTarget: {}
