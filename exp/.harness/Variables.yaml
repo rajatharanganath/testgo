@@ -8,15 +8,14 @@ pipeline:
     - stage:
         name: Ci Test Outputs
         identifier: Ci_Test_Outputs
-        description: ""
         type: CI
         spec:
           cloneCodebase: false
           infrastructure:
             type: KubernetesDirect
             spec:
-              connectorRef: account.Localk3s
-              namespace: harness-delegate-ng
+              connectorRef: rajathak8
+              namespace: rajatha-delegate-ng
               automountServiceAccountToken: true
               nodeSelector: {}
               os: Linux
