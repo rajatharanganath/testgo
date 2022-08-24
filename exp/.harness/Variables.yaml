@@ -84,13 +84,6 @@ pipeline:
           execution:
             steps:
               - step:
-                  name: Rollout Deployment
-                  identifier: rolloutDeployment
-                  type: K8sRollingDeploy
-                  timeout: 10m
-                  spec:
-                    skipDryRun: false
-              - step:
                   type: ShellScript
                   name: step1
                   identifier: step1
