@@ -45,7 +45,7 @@ pipeline:
                   identifier: Echo_Tag
                   spec:
                     connectorRef: dockerrajatha
-                    image: devel-alpine3.15
+                    image: bash
                     shell: Bash
                     command: |-
                       #!/bin/sh
