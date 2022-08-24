@@ -45,7 +45,7 @@ pipeline:
                   identifier: Echo_Tag
                   spec:
                     connectorRef: dockerrajatha
-                    image: busybox
+                    image: devel-alpine3.15
                     shell: Bash
                     command: |-
                       #!/bin/sh
