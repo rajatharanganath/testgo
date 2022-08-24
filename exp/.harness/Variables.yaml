@@ -60,15 +60,6 @@ pipeline:
                     shell: Sh
                     command: |
                       echo <+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push["artifact-Build_and_Push"].stepArtifacts.publishedImageArtifacts[0].tag>
-              - step:
-                  type: Run
-                  name: echo tag3
-                  identifier: echo_tag3
-                  spec:
-                    connectorRef: dockerrajatha
-                    image: alpine
-                    shell: Sh
-                    command: echo <+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push>
     - stage:
         name: stg2
         identifier: stg2
