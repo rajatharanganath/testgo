@@ -1,0 +1,54 @@
+pipeline:
+  name: Variables
+  identifier: Variables
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: Ci Test Outputs
+        identifier: Ci_Test_Outputs
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: account.Localk3s
+              namespace: harness-delegate-ng
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Create Dockerfile
+                  identifier: Create_Dockerfile
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: busybox
+                    shell: Sh
+                    command: echo "FROM busybox" > Dockerfile
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: Build and Push
+                  identifier: Build_and_Push
+                  spec:
+                    connectorRef: dockerrajatha
+                    repo: fjunior87/busybox
+                    tags:
+                      - latest
+              - step:
+                  type: Run
+                  name: Echo Tag
+                  identifier: Echo_Tag
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: busybox
+                    shell: Sh
+                    command: |-
+                      echo <+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push.artifact-Build_and_Push.stepArtifacts.publishedImageArtifacts[0].tag>
+                      echo <+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push["artifact-Build_and_Push"].stepArtifacts.publishedImageArtifacts[0].tag>
+                      echo <+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push>
