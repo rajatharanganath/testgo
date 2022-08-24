@@ -50,3 +50,23 @@ pipeline:
                     command: |
                       #!/bin/sh
                       echo "<+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push.artifact-Build_and_Push.stepArtifacts.publishedImageArtifacts[0].tag>"
+              - step:
+                  type: Run
+                  name: echo tag 2
+                  identifier: echo_tag_2
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine
+                    shell: Sh
+                    command: |
+                      echo <+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push["artifact-Build_and_Push"].stepArtifacts.publishedImageArtifacts[0].tag>
+              - step:
+                  type: Run
+                  name: echo tag3
+                  identifier: echo_tag3
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine
+                    shell: Sh
+                    command: |
+                      echo <+pipeline.stages.Ci_Test_Outputs.spec.execution.steps.Build_and_Push>
