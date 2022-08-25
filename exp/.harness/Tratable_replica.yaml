@@ -53,12 +53,6 @@ pipeline:
                     action:
                       type: Abort
   allowStageExecutions: false
-  properties:
-    ci:
-      codebase:
-        connectorRef: account.Github_via_SSH_ECDSA_key
-        repoName: harness-base-docker-images
-        build: <+input>
   notificationRules:
     - name: On Pipeline Errors
       pipelineEvents:
