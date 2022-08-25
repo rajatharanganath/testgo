@@ -1,0 +1,15 @@
+template:
+  name: New Step Template Name
+  identifier: new_step_template_name
+  versionLabel: "1.0"
+  type: Step
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  tags: {}
+  spec:
+    type: BuildAndPushACR
+    spec:
+      connectorRef: <+input>
+      repository: <+input>
+      tags:
+        - latest
