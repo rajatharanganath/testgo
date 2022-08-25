@@ -51,6 +51,6 @@ pipeline:
                   retryCount: 1
                   onRetryFailure:
                     action:
-                      type: Abort
+                      type: MarkAsSuccess
   allowStageExecutions: false
   notificationRules: []
