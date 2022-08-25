@@ -6,115 +6,6 @@ pipeline:
   tags: {}
   stages:
     - stage:
-        name: Build and Push
-        identifier: Build
-        type: CI
-        spec:
-          cloneCodebase: true
-          infrastructure:
-            type: KubernetesDirect
-            spec:
-              connectorRef: account.K8S_nextgen_Connector
-              namespace: harness-build
-              automountServiceAccountToken: true
-              nodeSelector: {}
-          execution:
-            steps:
-              - step:
-                  type: Run
-                  name: Create Docker file
-                  identifier: Create_Docker_file
-                  spec:
-                    connectorRef: account.Tractable_Docker_Hub
-                    image: alpine:latest
-                    shell: Sh
-                    command: |-
-                      cat <<EOF > Dockerfile
-                      FROM ubuntu:22.04
-
-                      # Disable graphical installers
-                      ENV DEBIAN_FRONTEND noninteractive
-
-                      # Use root user
-                      USER root
-                      # But change default shell to bash for asdf
-                      RUN chsh -s /bin/bash root
-
-                      # Update packages
-                      # Install Bash support for asdf
-                      # Install libraries to compile python
-                      # Install other requirements
-                      # Remove package lists
-                      RUN apt-get update && apt-get install --no-install-recommends -y \
-                          libuser bash bash-completion \
-                          make patch build-essential zlib1g-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev \
-                          curl git unzip ca-certificates && \
-                          apt-get clean && rm -rf /var/lib/apt/lists/*
-
-                      # Install aws-cli
-                      RUN curl -sS "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-                          unzip -qq awscliv2.zip && \
-                          ./aws/install
-
-                      # RUN adduser --gecos "" --shell /bin/bash --home /tractable --disabled-password tractable
-                      # USER tractable
-                      # ONBUILD USER tractable
-                      # WORKDIR /tractable
-
-                      # Installing asdf
-                      # Sourcing asdf every way possible
-                      SHELL ["/bin/bash", "-c"]
-                      RUN git -c "advice.detachedHead=false" clone "https://github.com/asdf-vm/asdf.git" "$HOME/.asdf" --branch v0.10.0 && \
-                          chmod +x $HOME/.asdf/asdf.sh && \
-                          echo -e "\nsource $HOME/.asdf/asdf.sh" >> ~/.bashrc && \
-                          echo -e "\nsource $HOME/.asdf/asdf.sh" >> ~/.profile && \
-                          source "$HOME/.asdf/asdf.sh"
-                      # Harness will overwrite/have their own .bashrc therefore we are using the BASH_ENV to source
-                      # Also, the USER directive doesn't apply to ENV directives and we can't use $HOME
-                      ENV BASH_ENV="/root/.asdf/asdf.sh"
-
-                      # Activate asdf
-                      # Add asdf python plugin
-                      # Set a system python version
-
-                      # Install a bunch of stable latest python versions
-                          #asdf install python latest:3.6 && asdf global python latest:3.6 && \
-                          #asdf install python latest:3.7 && \
-                          #asdf install python latest:3.8 && \
-                          #asdf install python latest:3.9 && \
-
-                      RUN source "$HOME/.asdf/asdf.sh" && \
-                          asdf plugin add python && \
-                          asdf plugin add poetry && \
-                          asdf install python latest:<+pipeline.stages.Build.variables.DEFAULT_PYTHON_VERSION> && \
-                          asdf global python latest:<+pipeline.stages.Build.variables.DEFAULT_PYTHON_VERSION> && \
-                          asdf install poetry 1.1.13 && \
-                          asdf global poetry 1.1.13 && \    
-                          cat $HOME/.tool-versions
-
-                      # List all program versions
-                      RUN source "$HOME/.asdf/asdf.sh" && \
-                          aws --version && \
-                          git --version && \
-                          asdf --version && \
-                          python --version
-
-                      # Switch default user away from root
-                      # I want people to be aware they are using root
-                      USER nobody
-
-                      # Start the container like this
-                      # docker run --rm -it --entrypoint /bin/bash --user 0 tractableio/asdf-python-aws-git:
-                      EOF
-                      cat Dockerfile
-        when:
-          pipelineStatus: All
-        variables:
-          - name: DEFAULT_PYTHON_VERSION
-            type: String
-            default: "3.6"
-            value: <+input>
-    - stage:
         name: Test Image
         identifier: Test_Image
         type: CI
@@ -125,6 +16,7 @@ pipeline:
             spec:
               connectorRef: rajathak8
               namespace: sdfdsfgds
+              automountServiceAccountToken: true
               nodeSelector: {}
               os: Linux
           execution:
@@ -149,7 +41,17 @@ pipeline:
                       python --version
                     imagePullPolicy: Always
                     runAsUser: "0"
-        failureStrategies: []
+        failureStrategies:
+          - onFailure:
+              errors:
+                - Timeout
+              action:
+                type: Retry
+                spec:
+                  retryCount: 1
+                  onRetryFailure:
+                    action:
+                      type: Abort
   allowStageExecutions: false
   properties:
     ci:
