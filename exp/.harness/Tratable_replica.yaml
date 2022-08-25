@@ -44,7 +44,7 @@ pipeline:
         failureStrategies:
           - onFailure:
               errors:
-                - Timeout
+                - AllErrors
               action:
                 type: Retry
                 spec:
