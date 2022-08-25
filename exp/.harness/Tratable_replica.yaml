@@ -121,7 +121,12 @@ pipeline:
         spec:
           cloneCodebase: false
           infrastructure:
-            useFromStage: Build
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: sdfdsfgds
+              nodeSelector: {}
+              os: Linux
           execution:
             steps:
               - step:
