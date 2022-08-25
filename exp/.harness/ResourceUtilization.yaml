@@ -41,8 +41,7 @@ pipeline:
                           sleep 100000
                         resources:
                           limits:
-                            memory: 8Gi
-                            cpu: 3000m
+                            memory: 2Gi
                   - step:
                       type: Run
                       name: test
@@ -56,5 +55,4 @@ pipeline:
                           sleep 100000
                         resources:
                           limits:
-                            memory: 8Gi
-                            cpu: 3000m
+                            memory: 2Gi
