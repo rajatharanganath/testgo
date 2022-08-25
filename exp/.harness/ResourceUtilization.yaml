@@ -39,9 +39,6 @@ pipeline:
                         command: |-
                           echo test
                           sleep 100000
-                        resources:
-                          limits:
-                            memory: 2Gi
                   - step:
                       type: Run
                       name: test
@@ -53,6 +50,3 @@ pipeline:
                         command: |-
                           echo test
                           sleep 100000
-                        resources:
-                          limits:
-                            memory: 2Gi
