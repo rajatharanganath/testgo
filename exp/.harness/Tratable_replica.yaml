@@ -131,7 +131,7 @@ pipeline:
             steps:
               - step:
                   type: Run
-                  name: List program versions
+                  name: step2
                   identifier: List_program_versions
                   spec:
                     connectorRef: account.Tractable_Docker_Hub
