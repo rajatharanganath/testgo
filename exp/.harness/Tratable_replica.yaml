@@ -46,6 +46,11 @@ pipeline:
               errors:
                 - AllErrors
               action:
-                type: Abort
+                type: Retry
+                spec:
+                  retryCount: 1
+                  onRetryFailure:
+                    action:
+                      type: Abort
   allowStageExecutions: false
   notificationRules: []
