@@ -149,17 +149,7 @@ pipeline:
                       python --version
                     imagePullPolicy: Always
                     runAsUser: "0"
-        failureStrategies:
-          - onFailure:
-              errors:
-                - Timeout
-              action:
-                type: Retry
-                spec:
-                  retryCount: 1
-                  onRetryFailure:
-                    action:
-                      type: Abort
+        failureStrategies: []
   allowStageExecutions: false
   properties:
     ci:
