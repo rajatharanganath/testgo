@@ -53,13 +53,4 @@ pipeline:
                     action:
                       type: Abort
   allowStageExecutions: false
-  notificationRules:
-    - name: On Pipeline Errors
-      pipelineEvents:
-        - type: PipelineFailed
-      notificationMethod:
-        type: Slack
-        spec:
-          userGroups: []
-          webhookUrl: https://hooks.slack.com/services/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
-      enabled: true
+  notificationRules: []
