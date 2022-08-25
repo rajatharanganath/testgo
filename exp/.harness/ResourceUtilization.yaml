@@ -55,4 +55,4 @@ pipeline:
               errors:
                 - AllErrors
               action:
-                type: Abort
+                type: Ignore
