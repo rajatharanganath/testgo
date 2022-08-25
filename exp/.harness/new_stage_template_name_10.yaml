@@ -1,0 +1,31 @@
+template:
+  name: New Stage Template Name
+  identifier: new_stage_template_name
+  versionLabel: "1.0"
+  type: Stage
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  tags: {}
+  spec:
+    type: CI
+    spec:
+      cloneCodebase: true
+      infrastructure:
+        type: KubernetesDirect
+        spec:
+          connectorRef: <+input>
+          namespace: <+input>
+          automountServiceAccountToken: true
+          nodeSelector: {}
+          os: Linux
+      execution:
+        steps:
+          - step:
+              type: BuildAndPushACR
+              name: step2
+              identifier: step2
+              spec:
+                connectorRef: <+input>
+                repository: <+input>
+                tags:
+                  - latest
