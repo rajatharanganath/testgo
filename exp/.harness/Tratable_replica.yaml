@@ -11,8 +11,6 @@ pipeline:
         type: CI
         spec:
           cloneCodebase: false
-          infrastructure:
-            useFromStage: Build
           execution:
             steps:
               - step:
@@ -35,3 +33,11 @@ pipeline:
                       python --version
                     imagePullPolicy: Always
                     runAsUser: "0"
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: dsgdfg
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
