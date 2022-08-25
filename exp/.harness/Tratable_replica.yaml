@@ -52,5 +52,7 @@ pipeline:
                   onRetryFailure:
                     action:
                       type: Abort
+                  retryIntervals:
+                    - 1m
   allowStageExecutions: false
   notificationRules: []
