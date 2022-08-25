@@ -50,3 +50,9 @@ pipeline:
                         command: |-
                           echo test
                           sleep 100000
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: Abort
