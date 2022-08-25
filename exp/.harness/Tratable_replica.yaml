@@ -35,6 +35,3 @@ pipeline:
                       python --version
                     imagePullPolicy: Always
                     runAsUser: "0"
-        failureStrategies: []
-  allowStageExecutions: false
-  notificationRules: []
