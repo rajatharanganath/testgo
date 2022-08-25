@@ -66,3 +66,14 @@ pipeline:
                     repo: rajatharanganath/ciquickstart
                     tags:
                       - <+pipeline.sequenceId>
+              - step:
+                  name: step2
+                  identifier: step2
+                  template:
+                    templateRef: new_step_template_name
+                    versionLabel: "1.0"
+                    templateInputs:
+                      type: BuildAndPushACR
+                      spec:
+                        connectorRef: <+input>
+                        repository: <+input>
