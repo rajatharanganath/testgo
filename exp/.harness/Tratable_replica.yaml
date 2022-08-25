@@ -160,47 +160,6 @@ pipeline:
             type: String
             default: "3.6"
             value: <+input>
-    - stage:
-        name: Test Image
-        identifier: Test_Image
-        type: CI
-        spec:
-          cloneCodebase: false
-          infrastructure:
-            useFromStage: Build
-          execution:
-            steps:
-              - step:
-                  type: Run
-                  name: List program versions
-                  identifier: List_program_versions
-                  spec:
-                    connectorRef: account.Tractable_Docker_Hub
-                    image: <+pipeline.stages.Build.spec.execution.steps.Generate_Docker_Tag.output.outputVariables.DOCKER_IMAGE_WITH_TAG>
-                    shell: Bash
-                    command: |
-                      whoami
-                      printenv
-
-                      ls -al /root/.asdf
-
-                      git --version
-                      aws --version
-                      asdf --version
-                      python --version
-                    imagePullPolicy: Always
-                    runAsUser: "0"
-        failureStrategies:
-          - onFailure:
-              errors:
-                - Timeout
-              action:
-                type: Retry
-                spec:
-                  retryCount: 1
-                  onRetryFailure:
-                    action:
-                      type: Abort
   allowStageExecutions: false
   properties:
     ci:
