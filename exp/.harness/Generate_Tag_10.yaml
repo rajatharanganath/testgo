@@ -1,0 +1,125 @@
+template:
+  name: Generate Tag
+  identifier: Generate_Tag
+  versionLabel: "1.0"
+  type: Step
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  tags: {}
+  spec:
+    type: Run
+    description: Generates a unique docker tag
+    spec:
+      connectorRef: account.Tractable_Docker_Hub
+      image: bash:alpine3.15
+      shell: Bash
+      command: |-
+        #!/bin/bash
+
+        # Needed for git operations
+        apk add -U git
+
+        # Input envs
+        # DOCKER_IMAGE=tractableio/abc
+        # TAG_OVERRIDE=null # optional, leave "null" to generate a tag
+        # TAG_PREFIX=null # optional, leave "null" to skip prefix
+        # ADD_GIT_TAG=null # optional, leave "null" to skip git tag
+
+        # Harness replacements
+        PIPELINE_EXECUTION_ID="<+pipeline.executionId>"
+        COMMIT_SHA="<+codebase.commitSha>"
+        DEFAULT_BRANCH="<+codebase.branch>"
+        SOURCE_BRANCH="<+codebase.sourceBranch>"
+        CODEBASE_BRANCH=$DEFAULT_BRANCH && [ $SOURCE_BRANCH != "null"  ] && CODEBASE_BRANCH=$SOURCE_BRANCH
+
+        # Debug input values
+        echo "BUILD_TYPE=$BUILD_TYPE"
+        echo "DOCKER_IMAGE=${DOCKER_IMAGE}"
+        echo "TAG_OVERRIDE=${TAG_OVERRIDE}"
+        echo "TAG_PREFIX=${TAG_PREFIX}"
+        echo "ADD_GIT_TAG=${ADD_GIT_TAG}"
+        echo "PIPELINE_EXECUTION_ID=${PIPELINE_EXECUTION_ID}"
+        echo "COMMIT_SHA=${COMMIT_SHA}"
+        echo "CODEBASE_BRANCH=${CODEBASE_BRANCH}"
+
+        if [[ "$DOCKER_IMAGE" != tractableio* ]]; then
+            echo "The template requires DOCKER_IMAGE input. Make sure it starts with 'tractableio/'."
+            exit 1
+        fi
+
+        git config --global --add safe.directory /harness
+
+        if [ "$TAG_OVERRIDE" = "null" ] || [ -z "$TAG_OVERRIDE" ]; then
+            echo "Auto generating tag"
+            # User doesn't want to force a tag overwrite, we will generate a tag.
+
+            # Check if user wants to prefix their tag
+            if [ "$TAG_PREFIX" = "null" ] || [ -z "$TAG_PREFIX" ]; then
+                TAG_PREFIX=""
+            else
+                TAG_PREFIX="${TAG_PREFIX}_"
+            fi
+
+            # Build ID will be the Harness pipeline execution id trimmed
+            if [ $PIPELINE_EXECUTION_ID = "null" ]; then
+                TAG_BUILD_ID=""
+            else
+                TAG_BUILD_ID=$PIPELINE_EXECUTION_ID
+            fi
+            echo "TAG_BUILD_ID=${TAG_BUILD_ID}"
+            TAG_BUILD_ID_TRIM=$(echo "${TAG_BUILD_ID}" | sed 's|[-_]||g')
+            TAG_BUILD_ID_SHORT="${TAG_BUILD_ID_TRIM:0:7}"
+            echo "TAG_BUILD_ID_SHORT=${TAG_BUILD_ID_SHORT}"
+            # Get the today date
+            TAG_DATE=$(date +"%Y%m%d")
+            # Get the sha for this commit
+            TAG_REF=$(git rev-parse HEAD)
+            echo "TAG_REF=${TAG_REF}"
+
+            echo "CODEBASE_BRANCH=${CODEBASE_BRANCH}"
+            # Get the branch name and trim if necessary; Use the git sha if no branch name available
+            if [ $CODEBASE_BRANCH = "null" ]; then
+                TAG_BRANCH="${TAG_REF:0:7}"
+            else
+                TAG_BRANCH=$(echo -n $CODEBASE_BRANCH | awk '{print tolower($0)}' | sed 's/[^a-z0-9_.-]//g')
+            fi
+
+            # Build the final docker tag with image name and export results
+            echo "TAG_BRANCH=${TAG_BRANCH}"
+            export DOCKER_TAG="${TAG_DATE}_${TAG_BRANCH:0:35}_${TAG_PREFIX}${TAG_REF:0:7}_${TAG_BUILD_ID_SHORT}"
+            export DOCKER_IMAGE="${DOCKER_IMAGE}"
+            export DOCKER_IMAGE_WITH_TAG="${DOCKER_IMAGE}:${DOCKER_TAG}"
+        else
+            # User wants to use their own tag
+            echo "Using tag supplied in TAG_OVERRIDE"
+            # Build the final docker tag with image name and export results
+            export DOCKER_TAG="${TAG_OVERRIDE}"
+            export DOCKER_IMAGE="${DOCKER_IMAGE}"
+            export DOCKER_IMAGE_WITH_TAG="${DOCKER_IMAGE}:${TAG_OVERRIDE}"
+        fi
+
+        # Add a local git tag (without pushing) if users wants to
+        if [ -n "$ADD_GIT_TAG" ] && [ $ADD_GIT_TAG = "true" ]; then
+            git config --global user.email "automation@tractable.ai"
+            git config --global user.name "Tractable Harness User"
+            git config --global --add safe.directory /harness
+            git tag $DOCKER_TAG
+        fi
+
+        # Debug resulting values
+        echo "DOCKER_IMAGE [$DOCKER_IMAGE]"
+        echo "DOCKER_TAG [$DOCKER_TAG]"
+        echo "DOCKER_IMAGE_WITH_TAG [$DOCKER_IMAGE_WITH_TAG]"
+      envVariables:
+        TAG_PREFIX: <+input>
+        DOCKER_IMAGE: <+input>
+        TAG_OVERRIDE: <+input>
+        ADD_GIT_TAG: <+input>
+      outputVariables:
+        - name: DOCKER_TAG
+        - name: DOCKER_IMAGE_WITH_TAG
+        - name: DOCKER_IMAGE
+    timeout: 5m
+    when:
+      stageStatus: Success
+      condition: <+input>
