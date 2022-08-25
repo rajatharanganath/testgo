@@ -1,0 +1,60 @@
+pipeline:
+  name: ResourceUtilization
+  identifier: ResourceUtilization
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: githubrajatha
+        build: <+input>
+  stages:
+    - stage:
+        name: Stg1
+        identifier: Stg1
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: rajatha-delegate-ng
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+          execution:
+            steps:
+              - parallel:
+                  - step:
+                      type: Run
+                      name: lint
+                      identifier: lint
+                      spec:
+                        connectorRef: <+input>
+                        image: <+input>
+                        shell: Sh
+                        command: |-
+                          echo test
+                          sleep 100000
+                        resources:
+                          limits:
+                            memory: 8Gi
+                            cpu: 3000m
+                  - step:
+                      type: Run
+                      name: test
+                      identifier: test
+                      spec:
+                        connectorRef: <+input>
+                        image: <+input>
+                        shell: Sh
+                        command: |-
+                          echo test
+                          sleep 100000
+                        resources:
+                          limits:
+                            memory: 8Gi
+                            cpu: 3000m
