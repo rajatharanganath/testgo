@@ -33,6 +33,28 @@ pipeline:
                       git status
                       git branch
                       ls
+    - stage:
+        name: stg2
+        identifier: stg2
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            useFromStage: Stage1
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: sdfsdf
+                  identifier: sdfsdf
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine
+                    shell: Sh
+                    command: echo test
+        when:
+          pipelineStatus: Failure
   properties:
     ci:
       codebase:
