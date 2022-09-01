@@ -41,6 +41,15 @@ pipeline:
                     connectorRef: dockerrajatha
                     image: mysql:5
                     shell: Sh
+              - step:
+                  type: Run
+                  name: sleep
+                  identifier: sleep
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine
+                    shell: Sh
+                    command: sleep 1000
     - stage:
         name: stg2
         identifier: stg2
