@@ -33,6 +33,14 @@ pipeline:
                       git status
                       git branch
                       ls
+              - step:
+                  type: Background
+                  name: background step
+                  identifier: background_step
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: mysql:5
+                    shell: Sh
     - stage:
         name: stg2
         identifier: stg2
