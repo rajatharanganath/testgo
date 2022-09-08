@@ -546,15 +546,3 @@ pipeline:
     - name: DEFAULT_BRANCH
       type: String
       value: master
-  notificationRules:
-    - name: Deployment notification
-      identifier: Deployment_notification
-      pipelineEvents:
-        - type: PipelineSuccess
-        - type: PipelineFailed
-      notificationMethod:
-        type: Slack
-        spec:
-          userGroups: []
-          webhookUrl: https://hooks.slack.com/services/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
-      enabled: true
