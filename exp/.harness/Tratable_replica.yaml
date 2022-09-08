@@ -19,8 +19,8 @@ pipeline:
           infrastructure:
             type: KubernetesDirect
             spec:
-              connectorRef: account.K8S_nextgen_Connector
-              namespace: harness-build
+              connectorRef: rajathak8
+              namespace: rajatha-delegate-april
               annotations:
                 iam.amazonaws.com/role: arn:aws:iam::608178844183:role/harness-roles/HarnessDelegateInfraEuRole
               automountServiceAccountToken: true
