@@ -26,30 +26,9 @@ pipeline:
                   identifier: git_cmd
                   spec:
                     connectorRef: dockerrajatha
-                    image: <+input>
-                    shell: Sh
-                    command: |-
-                      git config --global --add safe.directory /harness
-                      git status
-                      git branch
-                      ls
-              - step:
-                  type: Background
-                  name: background step
-                  identifier: background_step
-                  spec:
-                    connectorRef: dockerrajatha
-                    image: mysql:5
-                    shell: Sh
-              - step:
-                  type: Run
-                  name: sleep
-                  identifier: sleep
-                  spec:
-                    connectorRef: dockerrajatha
                     image: alpine
                     shell: Sh
-                    command: sleep 1000
+                    command: echo <+codebase.tag>
     - stage:
         name: stg2
         identifier: stg2
