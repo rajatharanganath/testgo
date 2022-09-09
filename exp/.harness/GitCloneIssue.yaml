@@ -75,5 +75,5 @@ pipeline:
   properties:
     ci:
       codebase:
-        connectorRef: githubrajatha
+        connectorRef: tempToken
         build: <+input>
