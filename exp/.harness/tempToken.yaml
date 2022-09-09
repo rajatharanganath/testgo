@@ -17,6 +17,6 @@ connector:
     apiAccess:
       type: Token
       spec:
-        tokenRef: limitedaccesswrong
+        tokenRef: limitedaccess
     executeOnDelegate: false
     type: Repo
