@@ -14,5 +14,9 @@ connector:
         spec:
           username: rajatharanganath
           tokenRef: limitedaccess
+    apiAccess:
+      type: Token
+      spec:
+        tokenRef: limitedaccesswrong
     executeOnDelegate: false
     type: Repo
