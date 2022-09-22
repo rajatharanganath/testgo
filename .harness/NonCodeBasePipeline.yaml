@@ -1,8 +1,4 @@
 pipeline:
-    name: NonCodeBasePipeline
-    identifier: NonCodeBasePipeline
-    projectIdentifier: RajathaTest
-    orgIdentifier: default
     tags: {}
     stages:
         - stage:
