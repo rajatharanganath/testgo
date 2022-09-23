@@ -1,0 +1,19 @@
+connector:
+  name: AccountLevelRajatha
+  identifier: AccountLevelRajatha
+  description:
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: Github
+  spec:
+    url: https://github.com/rajatharanganath
+    validationRepo: testgo
+    authentication:
+      type: Http
+      spec:
+        type: UsernameToken
+        spec:
+          username: rajatharanganath
+          tokenRef: rajatharanganath
+    executeOnDelegate: false
+    type: Account

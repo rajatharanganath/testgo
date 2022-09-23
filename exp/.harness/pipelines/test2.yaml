@@ -1,0 +1,34 @@
+pipeline:
+    name: test2
+    identifier: test2
+    allowStageExecutions: false
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    stages:
+        - stage:
+              name: stg1
+              identifier: stg1
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: rajatha-delegate-new
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: lsaflafns
+                                identifier: lsaflafns
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: alpine
+                                    command: echo test

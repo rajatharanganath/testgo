@@ -1,0 +1,12 @@
+connector:
+  name: Aws Build Sample
+  identifier: Aws_Build_Sample
+  description:
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: Aws
+  spec:
+    credential:
+      type: Irsa
+    delegateSelectors:
+    - harness-ci-qe

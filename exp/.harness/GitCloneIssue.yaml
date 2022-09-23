@@ -1,0 +1,58 @@
+pipeline:
+  name: GitCloneIssue
+  identifier: GitCloneIssue
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  stages:
+    - stage:
+        name: Stage1
+        identifier: Stage1
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: rajatha-delegate-april
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: git cmd
+                  identifier: git_cmd
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine
+                    shell: Sh
+                    command: echo <+codebase.tag>
+    - stage:
+        name: stg2
+        identifier: stg2
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            useFromStage: Stage1
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: sdfsdf
+                  identifier: sdfsdf
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine
+                    shell: Sh
+                    command: echo test
+        when:
+          pipelineStatus: Failure
+  properties:
+    ci:
+      codebase:
+        connectorRef: tempToken
+        build: <+input>

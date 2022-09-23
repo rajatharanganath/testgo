@@ -1,0 +1,37 @@
+pipeline:
+    name: tests
+    identifier: tests
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    stages:
+        - stage:
+              name: stg2
+              identifier: stg2
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: ""
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: step1
+                                identifier: step1
+                                spec:
+                                    connectorRef: GithubDockerRegistry
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo test

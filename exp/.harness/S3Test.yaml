@@ -1,0 +1,80 @@
+pipeline:
+    name: S3Test
+    identifier: S3Test
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    stages:
+        - stage:
+              name: CI Golden Stage
+              identifier: upload
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: rajatha-delegate-april
+                          serviceAccountName: ""
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: CreateDockerFile
+                                identifier: CreateDockerFile
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: alpine:latest
+                                    shell: Sh
+                                    command: |-
+                                        touch harnessDockerfileui
+                                        cat > harnessDockerfileui <<- EOM
+                                        FROM alpine:latest AS dev-env
+                                        ARG foo
+                                        RUN echo "$foo bar"
+                                        ENTRYPOINT ["pwd"]
+
+                                        FROM alpine:latest AS release-env
+                                        ARG hello
+                                        RUN echo "$hello world"
+                                        ENTRYPOINT ["ls"]
+                                        EOM
+                                        cat harnessDockerfileui
+                                    resources:
+                                        limits:
+                                            memory: 100M
+                          - step:
+                                type: RestoreCacheS3
+                                name: Restore from Cache
+                                identifier: Restore_from_Cache
+                                spec:
+                                    connectorRef: AWSKey
+                                    region: us-east-1
+                                    bucket: test-rajatha
+                                    key: value-<+pipeline.executionId>
+                                    archiveFormat: Tar
+                          - step:
+                                type: SaveCacheS3
+                                name: Save Cache to S3
+                                identifier: Save_Cache_to_S3
+                                spec:
+                                    connectorRef: AWSKey
+                                    region: us-east-2
+                                    bucket: test-rajatha
+                                    key: value-<+pipeline.executionId>
+                                    sourcePaths:
+                                        - harnessDockerfileui
+                                    archiveFormat: Tar
+                                when:
+                                    stageStatus: All
+                                failureStrategies: []
+    variables: []

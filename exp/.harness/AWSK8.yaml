@@ -1,0 +1,12 @@
+connector:
+  name: AWSK8
+  identifier: AWSK8
+  description: ""
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: K8sCluster
+  spec:
+    credential:
+      type: InheritFromDelegate
+    delegateSelectors:
+    - rajatha-delegate-ecr-prod

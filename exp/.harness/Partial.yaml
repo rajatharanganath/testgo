@@ -1,0 +1,23 @@
+inputSet:
+  identifier: "Partial"
+  name: "Partial"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest2"
+  pipeline:
+    identifier: "TNHUREMOTE"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "dev1"
+    stages:
+    - stage:
+        identifier: "Build"
+        type: "CI"
+        spec:
+          infrastructure:
+            type: "KubernetesDirect"
+            spec:
+              connectorRef: "rajathak8"

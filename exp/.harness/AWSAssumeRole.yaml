@@ -1,0 +1,12 @@
+connector:
+  name: AWSAssumeRole
+  identifier: AWSAssumeRole
+  description:
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: Aws
+  spec:
+    credential:
+      type: InheritFromDelegate
+    delegateSelectors:
+    - rajatha-aws-assumerole

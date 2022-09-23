@@ -1,0 +1,29 @@
+pipeline:
+    name: TradeLedgerRepro
+    identifier: TradeLedgerRepro
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    storeType: ""
+    remoteType: create
+    tags: {}
+    stages:
+        - stage:
+              name: stg1
+              identifier: stg1
+              template:
+                  templateRef: Shared_Library
+                  versionLabel: v1
+                  templateInputs:
+                      type: CI
+                      variables:
+                          - name: publish_API_docs
+                            type: String
+                            value: <+input>.allowedValues(true,false)
+                          - name: publish_API_name
+                            type: String
+                            value: <+input>
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>

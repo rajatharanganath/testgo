@@ -1,0 +1,52 @@
+pipeline:
+    name: CustomerReplica
+    identifier: CustomerReplica
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    stages:
+        - stage:
+              name: Build Push ECR IRSA
+              identifier: Build_Push_ECR_IRSA
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: rajatha-delegate-april
+                          serviceAccountName: ""
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: step1
+                                identifier: step1
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: debian:11
+                                    shell: Bash
+                                    command: |-
+                                        set +x
+                                        df /var/lib/docker
+                                        ls -ltr /harness
+                                        ls -ltr /addon
+                                        tail -n 10 /proc/mounts
+                                        i=0
+                                        while [ $i -lt 10 ]; do
+                                            i=$((i + 1))
+                                            echo $i
+                                            dd if=/dev/zero of=/root/file$i status=none bs=1M count=1K
+                                            ls -ltr /root/file*
+                                            df -hT -all /
+                                            df -h / | tail -n1
+                                        done

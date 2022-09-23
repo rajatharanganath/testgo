@@ -1,0 +1,22 @@
+connector:
+  name: tempToken
+  identifier: tempToken
+  description: ""
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: Github
+  spec:
+    url: https://github.com/rajatharanganath/testgo
+    authentication:
+      type: Http
+      spec:
+        type: UsernameToken
+        spec:
+          username: rajatharanganath
+          tokenRef: limitedaccess
+    apiAccess:
+      type: Token
+      spec:
+        tokenRef: limitedaccess
+    executeOnDelegate: false
+    type: Repo

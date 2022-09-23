@@ -1,0 +1,79 @@
+pipeline:
+  name: DockerImagerCreationPipeline
+  identifier: DockerImagerCreationPipeline
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: githubrajatha
+        build: <+input>
+  stages:
+    - stage:
+        name: build
+        identifier: build
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: rajatha-delegate-april
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              containerSecurityContext:
+                allowPrivilegeEscalation: false
+                runAsUser: "1000"
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: run
+                  identifier: run
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine:latest
+                    shell: Sh
+                    command: |-
+                      touch harnessDockerfileui
+                      cat > harnessDockerfileui <<- EOM
+                      FROM alpine:latest AS dev-env
+                      ARG foo
+                      RUN echo "$foo bar"
+                      ENTRYPOINT ["pwd"]
+
+                      FROM alpine:latest AS release-env
+                      ARG hello
+                      RUN echo "$hello world"
+                      ENTRYPOINT ["ls"]
+                      EOM
+                      cat harnessDockerfileui
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths:
+                          - "*.xml"
+                    outputVariables:
+                      - name: LATEST_BRANCH
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: build and push
+                  identifier: build_and_push
+                  spec:
+                    connectorRef: dockerrajatha
+                    repo: rajatharanganath/ciquickstart
+                    tags:
+                      - <+pipeline.sequenceId>
+              - step:
+                  name: step2
+                  identifier: step2
+                  template:
+                    templateRef: new_step_template_name
+                    versionLabel: "1.0"
+                    templateInputs:
+                      type: BuildAndPushACR
+                      spec:
+                        connectorRef: <+input>
+                        repository: <+input>

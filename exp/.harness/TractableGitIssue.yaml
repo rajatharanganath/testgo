@@ -1,0 +1,61 @@
+pipeline:
+    name: TractableGitIssue
+    identifier: TractableGitIssue
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: AccountLevelRajatha
+                repoName: testapp-pipelinerepo
+                build: <+input>
+    stages:
+        - stage:
+              name: stg1
+              identifier: stg1
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: rajatha-delegate-april
+                          runAsUser: ""
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          containerSecurityContext:
+                              runAsUser: ""
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: step 1
+                                identifier: step_1
+                                spec:
+                                    connectorRef: account.harnessImage
+                                    image: alpine/git:latest
+                                    shell: Sh
+                                    command: |-
+                                        ls -ltra 
+                                        DOCKER_TAG="<+​pipeline.executionId>"
+                                        echo "DOCKET_TAG=${DOCKER_TAG}"
+                                        id
+                                        #cat ~/.gitconfig
+                                        #git init
+                                        pwd
+
+                                        #touch /harness/.git/config
+                                        #cat > /harness/.git/config <<- EOM
+                                        #[safe]
+                                        #	directory = /harness
+                                        #EOM
+                                        #cat /harness/.git/config
+                                        #ls -ltra 
+                                        #git config  --add safe.directory /harness
+                                        #git status
+                                        git config --global --add safe.directory /harness
+                                        git tag $DOCKER_TAG
+                                    runAsUser: "0"

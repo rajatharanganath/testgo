@@ -1,0 +1,21 @@
+connector:
+  name: RajathaBitBucket
+  identifier: RajathaBitBucket
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: Bitbucket
+  spec:
+    url: https://bitbucket.org/rajathar/testgo
+    authentication:
+      type: Http
+      spec:
+        type: UsernamePassword
+        spec:
+          username: rajatha.ranganat@harness.io
+          passwordRef: BitBucketAccessToken
+    apiAccess:
+      type: UsernameToken
+      spec:
+        username: rajatha.ranganat@harness.io
+        tokenRef: BitBucketAccessToken
+    type: Repo

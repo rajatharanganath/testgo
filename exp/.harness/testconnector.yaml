@@ -1,0 +1,18 @@
+connector:
+  name: testconnector
+  identifier: testconnector
+  description:
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: Github
+  spec:
+    url: https://github.com/harness/harness-core
+    authentication:
+      type: Http
+      spec:
+        type: UsernameToken
+        spec:
+          username: rajatha
+          tokenRef: rajatharanganath
+    executeOnDelegate: false
+    type: Repo

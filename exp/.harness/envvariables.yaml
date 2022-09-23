@@ -1,0 +1,28 @@
+inputSet:
+  identifier: "envvariables"
+  name: "envvariables"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest2"
+  pipeline:
+    identifier: "TemplateTest"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "main"
+    stages:
+    - stage:
+        identifier: "stage1"
+        type: "CI"
+        spec:
+          infrastructure:
+            type: "KubernetesDirect"
+            spec:
+              annotations:
+                ASSUME_ROLE_ARN: "rajatha"
+    variables:
+    - name: "MAGIC"
+      type: "String"
+      value: "b"

@@ -1,0 +1,37 @@
+pipeline:
+    name: xzcxzv
+    identifier: xzcxzv
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    stages:
+        - stage:
+              name: xcvvcx
+              identifier: xcvvcx
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: xcvcxv
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          harnessImageConnectorRef: dockerrajatha
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: xzvzx
+                                identifier: xzvzx
+                                spec:
+                                    connectorRef: <+input>
+                                    image: <+input>
+                                    shell: Sh
+                                    command: cxvcxv

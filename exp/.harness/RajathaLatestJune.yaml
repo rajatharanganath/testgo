@@ -1,0 +1,24 @@
+connector:
+  name: RajathaLatestJune
+  identifier: RajathaLatestJune
+  description:
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  type: Github
+  spec:
+    url: https://github.com/rajatharanganath/testgo
+    authentication:
+      type: Http
+      spec:
+        type: UsernameToken
+        spec:
+          username: rajatharanganath
+          tokenRef: rajatharanganath
+    apiAccess:
+      type: GithubApp
+      spec:
+        installationId: '"22688558"'
+        applicationId: '"167730"'
+        privateKeyRef: rajatharanganath
+    executeOnDelegate: false
+    type: Repo

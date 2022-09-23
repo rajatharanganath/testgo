@@ -1,0 +1,60 @@
+pipeline:
+    stages:
+        - stage:
+              when:
+                  pipelineStatus: Success
+              type: CI
+              spec:
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: rajatha-delegate-april
+                          automountServiceAccountToken: false
+                          nodeSelector: {}
+                          containerSecurityContext:
+                              runAsUser: "1000"
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: alpine/git:latest
+                                    shell: Sh
+                                    command: |
+                                        ls -ltra /harness
+                                        pwd
+                                        cat .gitignore
+                                        git --version 
+                                        #git config --add safe.directory /harness
+                                        #git tag <+pipeline.executionId>
+                                name: test
+                                identifier: test
+                          - step:
+                                type: Run
+                                name: stp2
+                                identifier: stp2
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo skip
+                                when:
+                                    stageStatus: Failure
+                                    condition: <+pipeline.name> == "RAJATHA"
+                                failureStrategies: []
+                  cloneCodebase: true
+              name: stage1
+              identifier: stage1
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    name: TemplateTest
+    identifier: TemplateTest
+    allowStageExecutions: true

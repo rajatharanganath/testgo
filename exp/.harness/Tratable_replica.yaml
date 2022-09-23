@@ -1,0 +1,518 @@
+pipeline:
+  name: Tratable replica
+  identifier: Tratable_replica
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: githubrajatha
+        build: <+input>
+  stages:
+    - stage:
+        name: Build and push docker images
+        identifier: build_and_deploy
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: rajatha-delegate-april
+              annotations:
+                iam.amazonaws.com/role: arn:aws:iam::608178844183:role/harness-roles/HarnessDelegateInfraEuRole
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              harnessImageConnectorRef: dockerrajatha
+              os: Linux
+          serviceDependencies:
+            - identifier: Postgres
+              name: Postgres
+              type: Service
+              spec:
+                connectorRef: dockerrajatha
+                image: postgres:11.8
+                envVariables:
+                  POSTGRES_USER: claim_journey
+                  POSTGRES_PASSWORD: claim_journey
+                  POSTGRES_DB: claim_journey
+                imagePullPolicy: IfNotPresent
+                resources:
+                  limits:
+                    memory: 4Gi
+                    cpu: "2"
+            - identifier: Kafka
+              name: Kafka
+              type: Service
+              spec:
+                connectorRef: dockerrajatha
+                image: postgres
+                resources:
+                  limits:
+                    memory: 4Gi
+                    cpu: "2"
+            - identifier: Cache
+              name: Cache
+              type: Service
+              spec:
+                connectorRef: dockerrajatha
+                image: redis:6.2-alpine
+                imagePullPolicy: IfNotPresent
+                resources:
+                  limits:
+                    memory: 2Gi
+                    cpu: "2"
+          execution:
+            steps:
+              - stepGroup:
+                  name: Pre-Coverage
+                  identifier: PreCoverage
+                  steps:
+                    - step:
+                        type: Run
+                        name: step1
+                        identifier: step1
+                        spec:
+                          connectorRef: dockerrajatha
+                          image: alpine
+                          shell: Sh
+                          command: echo test
+                    - parallel:
+                        - step:
+                            type: Run
+                            name: step2
+                            identifier: step2
+                            spec:
+                              connectorRef: dockerrajatha
+                              image: alpine
+                              shell: Sh
+                              command: echo test
+                        - step:
+                            type: Run
+                            name: step3
+                            identifier: step3
+                            spec:
+                              connectorRef: dockerrajatha
+                              image: alpine
+                              shell: Sh
+                              command: echo test
+                        - step:
+                            type: Run
+                            name: step4
+                            identifier: step4
+                            spec:
+                              connectorRef: dockerrajatha
+                              image: alpine
+                              shell: Sh
+                              command: echo test3
+                  when:
+                    stageStatus: Success
+                    condition: <+codebase.build.type> != "tag"
+                  failureStrategies: []
+                type: StepGroup
+                nodeType: StepGroup
+              - parallel:
+                  - stepGroup:
+                      name: Tag
+                      identifier: Tag
+                      steps:
+                        - parallel:
+                            - step:
+                                type: Run
+                                name: Generate docker tag
+                                identifier: Generate_docker_tag
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: bash:alpine3.15
+                                  shell: Bash
+                                  command: |
+                                    echo test4
+                                  outputVariables:
+                                    - name: DOCKER_TAG
+                                  imagePullPolicy: IfNotPresent
+                                when:
+                                  stageStatus: Success
+                                  condition: <+codebase.branch>=~"^(master|release\/.*)$" && <+pipeline.variables.GENERATE_DOCKER_TAG>=="TRUE"
+                                failureStrategies: []
+                            - step:
+                                type: Run
+                                name: Get Branch Name
+                                identifier: Get_Branch_Name
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: bash:alpine3.15
+                                  shell: Sh
+                                  command: echo test5
+                                  envVariables:
+                                    DEFAULT_BRANCH: <+codebase.branch>
+                                    SOURCE_BRANCH: <+codebase.sourceBranch>
+                                  outputVariables:
+                                    - name: CODEBASE_BRANCH
+                                  imagePullPolicy: IfNotPresent
+                  - stepGroup:
+                      name: Tests
+                      identifier: Tests
+                      steps:
+                        - parallel:
+                            - step:
+                                type: Run
+                                name: step6
+                                identifier: step6
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test6
+                            - step:
+                                type: Run
+                                name: Fetch SSM secrets
+                                identifier: Fetch_SSM_secrets
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  outputVariables:
+                                    - name: CYPRESS_E2E_USERNAME
+                                    - name: CYPRESS_E2E_PASSWORD
+                                    - name: CYPRESS_E2E_POOL_ID
+                                    - name: CYPRESS_E2E_CLIENT_ID
+                        - step:
+                            type: Run
+                            name: Install node modules and generate prisma
+                            identifier: Install_node_modules_and_generate_prisma
+                            spec:
+                              connectorRef: dockerrajatha
+                              image: alpine
+                              shell: Sh
+                              command: echo test
+                              imagePullPolicy: IfNotPresent
+                              resources:
+                                limits:
+                                  memory: 2Gi
+                                  cpu: "1"
+                        - parallel:
+                            - step:
+                                type: Run
+                                name: Frontend linting
+                                identifier: Frontend_linting
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  imagePullPolicy: IfNotPresent
+                                  resources:
+                                    limits:
+                                      memory: 2Gi
+                                      cpu: "2"
+                            - step:
+                                type: Run
+                                name: Frontend unit tests
+                                identifier: Frontend_unit_tests
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  imagePullPolicy: IfNotPresent
+                                  resources:
+                                    limits:
+                                      memory: 5Gi
+                                      cpu: "4"
+                            - step:
+                                type: Run
+                                name: Build bodyshop app
+                                identifier: Build_bodyshop_app
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  imagePullPolicy: IfNotPresent
+                                  resources:
+                                    limits:
+                                      memory: 2Gi
+                                      cpu: "2"
+                            - step:
+                                type: Run
+                                name: Build loss adjuster app
+                                identifier: Build_loss_adjuster_app
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  imagePullPolicy: IfNotPresent
+                                  resources:
+                                    limits:
+                                      memory: 2Gi
+                                      cpu: "2"
+                            - step:
+                                type: Run
+                                name: Backend linting
+                                identifier: Backend_linting
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  imagePullPolicy: IfNotPresent
+                                  resources:
+                                    limits:
+                                      memory: 2Gi
+                                      cpu: "2"
+                            - step:
+                                type: Run
+                                name: Backend unit tests
+                                identifier: Backend_unit_tests
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  reports:
+                                    type: JUnit
+                                    spec:
+                                      paths:
+                                        - packages/claim-journey/test_results_unit.xml
+                                  imagePullPolicy: IfNotPresent
+                                  resources:
+                                    limits:
+                                      memory: 4Gi
+                                      cpu: "2"
+                            - step:
+                                type: Run
+                                name: Build claim journey
+                                identifier: Build_claim_journey
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  imagePullPolicy: IfNotPresent
+                                  resources:
+                                    limits:
+                                      memory: 4Gi
+                                      cpu: "2"
+                            - step:
+                                type: Run
+                                name: Backend type check
+                                identifier: Backend_type_check
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  imagePullPolicy: IfNotPresent
+                                  resources:
+                                    limits:
+                                      memory: 2Gi
+                                      cpu: "1"
+                        - parallel:
+                            - step:
+                                type: Run
+                                name: Component tests -  Frontend and Backend
+                                identifier: component_tests
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  imagePullPolicy: IfNotPresent
+                                  resources:
+                                    limits:
+                                      memory: 6Gi
+                                      cpu: "5"
+                                description: Component tests - Frontend and Backend
+                            - step:
+                                type: Run
+                                name: Frontend integration tests
+                                identifier: Frontend_integration_tests
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  imagePullPolicy: IfNotPresent
+                                  resources:
+                                    limits:
+                                      memory: 6Gi
+                                      cpu: "3"
+                                description: FE Cypress tests
+                            - step:
+                                type: Run
+                                name: Backend integration tests
+                                identifier: Backend_integration_tests
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  reports:
+                                    type: JUnit
+                                    spec:
+                                      paths:
+                                        - packages/claim-journey/test_results_integration.xml
+                                  imagePullPolicy: IfNotPresent
+                                  resources:
+                                    limits:
+                                      memory: 6Gi
+                                      cpu: "5"
+              - parallel:
+                  - stepGroup:
+                      name: Build and Push
+                      identifier: Build_and_Push
+                      steps:
+                        - parallel:
+                            - step:
+                                type: Run
+                                name: step10
+                                identifier: step10
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  resources:
+                                    limits:
+                                      memory: 2Gi
+                                      cpu: "1"
+                            - step:
+                                type: Run
+                                name: step11
+                                identifier: step11
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  resources:
+                                    limits:
+                                      memory: 2Gi
+                                      cpu: "1"
+                            - step:
+                                type: Run
+                                name: step12
+                                identifier: step12
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  resources:
+                                    limits:
+                                      memory: 2Gi
+                                      cpu: "1"
+                  - stepGroup:
+                      name: Coverage
+                      identifier: Coverage
+                      steps:
+                        - step:
+                            type: Run
+                            name: Get Coverage Summaries
+                            identifier: Get_Modified_Coverage
+                            spec:
+                              connectorRef: dockerrajatha
+                              image: alpine
+                              shell: Sh
+                              command: echo test
+                        - step:
+                            type: Run
+                            name: Get PR diff
+                            identifier: Get_PR_diff
+                            spec:
+                              connectorRef: dockerrajatha
+                              image: alpine
+                              shell: Sh
+                              command: echo test
+                              imagePullPolicy: IfNotPresent
+                            when:
+                              stageStatus: Success
+                              condition: <+codebase.build.type> == "PR"
+                            failureStrategies: []
+                        - parallel:
+                            - step:
+                                type: Run
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: alpine
+                                  shell: Sh
+                                  command: echo test
+                                  imagePullPolicy: IfNotPresent
+                                name: Publish Coverage
+                                identifier: PublishCoverage
+                                when:
+                                  stageStatus: Success
+                                  condition: <+execution.steps.Tag.steps.Generate_Tag.output.outputVariables.CODEBASE_BRANCH> == <+pipeline.variables.DEFAULT_BRANCH>
+                                failureStrategies: []
+                            - step:
+                                type: Run
+                                name: Post report to Github
+                                identifier: Post_report_to_Github
+                                spec:
+                                  connectorRef: dockerrajatha
+                                  image: tractableio/ghapi:main-347c028
+                                  shell: Sh
+                                  command: echo test
+                                  imagePullPolicy: IfNotPresent
+                                when:
+                                  stageStatus: Success
+                                  condition: <+codebase.build.type> == "PR"
+                                failureStrategies: []
+                      when:
+                        stageStatus: Success
+                        condition: <+codebase.build.type> != "tag"
+                      failureStrategies: []
+          sharedPaths:
+            - /root/.ssh
+            - harness/node_modules
+            - harness/coverage
+  variables:
+    - name: DEPLOY_DEV
+      type: String
+      default: "FALSE"
+      value: <+input>.allowedValues(TRUE,FALSE)
+    - name: K8S_GIT_REPO
+      type: String
+      value: kube-manifests
+    - name: DEPLOY_STAGING_EU
+      type: String
+      default: "FALSE"
+      value: <+input>.allowedValues(TRUE,FALSE)
+    - name: GENERATE_DOCKER_TAG
+      type: String
+      default: "TRUE"
+      value: <+input>.allowedValues(TRUE,FALSE)
+    - name: DEPLOY_PREPROD_JP
+      type: String
+      default: "FALSE"
+      value: <+input>.allowedValues(TRUE,FALSE)
+    - name: DEPLOY_PREPROD_US
+      type: String
+      default: "FALSE"
+      value: <+input>.allowedValues(TRUE,FALSE)
+    - name: DEPLOY_PREPROD_EU
+      type: String
+      default: "FALSE"
+      value: <+input>.allowedValues(TRUE,FALSE)
+    - name: DEPLOY_PROD_EU
+      type: String
+      default: "FALSE"
+      value: <+input>.allowedValues(TRUE,FALSE)
+    - name: DEPLOY_PROD_US
+      type: String
+      default: "FALSE"
+      value: <+input>.allowedValues(TRUE,FALSE)
+    - name: DEPLOY_PROD_JP
+      type: String
+      default: "FALSE"
+      value: <+input>.allowedValues(TRUE,FALSE)
+    - name: NODE_VERSION
+      type: String
+      value: "16"
+    - name: DEFAULT_BRANCH
+      type: String
+      value: master

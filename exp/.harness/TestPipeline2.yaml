@@ -1,0 +1,134 @@
+pipeline:
+    name: TestPipeline2
+    identifier: TestPipeline2
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    stages:
+        - stage:
+              name: root-unit-spec1
+              identifier: rootunitspec1
+              template:
+                  templateRef: build_centromediamanager_root_stage
+                  versionLabel: 1.0.1
+                  templateInputs:
+                      type: CI
+                      spec:
+                          infrastructure:
+                              type: KubernetesDirect
+                              spec:
+                                  connectorRef: abc
+                                  namespace: abc
+                          execution:
+                              steps:
+                                  - step:
+                                        identifier: root_specs
+                                        template:
+                                            templateInputs:
+                                                type: Run
+                                                spec:
+                                                    envVariables:
+                                                        CHUNK: "1"
+                                                        TOTAL_CHUNKS: "24"
+                      variables:
+                          - name: skip
+                            type: String
+                            value: <+input>
+        - stage:
+              name: build
+              identifier: build
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: org.harness_kubernetes_eks_bld
+                          namespace: build-namespace
+                          initTimeout: 25m
+                  execution:
+                      steps:
+                          - step:
+                                type: BuildAndPushDockerRegistry
+                                name: build-and-push
+                                identifier: buildandpush
+                                spec:
+                                    connectorRef: org.harness_artifactory_docker
+                                    repo: artifactory.basis.net/basis/basis
+                                    tags:
+                                        - dvfdv
+                                    dockerfile: kubernetes/Dockerfile
+                                    optimize: true
+                                    remoteCacheRepo: artifactory.basis.net/basis/basis-cache
+                                    resources:
+                                        limits:
+                                            memory: 4000Mi
+                                failureStrategies: []
+              when:
+                  pipelineStatus: Success
+                  condition: abc == "build" || abc == "build_test"
+        - stage:
+              name: sdfsdf
+              identifier: sdfsdf
+              template:
+                  templateRef: build_centromediamanager_root_stage
+                  versionLabel: 1.0.1
+                  templateInputs:
+                      type: CI
+                      spec:
+                          infrastructure:
+                              type: KubernetesDirect
+                              spec:
+                                  connectorRef: <+input>
+                                  namespace: <+input>
+                          execution:
+                              steps:
+                                  - step:
+                                        identifier: root_specs
+                                        template:
+                                            templateInputs:
+                                                type: Run
+                                                spec:
+                                                    envVariables:
+                                                        CHUNK: <+input>
+                                                        TOTAL_CHUNKS: <+input>
+                      variables:
+                          - name: skip
+                            type: String
+                            value: <+input>
+    properties:
+        ci:
+            codebase:
+                connectorRef: harness_bitbucketapi_centromediamanager
+                build: <+input>
+    variables:
+        - name: repo_branch
+          type: String
+          value: <+input>
+        - name: repo_commit
+          type: String
+          value: <+input>
+        - name: repo_name
+          type: String
+          value: <+input>
+        - name: repo_workspace
+          type: String
+          value: <+input>
+        - name: run
+          type: String
+          value: <+input>
+        - name: bitbucket_pass
+          type: Secret
+          value: <+input>
+        - name: bitbucket_user
+          type: String
+          value: <+input>
+        - name: connector_ref_name
+          type: String
+          value: <+input>
+        - name: connector_namespace
+          type: String
+          value: <+input>
+        - name: skip
+          type: String
+          value: "false"

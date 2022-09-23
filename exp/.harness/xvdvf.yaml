@@ -1,0 +1,54 @@
+pipeline:
+    name: xvdvf
+    identifier: xvdvf
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    storeType: ""
+    remoteType: create
+    tags: {}
+    stages:
+        - stage:
+              type: Deployment
+              spec:
+                  serviceConfig:
+                      serviceRef: lscjf
+                      serviceDefinition:
+                          spec:
+                              variables: []
+                          type: Ssh
+                  infrastructure:
+                      environmentRef: dev
+                      infrastructureDefinition:
+                          type: KubernetesDirect
+                          spec:
+                              connectorRef: rajathak8
+                              namespace: rajatha-delegate-april
+                              releaseName: release-<+INFRA_KEY>
+                      allowSimultaneousDeployments: false
+                  execution:
+                      steps:
+                          - step:
+                                type: ShellScript
+                                name: step1
+                                identifier: step1
+                                spec:
+                                    shell: Bash
+                                    onDelegate: true
+                                    source:
+                                        type: Inline
+                                        spec:
+                                            script: echo test
+                                    environmentVariables: []
+                                    outputVariables: []
+                                    executionTarget: {}
+                                timeout: 10m
+                      rollbackSteps: []
+              failureStrategies:
+                  - onFailure:
+                        errors:
+                            - AllErrors
+                        action:
+                            type: StageRollback
+              name: stg1
+              identifier: stg1
+              tags: {}

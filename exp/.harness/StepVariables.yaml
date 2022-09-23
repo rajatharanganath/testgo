@@ -1,0 +1,170 @@
+pipeline:
+  name: StepVariables
+  identifier: StepVariables
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  storeType: ""
+  remoteType: create
+  tags: {}
+  stages:
+    - stage:
+        name: build
+        identifier: build
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: rajatha-delegate-april
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              containerSecurityContext:
+                allowPrivilegeEscalation: false
+                runAsUser: "1000"
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: run
+                  identifier: run
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine/git:latest
+                    shell: Sh
+                    command: |-
+                      #!/bin/sh
+                      echo <+codebase.targetBranch>
+                      echo <+codebase.sourceBranch>
+                      export LATEST_BRANCH="master"
+                      if [ <+codebase.targetBranch> == "master" ]
+                      then
+                         export LATEST_BRANCH="heelotag, master"
+                      else
+                         export LATEST_BRANCH="hellotag, non-master"
+                      fi
+                      echo <+codebase.branch> 
+                      git --version 
+                    envVariables: <+input>
+                    outputVariables:
+                      - name: LATEST_BRANCH
+              - step:
+                  type: Run
+                  name: step2
+                  identifier: step2
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine
+                    shell: Sh
+                    command: |-
+                      echo "<+pipeline.stages.build.spec.execution.steps.run.artifact-run.stepArtifacts.image>"
+                      echo "<+pipeline.stages.build.spec.execution.steps.run["artifact-run"].stepArtifacts.image>"
+          serviceDependencies:
+            - identifier: mysql
+              name: mysql
+              type: Service
+              spec:
+                connectorRef: dockerrajatha
+                image: mysql:5
+        variables:
+          - name: stageVar
+            type: String
+            value: <+input>.allowedValues(100gi,200gi,300gi,400gi)
+    - stage:
+        name: build2
+        identifier: build2
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            useFromStage: build
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: stg2
+                  identifier: stg2
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine
+                    shell: Sh
+                    command: echo "<+pipeline.stages.build.spec.execution.steps.run.output.outputVariables.LATEST_BRANCH>"
+    - stage:
+        name: cdstg
+        identifier: cdstg
+        description: ""
+        type: Deployment
+        spec:
+          serviceConfig:
+            serviceRef: lscjf
+            serviceDefinition:
+              spec:
+                variables: []
+              type: Ssh
+          infrastructure:
+            environmentRef: dev
+            infrastructureDefinition:
+              type: KubernetesDirect
+              spec:
+                connectorRef: rajathak8
+                namespace: rajatha-delegate-april
+                releaseName: release-<+INFRA_KEY>
+            allowSimultaneousDeployments: false
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: dsfdf
+                  identifier: dsfdf
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: echo <+pipeline.stages.build.spec.execution.steps.run.output.outputVariables.LATEST_BRANCH>
+                    environmentVariables: []
+                    outputVariables: []
+                    executionTarget: {}
+                  timeout: 10m
+            rollbackSteps: []
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+        when:
+          pipelineStatus: Success
+          condition: <+stage.pipeline.variables.magic> == "RAJATHA"
+    - stage:
+        name: stg4
+        identifier: stg4
+        template:
+          templateRef: Stage1
+          versionLabel: v1
+          templateInputs:
+            type: CI
+            spec:
+              execution:
+                steps:
+                  - step:
+                      identifier: run
+                      type: Run
+                      spec:
+                        image: <+input>
+                        command: <+input>
+                        envVariables: <+input>
+  variables:
+    - name: magic
+      type: String
+      value: <+input>.allowedValues(110gi,200gi,300gi,400GI)
+  properties:
+    ci:
+      codebase:
+        connectorRef: githubrajatha
+        build: <+input>
+  allowStageExecutions: true

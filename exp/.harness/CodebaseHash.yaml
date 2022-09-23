@@ -1,0 +1,76 @@
+pipeline:
+    name: CodebaseHash
+    identifier: CodebaseHash
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+                resources:
+                    limits:
+                        memory: 1Gi
+                        cpu: "1"
+    stages:
+        - stage:
+              name: codebasehash
+              identifier: codebasehashcheck
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: rajatha-delgate-april
+                          initTimeout: 15m
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: checkifrequired
+                                identifier: checkifrequired
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: us.gcr.io/platform-205701/ubi/ubi-python:latest
+                                    shell: Sh
+                                    command: |-
+                                        set -e
+
+                                        if [ -f 'scripts/codebase/codebase-hash-check.py' ]; then
+                                            echo "python scripts/codebase/codebase-hash-check.py <+trigger.prNumber>"
+                                            # python scripts/codebase/codebase-hash-check.py <+trigger.prNumber>
+                                            #export STATUS=$?
+                                            # echo "STATUS=$STATUS"
+                                        fi
+
+                                        export STATUS=1
+                                    outputVariables:
+                                        - name: STATUS
+                                when:
+                                    stageStatus: Success
+                                failureStrategies: []
+              variables:
+                  - name: JFROG_USERNAME
+                    type: Secret
+                    value: artifactoryinternalreaduser
+                  - name: JFROG_PASSWORD
+                    type: Secret
+                    value: artifactoryharnessinternalread
+                  - name: BUILD_PURPOSE
+                    type: String
+                    value: PR_CHECK
+                  - name: GCP_BAZEL_CACHE_CRED_PATH
+                    type: Secret
+                    value: gcp_bazel_cache_cred_path
+                  - name: GITHUB_REPO
+                    type: String
+                    value: harness/harness-core
+                  - name: GITHUB_TOKEN
+                    type: Secret
+                    value: account.BOT_PWD

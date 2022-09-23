@@ -1,0 +1,180 @@
+pipeline:
+    name: stepGrouptest
+    identifier: stepGrouptest
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    stages:
+        - stage:
+              name: STO Tests
+              identifier: Tests_RSpec
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: harness-services
+                          serviceAccountName: harness-admin
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          containerSecurityContext:
+                              privileged: true
+                          os: Linux
+                  serviceDependencies:
+                      - identifier: postgres
+                        name: postgres
+                        type: Service
+                        spec:
+                            connectorRef: dockerrajatha
+                            image: postgres:13.7-alpine
+                            envVariables:
+                                POSTGRES_HOST_AUTH_METHOD: trust
+                      - identifier: dind
+                        name: docker_dind
+                        type: Service
+                        spec:
+                            connectorRef: dockerrajatha
+                            image: docker:dind
+                            privileged: true
+                            entrypoint:
+                                - dockerd-entrypoint.sh
+                  execution:
+                      steps:
+                          - parallel:
+                                - stepGroup:
+                                      name: SAST
+                                      identifier: SAST
+                                      steps:
+                                          - step:
+                                                type: Security
+                                                name: OWASP
+                                                identifier: OWASP
+                                                spec:
+                                                    connectorRef: account.harnessImage
+                                                    privileged: true
+                                                    settings:
+                                                        policy_type: orchestratedScan
+                                                        scan_type: repository
+                                                        repository_project: <+pipeline.properties.ci.codebase.repoName>
+                                                        repository_branch: <+codebase.branch>
+                                                        product_name: owasp
+                                                        product_config_name: owasp
+                                                        fail_on_severity: HIGH
+                                                    imagePullPolicy: Always
+                                                failureStrategies:
+                                                    - onFailure:
+                                                          errors:
+                                                              - AllErrors
+                                                          action:
+                                                              type: Ignore
+                                                when:
+                                                    stageStatus: Success
+                                - stepGroup:
+                                      name: Build and Container Scan
+                                      identifier: Build_and_Container_Scan
+                                      steps:
+                                          - step:
+                                                type: Run
+                                                name: Docker Build
+                                                identifier: Docker_Build
+                                                spec:
+                                                    connectorRef: dockerrajatha
+                                                    image: bentolor/docker-dind-awscli
+                                                    shell: Bash
+                                                    command: |-
+                                                        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 414892725800.dkr.ecr.us-east-1.amazonaws.com
+
+                                                        docker build . -t <+pipeline.properties.ci.codebase.repoName>:test \
+                                                        --build-arg BUNDLE_GITHUB__COM=$BUNDLE_GITHUB__COM \
+                                                        --build-arg BUNDLE_ENTERPRISE__CONTRIBSYS__COM=$BUNDLE_ENTERPRISE__CONTRIBSYS__COM \
+                                                        --build-arg GOOGLE_RECAPTCHA_SITE_KEY=<+secrets.getValue("account.GOOGLERECAPTCHAKEY")>
+                                                    envVariables:
+                                                        BUNDLE_ENTERPRISE__CONTRIBSYS__COM: <+secrets.getValue("account.BUNDLE_ENTERPRISE__CONTRIBSYS__COM")>
+                                                        BUNDLE_GITHUB__COM: <+secrets.getValue("account.GithubOpsHarnessPersonalToken")>
+                                                        GOOGLE_RECAPTCHA_SITE_KEY: <+secrets.getValue("account.GOOGLERECAPTCHAKEY")>
+                                                    imagePullPolicy: IfNotPresent
+                                                    resources:
+                                                        limits:
+                                                            memory: 1Gi
+                                                            cpu: 500m
+                                                when:
+                                                    stageStatus: Success
+                                                failureStrategies: []
+                                          - parallel:
+                                                - step:
+                                                      type: Security
+                                                      name: Aqua-Trivy
+                                                      identifier: AquaTrivy
+                                                      spec:
+                                                          connectorRef: account.harnessImage
+                                                          privileged: true
+                                                          settings:
+                                                              policy_type: orchestratedScan
+                                                              scan_type: container
+                                                              product_name: aqua-trivy
+                                                              product_config_name: aqua-trivy
+                                                              container_type: local_image
+                                                              container_domain: docker.io
+                                                              container_project: <+pipeline.properties.ci.codebase.repoName>
+                                                              container_tag: test
+                                                              fail_on_severity: CRITICAL
+                                                      when:
+                                                          stageStatus: Success
+                                                      failureStrategies:
+                                                          - onFailure:
+                                                                errors:
+                                                                    - AllErrors
+                                                                action:
+                                                                    type: Ignore
+                                                  loopingStrategyEnabled: false
+                                                - step:
+                                                      type: Security
+                                                      name: Docker-Content-Trust
+                                                      identifier: DockerContentTrust
+                                                      spec:
+                                                          connectorRef: account.harnessImage
+                                                          privileged: true
+                                                          settings:
+                                                              policy_type: orchestratedScan
+                                                              scan_type: container
+                                                              product_name: docker-content-trust
+                                                              product_config_name: default
+                                                              container_type: local_image
+                                                              container_domain: docker.io
+                                                              container_project: <+pipeline.properties.ci.codebase.repoName>
+                                                              container_tag: test
+                                                              fail_on_severity: CRITICAL
+                                                      when:
+                                                          stageStatus: Success
+                                                      failureStrategies:
+                                                          - onFailure:
+                                                                errors:
+                                                                    - AllErrors
+                                                                action:
+                                                                    type: Ignore
+                  sharedPaths:
+                      - /var/run
+                      - /var/lib/docker
+              when:
+                  pipelineStatus: Success
+              variables:
+                  - name: AWS_SECRET_ACCESS_KEY
+                    type: String
+                    value: <+secrets.getValue('account.AWSShared')>
+                  - name: AWS_ACCESS_KEY_ID
+                    type: String
+                    value: <+secrets.getValue('account.AWSSharedIAMKey')>
+                  - name: AWS_DEFAULT_REGION
+                    type: String
+                    value: us-east-1
+                  - name: LOG_LEVEL
+                    type: String
+                    value: DEBUG
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    variables: []

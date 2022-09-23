@@ -1,0 +1,60 @@
+template:
+    name: Stg1
+    identifier: Stg1
+    versionLabel: "1"
+    type: Stage
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    tags: {}
+    spec:
+        type: Deployment
+        spec:
+            serviceConfig:
+                serviceRef: <+input>
+                serviceDefinition:
+                    spec:
+                        variables: []
+                    type: Kubernetes
+            infrastructure: {}
+            execution:
+                steps:
+                    - step:
+                          name: Rollout Deployment
+                          identifier: rolloutDeployment
+                          type: K8sRollingDeploy
+                          timeout: 10m
+                          spec:
+                              skipDryRun: false
+                    - stepGroup:
+                          name: Untitled
+                          identifier: e047d540-fabe-56ed-b30f-1c7696e2d110
+                          steps:
+                              - step:
+                                    type: ShellScript
+                                    name: ZSFdsf
+                                    identifier: ZSFdsf
+                                    spec:
+                                        shell: Bash
+                                        onDelegate: true
+                                        source:
+                                            type: Inline
+                                            spec:
+                                                script: sdfsdf
+                                        environmentVariables: []
+                                        outputVariables: []
+                                        executionTarget: {}
+                                    timeout: 10m
+                rollbackSteps:
+                    - step:
+                          name: Rollback Rollout Deployment
+                          identifier: rollbackRolloutDeployment
+                          type: K8sRollingRollback
+                          timeout: 10m
+                          spec: {}
+            serviceDependencies: []
+        failureStrategies:
+            - onFailure:
+                  errors:
+                      - AllErrors
+                  action:
+                      type: StageRollback

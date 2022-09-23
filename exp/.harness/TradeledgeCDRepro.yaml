@@ -1,0 +1,70 @@
+pipeline:
+    name: TradeledgeCDRepro
+    identifier: TradeledgeCDRepro
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    storeType: ""
+    remoteType: create
+    tags: {}
+    stages:
+        - stage:
+              name: stg
+              identifier: stg
+              template:
+                  templateRef: CDTemplate
+                  versionLabel: v1
+        - stage:
+              name: zsfdsf
+              identifier: zsfdsf
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: dsfdsf
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: dsfdfs
+                                identifier: dsfdfs
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo test
+        - stage:
+              name: stg2
+              identifier: stg2
+              type: CI
+              spec:
+                  cloneCodebase: false
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: rajathak8
+                          namespace: zsfasdf
+                          nodeSelector: {}
+                          os: Linux
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: sdfdsf
+                                identifier: sdfdsf
+                                spec:
+                                    connectorRef: dockerrajatha
+                                    image: <+input>
+                                    shell: Sh
+                                    command: dsfgsadg
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    allowStageExecutions: true

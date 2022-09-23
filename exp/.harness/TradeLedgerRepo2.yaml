@@ -1,0 +1,31 @@
+pipeline:
+    name: TradeLedgerRepo2
+    identifier: TradeLedgerRepo2
+    projectIdentifier: RajathaTest2
+    orgIdentifier: default
+    storeType: ""
+    remoteType: create
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: githubrajatha
+                build: <+input>
+    stages:
+        - stage:
+              name: stg1
+              identifier: stg1
+              template:
+                  templateRef: Stage1
+                  versionLabel: v1
+                  templateInputs:
+                      type: CI
+                      spec:
+                          execution:
+                              steps:
+                                  - step:
+                                        identifier: run
+                                        type: Run
+                                        spec:
+                                            image: <+input>
+                                            command: <+input>
