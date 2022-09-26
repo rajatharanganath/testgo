@@ -28,7 +28,15 @@ pipeline:
                     connectorRef: dockerrajatha
                     image: alpine
                     shell: Sh
-                    command: echo <+codebase.tag>
+                    command: |-
+                      echo <+codebase.tag>
+                      echo <+matrix.env>
+                  failureStrategies: []
+                  strategy:
+                    matrix:
+                      env:
+                        - abc
+                        - efg
     - stage:
         name: stg2
         identifier: stg2
