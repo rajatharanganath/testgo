@@ -62,5 +62,6 @@ pipeline:
   properties:
     ci:
       codebase:
-        connectorRef: tempToken
+        connectorRef: AccountLevelRajatha
+        repoName: rajatharanganath/testgo.git
         build: <+input>
