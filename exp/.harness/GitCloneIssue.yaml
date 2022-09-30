@@ -14,7 +14,7 @@ pipeline:
             type: KubernetesDirect
             spec:
               connectorRef: rajathak8
-              namespace: ""
+              namespace: "  "
               automountServiceAccountToken: true
               nodeSelector: {}
               os: Linux
