@@ -33,7 +33,7 @@ pipeline:
                   identifier: lint
                   spec:
                     connectorRef: GCPConnector
-                    image: alpine
+                    image: us.gcr.io/platform-205701/harness/ti-service
                     shell: Sh
                     command: |-
                       echo test
