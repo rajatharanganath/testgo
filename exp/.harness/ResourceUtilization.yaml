@@ -50,27 +50,13 @@ pipeline:
                       EOM
                       cat harnessDockerfileui
               - step:
-                  type: BuildAndPushGCR
-                  name: test
-                  identifier: test
-                  spec:
-                    connectorRef: GCSConnector
-                    host: us.gcr.io
-                    projectID: ci-play
-                    imageName: testrajatha
-                    tags:
-                      - "1.0"
-              - step:
-                  type: Run
-                  name: lint
-                  identifier: lint
+                  type: GCSUpload
+                  name: sdfdsaf
+                  identifier: sdfdsaf
                   spec:
                     connectorRef: GCPConnector
-                    image: us.gcr.io/platform-205701/harness/ti-service
-                    shell: Sh
-                    command: |-
-                      echo test
-                      sleep 100000
+                    bucket: abc
+                    sourcePath: dsfdsfg
         failureStrategies:
           - onFailure:
               errors:
