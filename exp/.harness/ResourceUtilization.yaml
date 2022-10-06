@@ -27,29 +27,17 @@ pipeline:
               os: Linux
           execution:
             steps:
-              - parallel:
-                  - step:
-                      type: Run
-                      name: lint
-                      identifier: lint
-                      spec:
-                        connectorRef: <+input>
-                        image: <+input>
-                        shell: Sh
-                        command: |-
-                          echo test
-                          sleep 100000
-                  - step:
-                      type: Run
-                      name: test
-                      identifier: test
-                      spec:
-                        connectorRef: <+input>
-                        image: <+input>
-                        shell: Sh
-                        command: |-
-                          echo test
-                          sleep 100000
+              - step:
+                  type: Run
+                  name: lint
+                  identifier: lint
+                  spec:
+                    connectorRef: GCPConnector
+                    image: alpine
+                    shell: Sh
+                    command: |-
+                      echo test
+                      sleep 100000
         failureStrategies:
           - onFailure:
               errors:
