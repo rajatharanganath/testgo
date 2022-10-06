@@ -49,29 +49,28 @@ pipeline:
                       ENTRYPOINT ["ls"]
                       EOM
                       cat harnessDockerfileui
-              - parallel:
-                  - step:
-                      type: Run
-                      name: lint
-                      identifier: lint
-                      spec:
-                        connectorRef: GCPConnector
-                        image: us.gcr.io/platform-205701/harness/ti-service
-                        shell: Sh
-                        command: |-
-                          echo test
-                          sleep 100000
-                  - step:
-                      type: BuildAndPushGCR
-                      name: test
-                      identifier: test
-                      spec:
-                        connectorRef: GCSConnector
-                        host: us.gcr.io
-                        projectID: ci-play
-                        imageName: testrajatha
-                        tags:
-                          - "1.0"
+              - step:
+                  type: BuildAndPushGCR
+                  name: test
+                  identifier: test
+                  spec:
+                    connectorRef: GCSConnector
+                    host: us.gcr.io
+                    projectID: ci-play
+                    imageName: testrajatha
+                    tags:
+                      - "1.0"
+              - step:
+                  type: Run
+                  name: lint
+                  identifier: lint
+                  spec:
+                    connectorRef: GCPConnector
+                    image: us.gcr.io/platform-205701/harness/ti-service
+                    shell: Sh
+                    command: |-
+                      echo test
+                      sleep 100000
         failureStrategies:
           - onFailure:
               errors:
