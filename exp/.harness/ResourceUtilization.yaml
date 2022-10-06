@@ -29,15 +29,49 @@ pipeline:
             steps:
               - step:
                   type: Run
-                  name: lint
-                  identifier: lint
+                  name: test1
+                  identifier: test1
                   spec:
-                    connectorRef: GCPConnector
-                    image: us.gcr.io/platform-205701/harness/ti-service
+                    connectorRef: dockerrajatha
+                    image: alpine:latest
                     shell: Sh
                     command: |-
-                      echo test
-                      sleep 100000
+                      touch harnessDockerfileui
+                      cat > harnessDockerfileui <<- EOM
+                      FROM alpine:latest AS dev-env
+                      ARG foo
+                      RUN echo "$foo bar"
+                      ENTRYPOINT ["pwd"]
+
+                      FROM alpine:latest AS release-env
+                      ARG hello
+                      RUN echo "$hello world"
+                      ENTRYPOINT ["ls"]
+                      EOM
+                      cat harnessDockerfileui
+              - parallel:
+                  - step:
+                      type: Run
+                      name: lint
+                      identifier: lint
+                      spec:
+                        connectorRef: GCPConnector
+                        image: us.gcr.io/platform-205701/harness/ti-service
+                        shell: Sh
+                        command: |-
+                          echo test
+                          sleep 100000
+                  - step:
+                      type: BuildAndPushGCR
+                      name: test
+                      identifier: test
+                      spec:
+                        connectorRef: GCSConnector
+                        host: us.gcr.io
+                        projectID: ci-play
+                        imageName: testrajatha
+                        tags:
+                          - "1.0"
         failureStrategies:
           - onFailure:
               errors:
