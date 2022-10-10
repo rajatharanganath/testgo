@@ -75,4 +75,4 @@ pipeline:
                     connectorRef: dockerrajatha
                     image: alpine
                     shell: Sh
-                    command: echo <+execution.steps.run.output.outputVariables.MATRIX_VALUE>
+                    command: echo <+execution.steps.run_0_0.output.outputVariables.MATRIX_VALUE>
