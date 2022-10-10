@@ -37,7 +37,7 @@ pipeline:
                     connectorRef: dockerrajatha
                     image: golang:1.15
                     shell: Sh
-                    command: |
+                    command: |-
                       #!/bin/sh
                       echo <+codebase.targetBranch>
                       echo <+codebase.sourceBranch>
@@ -53,6 +53,7 @@ pipeline:
                       echo <+matrix.service>
                       MATRIX_VALUE=<+matrix.env>+<+matrix.service>
                       export MATRIX_VALUE
+                      <+pipeline.stages.build.variables.longvalue>=<+pipeline.stages.build.variables.longvalue> + $MATRIX_VALUE
                     outputVariables:
                       - name: LATEST_BRANCH
                       - name: MATRIX_VALUE
