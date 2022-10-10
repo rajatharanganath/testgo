@@ -53,6 +53,7 @@ pipeline:
                       echo <+matrix.service>
                       MATRIX_VALUE=<+matrix.env>+<+matrix.service>
                       export MATRIX_VALUE
+                      <+pipeline.stages.build.variables.longvalue>=<+pipeline.stages.build.variables.longvalue>+MATRIX_VALUE
                     outputVariables:
                       - name: LATEST_BRANCH
                       - name: MATRIX_VALUE
@@ -76,3 +77,8 @@ pipeline:
                     image: alpine
                     shell: Sh
                     command: echo <+execution.steps.run_0_0.output.outputVariables.MATRIX_VALUE>
+        variables:
+          - name: longvalue
+            type: String
+            description: ""
+            value: ""
