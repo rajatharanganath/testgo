@@ -67,22 +67,12 @@ pipeline:
                         - env1
                         - env2
                     maxConcurrency: 2
-    - stage:
-        name: stg2
-        identifier: stg2
-        type: CI
-        spec:
-          cloneCodebase: false
-          infrastructure:
-            useFromStage: build
-          execution:
-            steps:
               - step:
                   type: Run
-                  name: stg2
-                  identifier: stg2
+                  name: test2
+                  identifier: test2
                   spec:
                     connectorRef: dockerrajatha
                     image: alpine
                     shell: Sh
-                    command: echo <+pipeline.stages.build.spec.execution.steps.run.output.outputVariables.LATEST_BRANCH>
+                    command: echo <+execution.steps.run.output.outputVariables.MATRIX_VALUE>
