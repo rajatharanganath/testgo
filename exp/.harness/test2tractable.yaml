@@ -76,7 +76,9 @@ pipeline:
                     connectorRef: dockerrajatha
                     image: alpine
                     shell: Sh
-                    command: echo <+execution.steps.run_0_0.output.outputVariables.MATRIX_VALUE>
+                    command: |-
+                      echo <+execution.steps.run_0_0.output.outputVariables.MATRIX_VALUE>
+                      echo <+pipeline.stages.build.variables.longvalue>
         variables:
           - name: longvalue
             type: String
