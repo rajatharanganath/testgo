@@ -74,7 +74,7 @@ pipeline:
                   identifier: test2
                   spec:
                     connectorRef: dockerrajatha
-                    image: alpine
+                    image: alpinedfgdfg
                     shell: Sh
                     command: |-
                       echo <+execution.steps.run_0_0.output.outputVariables.MATRIX_VALUE>
