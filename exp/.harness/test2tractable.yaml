@@ -27,6 +27,7 @@ pipeline:
               containerSecurityContext:
                 allowPrivilegeEscalation: false
                 runAsUser: ""
+              os: Linux
           execution:
             steps:
               - step:
