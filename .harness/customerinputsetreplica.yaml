@@ -1,0 +1,37 @@
+pipeline:
+  name: customerinputsetreplica
+  identifier: customerinputsetreplica
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: Build
+        identifier: Build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: rajatha-delegate-april
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Build
+                  identifier: Build
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: busybox
+                    shell: Sh
+                    command: echo "build"
+                  when:
+                    stageStatus: Success
+                    condition: <+input>
+                  failureStrategies: []
