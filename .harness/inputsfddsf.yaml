@@ -1,0 +1,14 @@
+inputSet:
+  identifier: "inputsfddsf"
+  name: "inputsfddsf"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest2"
+  pipeline:
+    identifier: "test2tractable"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "<+trigger.branch>"
