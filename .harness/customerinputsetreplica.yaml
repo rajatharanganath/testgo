@@ -47,5 +47,4 @@ pipeline:
                   onRetryFailure:
                     action:
                       type: Abort
-                  retryIntervals:
-                    - 1d
+              
