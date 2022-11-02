@@ -35,3 +35,17 @@ pipeline:
                     stageStatus: Success
                     condition: <+input>
                   failureStrategies: []
+        failureStrategies:
+          - onFailure:
+              errors:
+                - Unknown
+                - Timeout
+              action:
+                type: Retry
+                spec:
+                  retryCount: 1
+                  onRetryFailure:
+                    action:
+                      type: Abort
+                  retryIntervals:
+                    - 1d
