@@ -8,10 +8,9 @@ pipeline:
     - stage:
         name: stg1
         identifier: stg1
-        description: ""
         type: CI
         spec:
-          cloneCodebase: false
+          cloneCodebase: true
           platform:
             os: Linux
             arch: Amd64
@@ -27,3 +26,9 @@ pipeline:
                   spec:
                     shell: Sh
                     command: echo test21
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.oAuthRajatha
+        repoName: rajatharanganath/testgo
+        build: <+input>
