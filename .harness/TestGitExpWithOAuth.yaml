@@ -26,4 +26,4 @@ pipeline:
                   identifier: step1
                   spec:
                     shell: Sh
-                    command: echo test
+                    command: echo test21
