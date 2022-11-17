@@ -29,6 +29,5 @@ pipeline:
   properties:
     ci:
       codebase:
-        connectorRef: account.oAuthRajatha
-        repoName: rajatharanganath/testgo
+        connectorRef: GitHubOrgConnector
         build: <+input>
