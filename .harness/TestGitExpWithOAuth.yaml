@@ -25,7 +25,7 @@ pipeline:
                   identifier: step1
                   spec:
                     shell: Sh
-                    command: echo test21
+                    command: <+input>
   properties:
     ci:
       codebase:
