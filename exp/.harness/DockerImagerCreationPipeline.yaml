@@ -16,16 +16,6 @@ pipeline:
         type: CI
         spec:
           cloneCodebase: true
-          infrastructure:
-            type: KubernetesDirect
-            spec:
-              connectorRef: rajathak8
-              namespace: rajatha-delegate-april
-              automountServiceAccountToken: true
-              nodeSelector: {}
-              containerSecurityContext:
-                allowPrivilegeEscalation: false
-                runAsUser: "1000"
           execution:
             steps:
               - step:
@@ -66,3 +56,9 @@ pipeline:
                     repo: rajatharanganath/ciquickstart
                     tags:
                       - <+pipeline.sequenceId>
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
