@@ -57,9 +57,10 @@ pipeline:
                     tags:
                       - <+pipeline.sequenceId>
                     dockerfile: harnessDockerfileui
-          platform:
-            os: Linux
-            arch: Amd64
-          runtime:
-            type: Cloud
-            spec: {}
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: rajatha-delegate-april
+              nodeSelector: {}
+              os: Linux
