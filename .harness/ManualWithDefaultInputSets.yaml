@@ -14,4 +14,4 @@ stages:
           spec:
             run: |-
               echo "Hello world"
-              echo <+input.foo>
+              echo <+inputs.foo>
