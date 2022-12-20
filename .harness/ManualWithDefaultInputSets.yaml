@@ -1,0 +1,17 @@
+version: 1
+name: Java with Gradle Remote Clone_1671536065452
+inputs:
+  foo:
+    type: string
+    desc: foo sample string
+stages:
+  - name: Build and test Java app
+    type: ci
+    spec:
+      steps:
+        - name: Build
+          type: script
+          spec:
+            run: |-
+              echo "Hello world"
+              echo <+input.foo>
