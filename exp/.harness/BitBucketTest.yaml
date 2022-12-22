@@ -1,251 +1,257 @@
 pipeline:
-    name: BitBucketTest
-    identifier: BitBucketTest
-    projectIdentifier: RajathaTest2
-    orgIdentifier: default
-    tags: {}
-    stages:
-        - stage:
-              name: build
-              identifier: build
-              type: CI
+  name: BitBucketTest
+  identifier: BitBucketTest
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: build
+        identifier: build
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: rajatha-delegate-april
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              containerSecurityContext:
+                allowPrivilegeEscalation: false
+                runAsUser: "1000"
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: run
+                  identifier: run
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine
+                    shell: Sh
+                    command: |-
+                      #!/bin/sh
+                      echo <+codebase.targetBranch>
+                      echo <+codebase.sourceBranch>
+                      export LATEST_BRANCH="master"
+                      if [ <+codebase.targetBranch> == "master" ]
+                      then
+                         export LATEST_BRANCH="heelotag, master"
+                      else
+                         export LATEST_BRANCH="hellotag, non-master"
+                      fi
+                      echo <+codebase.branch> 
+                    outputVariables:
+                      - name: LATEST_BRANCH
+        variables:
+          - name: stageVar
+            type: String
+            value: <+input>.allowedValues(100gi,200gi,300gi,400gi)
+    - stage:
+        name: build2
+        identifier: build2
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: rajathak8
+              namespace: delegate
+              nodeSelector: {}
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: stg2
+                  identifier: stg2
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine
+                    shell: Sh
+                    command: echo test
+    - stage:
+        name: cdstg
+        identifier: cdstg
+        description: ""
+        type: Deployment
+        spec:
+          serviceConfig:
+            serviceRef: lscjf
+            serviceDefinition:
               spec:
-                  cloneCodebase: false
-                  infrastructure:
-                      type: KubernetesDirect
+                variables: []
+              type: Ssh
+          infrastructure:
+            environmentRef: dev
+            infrastructureDefinition:
+              type: KubernetesDirect
+              spec:
+                connectorRef: rajathak8
+                namespace: rajatha-delegate-april
+                releaseName: release-<+INFRA_KEY>
+            allowSimultaneousDeployments: false
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: dsfdf
+                  identifier: dsfdf
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
                       spec:
-                          connectorRef: rajathak8
-                          namespace: rajatha-delegate-april
-                          automountServiceAccountToken: true
-                          nodeSelector: {}
-                          containerSecurityContext:
-                              allowPrivilegeEscalation: false
-                              runAsUser: "1000"
-                          os: Linux
-                  execution:
+                        script: echo <+pipeline.stages.build.spec.execution.steps.run.output.outputVariables.LATEST_BRANCH>
+                    environmentVariables: []
+                    outputVariables: []
+                    executionTarget: {}
+                  timeout: 10m
+              - parallel:
+                  - stepGroup:
+                      name: step_group1
+                      identifier: step_group1
                       steps:
-                          - step:
-                                type: Run
-                                name: run
-                                identifier: run
+                        - step:
+                            type: ShellScript
+                            name: run1
+                            identifier: run1
+                            spec:
+                              shell: Bash
+                              onDelegate: true
+                              source:
+                                type: Inline
                                 spec:
-                                    connectorRef: dockerrajatha
-                                    image: alpine
-                                    shell: Sh
-                                    command: |-
-                                        #!/bin/sh
-                                        echo <+codebase.targetBranch>
-                                        echo <+codebase.sourceBranch>
-                                        export LATEST_BRANCH="master"
-                                        if [ <+codebase.targetBranch> == "master" ]
-                                        then
-                                           export LATEST_BRANCH="heelotag, master"
-                                        else
-                                           export LATEST_BRANCH="hellotag, non-master"
-                                        fi
-                                        echo <+codebase.branch> 
-                                    outputVariables:
-                                        - name: LATEST_BRANCH
-              variables:
-                  - name: stageVar
-                    type: String
-                    value: <+input>.allowedValues(100gi,200gi,300gi,400gi)
-        - stage:
-              name: build2
-              identifier: build2
-              type: CI
-              spec:
-                  cloneCodebase: true
-                  infrastructure:
-                      type: KubernetesDirect
+                                  script: echo run1
+                              environmentVariables: []
+                              outputVariables: []
+                              executionTarget: {}
+                            timeout: 10m
+                        - step:
+                            type: ShellScript
+                            name: run2
+                            identifier: run2
+                            spec:
+                              shell: Bash
+                              onDelegate: true
+                              source:
+                                type: Inline
+                                spec:
+                                  script: echo run1 duplicate
+                              environmentVariables: []
+                              outputVariables: []
+                              executionTarget: {}
+                            timeout: 10m
+                  - stepGroup:
+                      name: step_group2
+                      identifier: step_group2
+                      steps:
+                        - parallel:
+                            - step:
+                                type: ShellScript
+                                name: run3
+                                identifier: run3
+                                spec:
+                                  shell: Bash
+                                  onDelegate: true
+                                  source:
+                                    type: Inline
+                                    spec:
+                                      script: echo run3
+                                  environmentVariables: []
+                                  outputVariables: []
+                                  executionTarget: {}
+                                timeout: 10m
+                            - step:
+                                type: ShellScript
+                                name: run4
+                                identifier: run4
+                                spec:
+                                  shell: Bash
+                                  onDelegate: true
+                                  source:
+                                    type: Inline
+                                    spec:
+                                      script: echo run4
+                                  environmentVariables: []
+                                  outputVariables: []
+                                  executionTarget: {}
+                                timeout: 10m
+                            - step:
+                                type: ShellScript
+                                name: run6
+                                identifier: run6
+                                spec:
+                                  shell: Bash
+                                  onDelegate: true
+                                  source:
+                                    type: Inline
+                                    spec:
+                                      script: echo run6
+                                  environmentVariables: []
+                                  outputVariables: []
+                                  executionTarget: {}
+                                timeout: 10m
+                        - step:
+                            type: ShellScript
+                            name: run7
+                            identifier: run7
+                            spec:
+                              shell: Bash
+                              onDelegate: true
+                              source:
+                                type: Inline
+                                spec:
+                                  script: echo run7
+                              environmentVariables: []
+                              outputVariables: []
+                              executionTarget: {}
+                            timeout: 10m
+                      failureStrategies: []
+              - step:
+                  type: ShellScript
+                  name: run5
+                  identifier: run5
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
                       spec:
-                          connectorRef: rajathak8
-                          namespace: delegate
-                          nodeSelector: {}
-                          os: Linux
-                  execution:
-                      steps:
-                          - step:
-                                type: Run
-                                name: stg2
-                                identifier: stg2
-                                spec:
-                                    connectorRef: dockerrajatha
-                                    image: alpine
-                                    shell: Sh
-                                    command: echo test
-        - stage:
-              name: cdstg
-              identifier: cdstg
-              description: ""
-              type: Deployment
-              spec:
-                  serviceConfig:
-                      serviceRef: lscjf
-                      serviceDefinition:
-                          spec:
-                              variables: []
-                          type: Ssh
-                  infrastructure:
-                      environmentRef: dev
-                      infrastructureDefinition:
-                          type: KubernetesDirect
-                          spec:
-                              connectorRef: rajathak8
-                              namespace: rajatha-delegate-april
-                              releaseName: release-<+INFRA_KEY>
-                      allowSimultaneousDeployments: false
-                  execution:
-                      steps:
-                          - step:
-                                type: ShellScript
-                                name: dsfdf
-                                identifier: dsfdf
-                                spec:
-                                    shell: Bash
-                                    onDelegate: true
-                                    source:
-                                        type: Inline
-                                        spec:
-                                            script: echo <+pipeline.stages.build.spec.execution.steps.run.output.outputVariables.LATEST_BRANCH>
-                                    environmentVariables: []
-                                    outputVariables: []
-                                    executionTarget: {}
-                                timeout: 10m
-                          - parallel:
-                                - stepGroup:
-                                      name: step_group1
-                                      identifier: step_group1
-                                      steps:
-                                          - step:
-                                                type: ShellScript
-                                                name: run1
-                                                identifier: run1
-                                                spec:
-                                                    shell: Bash
-                                                    onDelegate: true
-                                                    source:
-                                                        type: Inline
-                                                        spec:
-                                                            script: echo run1
-                                                    environmentVariables: []
-                                                    outputVariables: []
-                                                    executionTarget: {}
-                                                timeout: 10m
-                                          - step:
-                                                type: ShellScript
-                                                name: run2
-                                                identifier: run2
-                                                spec:
-                                                    shell: Bash
-                                                    onDelegate: true
-                                                    source:
-                                                        type: Inline
-                                                        spec:
-                                                            script: echo run1 duplicate
-                                                    environmentVariables: []
-                                                    outputVariables: []
-                                                    executionTarget: {}
-                                                timeout: 10m
-                                - stepGroup:
-                                      name: step_group2
-                                      identifier: step_group2
-                                      steps:
-                                          - parallel:
-                                                - step:
-                                                      type: ShellScript
-                                                      name: run3
-                                                      identifier: run3
-                                                      spec:
-                                                          shell: Bash
-                                                          onDelegate: true
-                                                          source:
-                                                              type: Inline
-                                                              spec:
-                                                                  script: echo run3
-                                                          environmentVariables: []
-                                                          outputVariables: []
-                                                          executionTarget: {}
-                                                      timeout: 10m
-                                                - step:
-                                                      type: ShellScript
-                                                      name: run4
-                                                      identifier: run4
-                                                      spec:
-                                                          shell: Bash
-                                                          onDelegate: true
-                                                          source:
-                                                              type: Inline
-                                                              spec:
-                                                                  script: echo run4
-                                                          environmentVariables: []
-                                                          outputVariables: []
-                                                          executionTarget: {}
-                                                      timeout: 10m
-                                                - step:
-                                                      type: ShellScript
-                                                      name: run6
-                                                      identifier: run6
-                                                      spec:
-                                                          shell: Bash
-                                                          onDelegate: true
-                                                          source:
-                                                              type: Inline
-                                                              spec:
-                                                                  script: echo run6
-                                                          environmentVariables: []
-                                                          outputVariables: []
-                                                          executionTarget: {}
-                                                      timeout: 10m
-                                          - step:
-                                                type: ShellScript
-                                                name: run7
-                                                identifier: run7
-                                                spec:
-                                                    shell: Bash
-                                                    onDelegate: true
-                                                    source:
-                                                        type: Inline
-                                                        spec:
-                                                            script: echo run7
-                                                    environmentVariables: []
-                                                    outputVariables: []
-                                                    executionTarget: {}
-                                                timeout: 10m
-                                      failureStrategies: []
-                          - step:
-                                type: ShellScript
-                                name: run5
-                                identifier: run5
-                                spec:
-                                    shell: Bash
-                                    onDelegate: true
-                                    source:
-                                        type: Inline
-                                        spec:
-                                            script: echo run1 outside step group
-                                    environmentVariables: []
-                                    outputVariables: []
-                                    executionTarget: {}
-                                timeout: 10m
-                      rollbackSteps: []
-              tags: {}
-              failureStrategies:
-                  - onFailure:
-                        errors:
-                            - AllErrors
-                        action:
-                            type: StageRollback
-              when:
-                  pipelineStatus: Success
-                  condition: <+stage.pipeline.variables.magic> == "RAJATHA"
-    variables:
-        - name: magic
-          type: String
-          value: <+input>.allowedValues(110gi,200gi,300gi,400GI)
-    properties:
-        ci:
-            codebase:
-                connectorRef: account.BBSaas
-                build: <+input>
-    allowStageExecutions: true
+                        script: echo run1 outside step group
+                    environmentVariables: []
+                    outputVariables: []
+                    executionTarget: {}
+                  timeout: 10m
+            rollbackSteps: []
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+        when:
+          pipelineStatus: Success
+          condition: <+stage.pipeline.variables.magic> == "RAJATHA"
+    - stage:
+        name: dfsgfdg
+        identifier: dfsgfdg
+        template:
+          templateRef: xzcxczv
+          versionLabel: "1"
+  variables:
+    - name: magic
+      type: String
+      value: <+input>.allowedValues(110gi,200gi,300gi,400GI)
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.BBSaas
+        build: <+input>
+  allowStageExecutions: true
