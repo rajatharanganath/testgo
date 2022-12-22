@@ -245,6 +245,12 @@ pipeline:
         template:
           templateRef: xzcxczv
           versionLabel: "1"
+          templateInputs:
+            type: CI
+            variables:
+              - name: rajatha
+                type: String
+                value: <+input>
   variables:
     - name: magic
       type: String
