@@ -33,3 +33,21 @@ pipeline:
           runtime:
             type: Cloud
             spec: {}
+  allowStageExecutions: true
+  delegateSelectors:
+    - ciaccountdelegate
+  timeout: 1d
+  notificationRules:
+    - name: abc
+      identifier: abc
+      pipelineEvents:
+        - type: StageFailed
+          forStages:
+            - xcvvcx
+      notificationMethod:
+        type: Email
+        spec:
+          userGroups: []
+          recipients:
+            - rajatha.ranganath@harness.io
+      enabled: true
