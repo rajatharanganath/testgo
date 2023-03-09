@@ -1,5 +1,6 @@
 inputSet:
   name: InputSet2Sample
+  tags: {}
   identifier: InputSet2Sample
   orgIdentifier: default
   projectIdentifier: RajathaTest2
@@ -10,7 +11,6 @@ inputSet:
         properties:
           ci:
             codebase:
-              repoName: <+input>
               build:
                 type: branch
                 spec:
