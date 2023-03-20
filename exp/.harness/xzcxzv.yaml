@@ -8,7 +8,10 @@ pipeline:
     ci:
       codebase:
         connectorRef: githubrajatha
-        build: <+input>
+        build:
+          spec:
+            branch: main
+          type: branch
   stages:
     - stage:
         name: xcvvcx
