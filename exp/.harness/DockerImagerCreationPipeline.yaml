@@ -27,6 +27,43 @@ pipeline:
                     image: alpine:latest
                     shell: Sh
                     command: |-
+                      mkdir -p abc
+                      touch harnessDockerfileui
+                      cat > harnessDockerfileui <<- EOM
+                      FROM alpine:latest AS dev-env
+                      ARG foo
+                      RUN echo "$foo bar"
+                      ENTRYPOINT ["pwd"]
+
+                      FROM alpine:latest AS release-env
+                      ARG hello
+                      RUN echo "$hello world"
+                      ENTRYPOINT ["ls"]
+                      EOM
+                      cat harnessDockerfileui
+
+                      cd
+                      pwd
+
+                      mkdir -p efg
+                      touch harnessDockerfileui
+                      cat > harnessDockerfileui <<- EOM
+                      FROM alpine:latest AS dev-env
+                      ARG foo
+                      RUN echo "$foo bar"
+                      ENTRYPOINT ["pwd"]
+
+                      FROM alpine:latest AS release-env
+                      ARG hello
+                      RUN echo "$hello world"
+                      ENTRYPOINT ["ls"]
+                      EOM
+                      cat harnessDockerfileui
+
+                      cd 
+                      pwd 
+
+                      mkdir -p hij
                       touch harnessDockerfileui
                       cat > harnessDockerfileui <<- EOM
                       FROM alpine:latest AS dev-env
@@ -56,7 +93,8 @@ pipeline:
                     repo: rajatharanganath/ciquickstart
                     tags:
                       - <+repeat.item>
-                    dockerfile: harnessDockerfileui
+                    dockerfile: /harness/<+repeat.item>/harnessDockerfileui
+                    context: /harness/<+repeat.item>
                   failureStrategies: []
                   strategy:
                     repeat:
