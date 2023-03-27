@@ -55,8 +55,16 @@ pipeline:
                     connectorRef: dockerrajatha
                     repo: rajatharanganath/ciquickstart
                     tags:
-                      - <+pipeline.sequenceId>
+                      - <+repeat.item>
                     dockerfile: harnessDockerfileui
+                  failureStrategies: []
+                  strategy:
+                    repeat:
+                      items:
+                        - abc
+                        - efg
+                        - hij
+                    maxConcurrency: 2
           infrastructure:
             type: KubernetesDirect
             spec:
