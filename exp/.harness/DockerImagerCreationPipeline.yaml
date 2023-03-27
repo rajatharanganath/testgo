@@ -67,7 +67,7 @@ pipeline:
                     maxConcurrency: 2
           platform:
             os: Linux
-            arch: Arm64
+            arch: Amd64
           runtime:
             type: Cloud
             spec: {}
