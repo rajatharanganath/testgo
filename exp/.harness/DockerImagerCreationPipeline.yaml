@@ -65,10 +65,9 @@ pipeline:
                         - efg
                         - hij
                     maxConcurrency: 2
-          infrastructure:
-            type: KubernetesDirect
-            spec:
-              connectorRef: rajathak8
-              namespace: rajatha-delegate-april
-              nodeSelector: {}
-              os: Linux
+          platform:
+            os: Linux
+            arch: Arm64
+          runtime:
+            type: Cloud
+            spec: {}
