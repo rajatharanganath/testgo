@@ -58,8 +58,7 @@ pipeline:
                     repo: rajatharanganath/ciquickstart
                     tags:
                       - <+execution.steps.run.output.outputVariables.LATEST_BRANCH>
-                    dockerfile: /harness/<+repeat.item>/harnessDockerfileui
-                    context: /harness/<+repeat.item>
+                    dockerfile: harnessDockerfileui
                   failureStrategies: []
           platform:
             os: Linux
