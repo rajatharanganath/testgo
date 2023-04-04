@@ -26,7 +26,7 @@ pipeline:
                     connectorRef: dockerrajatha
                     image: alpine:latest
                     shell: Sh
-                    command: |-
+                    command: |+
                       touch harnessDockerfileui
                       cat > harnessDockerfileui <<- EOM
                       FROM alpine:latest AS dev-env
@@ -41,7 +41,6 @@ pipeline:
                       EOM
                       cat harnessDockerfileui
 
-                      export LATEST_BRANCH=latest
                     reports:
                       type: JUnit
                       spec:
