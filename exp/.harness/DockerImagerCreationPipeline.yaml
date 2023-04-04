@@ -41,6 +41,8 @@ pipeline:
                       EOM
                       cat harnessDockerfileui
 
+                      export LATEST_BRANCH=$abc
+
                     reports:
                       type: JUnit
                       spec:
