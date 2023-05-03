@@ -58,7 +58,7 @@ pipeline:
                     connectorRef: dockerrajatha
                     repo: rajatharanganath/ciquickstart
                     tags:
-                      - "\"<+execution.steps.run.output.outputVariables.LATEST_BRANCH>\""
+                      - latest
                     dockerfile: harnessDockerfileui
                   failureStrategies: []
           platform:
