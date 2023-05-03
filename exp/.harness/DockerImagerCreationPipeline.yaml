@@ -59,7 +59,7 @@ pipeline:
                     repo: rajatharanganath/ciquickstart
                     tags:
                       - latest
-                    dockerfile: <+input>
+                    dockerfile: harnessDockerfileui
                   failureStrategies: []
           platform:
             os: Linux
