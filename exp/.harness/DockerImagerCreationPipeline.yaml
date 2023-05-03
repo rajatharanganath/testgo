@@ -61,21 +61,14 @@ pipeline:
                       - latest
                     dockerfile: harnessDockerfileui
                   failureStrategies: []
-              - step:
-                  type: Plugin
-                  name: Plugin_1
-                  identifier: Plugin_1
-                  spec:
-                    connectorRef: GithubDockerRegistry
-                    image: plugins/docker
-                    entrypoint:
-                      - plugins/docker --dry-run
-                    settings:
-                      PLUGIN_TAG: latest
-                      PLUGIN_REPO: octocat/hello-world
           platform:
             os: Linux
             arch: Amd64
           runtime:
             type: Cloud
             spec: {}
+        variables:
+          - name: PLUGIN_DRY_RUN
+            type: String
+            description: ""
+            value: "true"
