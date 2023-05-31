@@ -4,18 +4,13 @@ pipeline:
   projectIdentifier: RajathaTest2
   orgIdentifier: default
   tags: {}
-  properties:
-    ci:
-      codebase:
-        connectorRef: githubrajatha
-        build: <+input>
   stages:
     - stage:
         name: build
         identifier: build
         type: CI
         spec:
-          cloneCodebase: true
+          cloneCodebase: false
           execution:
             steps:
               - step:
@@ -26,7 +21,7 @@ pipeline:
                     connectorRef: dockerrajatha
                     image: alpine:latest
                     shell: Sh
-                    command: |+
+                    command: |
                       touch harnessDockerfileui
                       cat > harnessDockerfileui <<- EOM
                       FROM alpine:latest AS dev-env
@@ -40,16 +35,6 @@ pipeline:
                       ENTRYPOINT ["ls"]
                       EOM
                       cat harnessDockerfileui
-
-                      export LATEST_BRANCH=$abc
-
-                    reports:
-                      type: JUnit
-                      spec:
-                        paths:
-                          - "*.xml"
-                    outputVariables:
-                      - name: LATEST_BRANCH
               - step:
                   type: BuildAndPushDockerRegistry
                   name: build and push
@@ -61,6 +46,13 @@ pipeline:
                       - latest
                     dockerfile: harnessDockerfileui
                   failureStrategies: []
+              - step:
+                  type: Run
+                  name: Run_2
+                  identifier: Run_2
+                  spec:
+                    shell: Sh
+                    command: ls -ltr *
               - step:
                   type: Security
                   name: Security_1
