@@ -61,6 +61,18 @@ pipeline:
                       - latest
                     dockerfile: harnessDockerfileui
                   failureStrategies: []
+              - step:
+                  type: Security
+                  name: Security_1
+                  identifier: Security_1
+                  spec:
+                    privileged: true
+                    settings:
+                      policy_type: orchestratedScan
+                      scan_type: repository
+                      product_name: aqua-trivy
+                      product_config_name: aqua-trivy
+                    imagePullPolicy: Never
           platform:
             os: Linux
             arch: Amd64
