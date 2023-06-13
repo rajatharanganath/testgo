@@ -29,7 +29,7 @@ pipeline:
                     shell: Sh
                     command: |-
                       echo hello
-                      #---data---
+                      #---data
                       echo 1 
                   timeout: 1m
           platform:
