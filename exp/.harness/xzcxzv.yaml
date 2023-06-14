@@ -29,7 +29,7 @@ pipeline:
                     shell: Sh
                     command: |-
                       echo hello
-                      #---data
+                      #---data---
                       echo 1 
                     connectorRef: account.harnessImage
                     image: harness/drone-git:1.0.6-rootless-linux-amd64
