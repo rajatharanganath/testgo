@@ -45,6 +45,7 @@ pipeline:
                           i=0
                           while [ $i -lt 10 ]
                           do
+                              df -h
                               du -sh *
                               sleep 10
                               i=`expr $i + 1`
