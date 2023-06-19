@@ -49,7 +49,7 @@ pipeline:
                               sleep 10
                               i=`expr $i + 1`
                           done
-                        connectorRef: GithubDockerRegistry
+                        connectorRef: dockerrajatha
                         image: alpine
           platform:
             os: Linux
