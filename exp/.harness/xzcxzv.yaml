@@ -21,19 +21,33 @@ pipeline:
           cloneCodebase: true
           execution:
             steps:
-              - step:
-                  type: Run
-                  name: xzvzx
-                  identifier: xzvzx
-                  spec:
-                    shell: Sh
-                    command: |-
-                      echo hello
-                      #---data---
-                      echo 1 
-                    connectorRef: account.harnessImage
-                    image: harness/drone-git:1.0.6-rootless-linux-amd64
-                  timeout: 1m
+              - parallel:
+                  - step:
+                      type: Run
+                      name: xzvzx
+                      identifier: xzvzx
+                      spec:
+                        shell: Sh
+                        command: |-
+                          echo hello
+                          #---data---
+                          echo 1 
+                        connectorRef: account.harnessImage
+                        image: harness/drone-git:1.0.6-rootless-linux-amd64
+                      timeout: 1m
+                  - step:
+                      type: Run
+                      name: Run_2
+                      identifier: Run_2
+                      spec:
+                        shell: Sh
+                        command: |-
+                          i = 0
+                          while (i<=10) {
+                              du -sh *
+                              sleep 10
+                              i++
+                          }
           platform:
             os: Linux
             arch: Amd64
