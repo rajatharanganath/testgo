@@ -42,12 +42,13 @@ pipeline:
                       spec:
                         shell: Sh
                         command: |-
-                          i = 0
-                          while (i<=10) {
+                          i=0
+                          while (i<=10)
+                          do
                               du -sh *
                               sleep 10
                               i++
-                          }
+                          done
           platform:
             os: Linux
             arch: Amd64
