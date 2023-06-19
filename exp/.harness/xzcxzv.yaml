@@ -43,7 +43,7 @@ pipeline:
                         shell: Sh
                         command: |-
                           i=0
-                          while (i<=10)
+                          while [ $i -lt 10 ]
                           do
                               du -sh *
                               sleep 10
