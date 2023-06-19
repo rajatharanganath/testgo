@@ -47,7 +47,7 @@ pipeline:
                           do
                               du -sh *
                               sleep 10
-                              i++
+                              i=`expr $i + 1`
                           done
           platform:
             os: Linux
