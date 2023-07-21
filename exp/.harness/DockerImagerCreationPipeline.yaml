@@ -41,11 +41,10 @@ pipeline:
                   identifier: build_and_push
                   spec:
                     connectorRef: dockerrajatha
-                    repo: rajatharanganath/ciquickstart
+                    repo: <+input>
                     tags:
                       - latest
                     dockerfile: harnessDockerfileui
-                  failureStrategies: []
               - step:
                   type: Run
                   name: Run_2
