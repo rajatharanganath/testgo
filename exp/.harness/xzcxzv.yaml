@@ -52,12 +52,15 @@ pipeline:
                           done
                         connectorRef: dockerrajatha
                         image: alpine
-          platform:
-            os: Linux
-            arch: Amd64
-          runtime:
-            type: Cloud
-            spec: {}
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: account.Harness_Kubernetes_Cluster
+              namespace: harness-delegate-ng
+              automountServiceAccountToken: true
+              nodeSelector:
+                abc: abc
+              os: Linux
   allowStageExecutions: true
   delegateSelectors:
     - ciaccountdelegate
