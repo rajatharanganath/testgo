@@ -79,3 +79,9 @@ pipeline:
           recipients:
             - rajatha.ranganath@harness.io
       enabled: true
+  variables:
+    - name: cookieIdentifier
+      type: String
+      description: ""
+      required: false
+      value: <+input>.default( )
