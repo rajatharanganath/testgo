@@ -27,13 +27,13 @@ pipeline:
                       name: xzvzx
                       identifier: xzvzx
                       spec:
+                        connectorRef: account.gcpaccount
+                        image: harness/drone-git:1.0.6-rootless-linux-amd64
                         shell: Sh
                         command: |-
                           echo hello
                           #---data---
                           echo 1 
-                        connectorRef: account.harnessImage
-                        image: harness/drone-git:1.0.6-rootless-linux-amd64
                       timeout: 1m
                   - step:
                       type: Run
