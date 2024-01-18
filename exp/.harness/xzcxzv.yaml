@@ -8,10 +8,7 @@ pipeline:
     ci:
       codebase:
         connectorRef: githubrajatha
-        build:
-          spec:
-            branch: main
-          type: branch
+        build: <+input>
   stages:
     - stage:
         name: xcvvcx
@@ -21,46 +18,24 @@ pipeline:
           cloneCodebase: true
           execution:
             steps:
-              - parallel:
-                  - step:
-                      type: Run
-                      name: xzvzx
-                      identifier: xzvzx
-                      spec:
-                        connectorRef: account.gcpaccount
-                        image: harness/drone-git:1.0.6-rootless-linux-amd64
-                        shell: Sh
-                        command: |-
-                          echo hello
-                          #---data---
-                          echo 1 
-                      timeout: 1m
-                  - step:
-                      type: Run
-                      name: Run_2
-                      identifier: Run_2
-                      spec:
-                        shell: Sh
-                        command: |-
-                          i=0
-                          while [ $i -lt 10 ]
-                          do
-                              df -h
-                              du -sh *
-                              sleep 10
-                              i=`expr $i + 1`
-                          done
-                        connectorRef: dockerrajatha
-                        image: alpine
-          infrastructure:
-            type: KubernetesDirect
-            spec:
-              connectorRef: account.Harness_Kubernetes_Cluster
-              namespace: harness-delegate-ng
-              automountServiceAccountToken: true
-              nodeSelector:
-                abc: abc
-              os: Linux
+              - step:
+                  type: Run
+                  name: xzvzx
+                  identifier: xzvzx
+                  spec:
+                    connectorRef: account.gcpaccount
+                    image: harness/drone-git:1.0.6-rootless-linux-amd64
+                    shell: Sh
+                    command: |-
+                      echo hello
+                      /usr/bin/git ls-files -z
+                  timeout: 1m
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
   allowStageExecutions: true
   delegateSelectors:
     - ciaccountdelegate
