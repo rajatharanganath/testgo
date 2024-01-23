@@ -26,9 +26,7 @@ pipeline:
                     connectorRef: account.gcpaccount
                     image: harness/drone-git:1.0.6-rootless-linux-amd64
                     shell: Sh
-                    command: |-
-                      echo hello
-                      /usr/bin/git ls-files -z
+                    command: <+input>
                   timeout: 1m
           platform:
             os: Linux
