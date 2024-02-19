@@ -34,8 +34,6 @@ pipeline:
           runtime:
             type: Cloud
             spec: {}
-          slsa_provenance:
-            enabled: false
         description: ""
         variables:
           - name: Standard_32
@@ -44,8 +42,6 @@ pipeline:
             required: false
             value: "true"
   allowStageExecutions: true
-  delegateSelectors:
-    - ciaccountdelegate
   timeout: 1d
   notificationRules:
     - name: abc
@@ -61,9 +57,3 @@ pipeline:
           recipients:
             - rajatha.ranganath@harness.io
       enabled: true
-  variables:
-    - name: cookieIdentifier
-      type: String
-      description: ""
-      required: false
-      value: <+input>.default( )
