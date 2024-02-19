@@ -37,6 +37,12 @@ pipeline:
           slsa_provenance:
             enabled: false
         description: ""
+        variables:
+          - name: Standard_32
+            type: String
+            description: ""
+            required: false
+            value: "true"
   allowStageExecutions: true
   delegateSelectors:
     - ciaccountdelegate
