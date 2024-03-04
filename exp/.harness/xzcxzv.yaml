@@ -28,12 +28,13 @@ pipeline:
                     shell: Sh
                     command: ls -ltr *
                   timeout: 1m
-          platform:
-            os: Linux
-            arch: Amd64
-          runtime:
-            type: Cloud
-            spec: {}
+          infrastructure:
+            type: VM
+            spec:
+              type: Pool
+              spec:
+                poolName: arm-pool
+                os: Linux
         description: ""
         variables:
           - name: Standard_32
