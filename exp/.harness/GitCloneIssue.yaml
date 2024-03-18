@@ -14,7 +14,7 @@ pipeline:
             type: KubernetesDirect
             spec:
               connectorRef: rajathak8
-              namespace: rajatha-delegate-april
+              namespace: "  "
               automountServiceAccountToken: true
               nodeSelector: {}
               os: Linux
@@ -28,7 +28,17 @@ pipeline:
                     connectorRef: dockerrajatha
                     image: alpine
                     shell: Sh
-                    command: echo <+codebase.tag>
+                    command: |-
+                      echo <+codebase.tag>
+                      echo <+matrix.env>
+                    envVariables:
+                      abc: <+input>
+                  failureStrategies: []
+                  strategy:
+                    matrix:
+                      env:
+                        - abc
+                        - efg
     - stage:
         name: stg2
         identifier: stg2
@@ -54,5 +64,6 @@ pipeline:
   properties:
     ci:
       codebase:
-        connectorRef: tempToken
+        connectorRef: AccountLevelRajatha
+        repoName: rajatharanganath/testgo.git
         build: <+input>

@@ -1,0 +1,26 @@
+inputSet:
+  identifier: "TestInputSetCustomer"
+  name: "TestInputSetCustomer"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest3"
+  pipeline:
+    identifier: "TestPipelineProd"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "<+trigger.branch>"
+    stages:
+    - stage:
+        identifier: "stage1"
+        type: "CI"
+        spec:
+          execution:
+            steps:
+            - step:
+                identifier: "step1"
+                type: "Run"
+                spec:
+                  image: "alpine"

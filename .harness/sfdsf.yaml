@@ -1,0 +1,36 @@
+pipeline:
+    name: sfdsf
+    identifier: sfdsf
+    projectIdentifier: RajathaTest
+    orgIdentifier: default
+    tags: {}
+    stages:
+        - stage:
+              name: stg1
+              identifier: stg1
+              type: CI
+              spec:
+                  cloneCodebase: false
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: RajathaK8
+                          namespace: rajatha-pr-demo
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: step1
+                                identifier: step1
+                                spec:
+                                    connectorRef: account.harnessImage
+                                    image: alpine
+                                    shell: Sh
+                                    command: |-
+                                        echo testapp
+                                        echo <+codebase.targetBranch>
+                                        echo <+codebase.sourceBranch>
+                                        echo <+codebase.repoUrl>
+                                        echo 358pm

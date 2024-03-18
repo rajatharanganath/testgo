@@ -1,0 +1,19 @@
+inputSet:
+  identifier: "customerreplicainputset"
+  name: "customerreplicainputset"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest2"
+  pipeline:
+    identifier: "customerinputsetreplica"
+    stages:
+    - stage:
+        identifier: "Build"
+        type: "CI"
+        spec:
+          execution:
+            steps:
+            - step:
+                identifier: "Build"
+                type: "Run"
+                when:
+                  condition: " "

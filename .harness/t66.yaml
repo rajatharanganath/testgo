@@ -1,0 +1,17 @@
+inputSet:
+  identifier: "t66"
+  name: "t66"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaQA"
+  pipeline:
+    identifier: "TNHUREMOTE2"
+    stages:
+    - stage:
+        identifier: "Build"
+        type: "CI"
+        spec:
+          infrastructure:
+            type: "KubernetesDirect"
+            spec:
+              connectorRef: "account.klkl"
+              namespace: "t66"

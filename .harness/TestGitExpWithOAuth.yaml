@@ -1,0 +1,33 @@
+pipeline:
+  name: TestGitExpWithOAuth
+  identifier: TestGitExpWithOAuth
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: stg1
+        identifier: stg1
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: step1
+                  identifier: step1
+                  spec:
+                    shell: Sh
+                    command: <+input>
+  properties:
+    ci:
+      codebase:
+        connectorRef: GitHubOrgConnector
+        build: <+input>

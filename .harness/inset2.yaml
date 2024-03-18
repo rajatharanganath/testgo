@@ -1,0 +1,32 @@
+inputSet:
+  identifier: "inset2"
+  name: "inset2"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaQA"
+  pipeline:
+    identifier: "TNHUREMOTE2"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "PR"
+            spec:
+              number: "<+trigger.prNumber>"
+    stages:
+    - stage:
+        identifier: "Build"
+        type: "CI"
+        spec:
+          infrastructure:
+            type: "KubernetesDirect"
+            spec:
+              connectorRef: "account.Testconnector"
+              namespace: "inset2"
+          execution:
+            steps:
+            - step:
+                identifier: "Run"
+                type: "Run"
+                spec:
+                  connectorRef: "account.selfSignedDockerRegistry"
+                  image: "inset2"

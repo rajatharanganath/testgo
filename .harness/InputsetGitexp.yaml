@@ -1,0 +1,14 @@
+inputSet:
+  identifier: "InputsetGitexp"
+  name: "InputsetGitexp"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest3"
+  pipeline:
+    identifier: "TestGitExp"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "main"

@@ -1,0 +1,33 @@
+pipeline:
+    name: RemotePipline123
+    identifier: RemotePipline123
+    projectIdentifier: rajathatest
+    orgIdentifier: default
+    storeType: REMOTE
+    remoteType: create
+    tags: {}
+    stages:
+        - stage:
+              name: ci
+              identifier: ci
+              type: CI
+              spec:
+                  cloneCodebase: false
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: account.k8s
+                          namespace: harness-delegate-ng
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: foo
+                                identifier: foo
+                                spec:
+                                    connectorRef: account.harnessImage
+                                    image: alpine
+                                    shell: Sh
+                                    command: echo foobar551

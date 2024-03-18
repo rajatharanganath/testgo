@@ -1,0 +1,27 @@
+inputSet:
+  identifier: "InputSet2"
+  name: "InputSet2"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaQA"
+  pipeline:
+    identifier: "TNHUREMOTE2"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "<+trigger.branch>"
+    stages:
+    - stage:
+        identifier: "Build"
+        type: "CI"
+        spec:
+          execution:
+            steps:
+            - step:
+                identifier: "Run"
+                type: "Run"
+                spec:
+                  connectorRef: "account.selfSignedDockerRegistry"
+                  image: "nginx"

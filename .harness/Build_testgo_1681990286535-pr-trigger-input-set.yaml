@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_testgo_1681990286535-pr-trigger-input-set
+  identifier: Build_testgo_1681990286535prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_testgo_1681990286535
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
