@@ -26,7 +26,11 @@ pipeline:
                     connectorRef: account.harnessImage
                     image: alpine
                     shell: Sh
-                    command: go build
+                    command: |-
+                      FROM alpine:latest
+                      RUN apk --no-cache add \
+                          golang
+                      go build
                   timeout: ""
                   type: Run
               - step:
