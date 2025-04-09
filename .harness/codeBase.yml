@@ -1,0 +1,14 @@
+inputSet:
+  identifier: "codeBase"
+  name: "codeBase"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaDemo"
+  pipeline:
+    identifier: "TestPipeLineWithInputSet"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "patch-1"

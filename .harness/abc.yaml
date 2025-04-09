@@ -1,0 +1,27 @@
+inputSet:
+  identifier: "cfdgdfg"
+  name: "cfdgdfg"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest2"
+  pipeline:
+    identifier: "GitCloneIssue"
+    stages:
+    - stage:
+        identifier: "Stage1"
+        type: "CI"
+        spec:
+          execution:
+            steps:
+            - step:
+                identifier: "git_cmd"
+                type: "Run"
+                spec:
+                  envVariables:
+                    abc: "fdgdfgfd"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "dfgdfg"

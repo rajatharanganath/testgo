@@ -1,0 +1,15 @@
+pipeline:
+  name: pipeline2
+  identifier: pipeline2
+  template:
+    templateRef: test1pipeline
+    versionLabel: "1"
+    templateInputs:
+      properties:
+        ci:
+          codebase:
+            repoName: <+input>
+            build: <+input>
+  tags: {}
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default

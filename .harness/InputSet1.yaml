@@ -1,0 +1,11 @@
+inputSet:
+  identifier: "InputSet1"
+  name: "InputSet1"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaDemo"
+  pipeline:
+    identifier: "TestPipeLineWithInputSet"
+    variables:
+    - name: "MAGIC"
+      type: "String"
+      value: "MAGIN_INPUTSET_712pm"

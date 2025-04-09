@@ -1,37 +1,60 @@
 pipeline:
-    name: xzcxzv
-    identifier: xzcxzv
-    projectIdentifier: RajathaTest2
-    orgIdentifier: default
-    tags: {}
-    properties:
-        ci:
-            codebase:
-                connectorRef: githubrajatha
-                build: <+input>
-    stages:
-        - stage:
-              name: xcvvcx
-              identifier: xcvvcx
-              type: CI
+  name: xzcxzv
+  identifier: xzcxzv
+  projectIdentifier: RajathaTest2
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: githubrajatha
+        build: <+input>
+  stages:
+    - stage:
+        name: xcvvcx
+        identifier: xcvvcx
+        type: CI
+        spec:
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: xzvzx
+                  identifier: xzvzx
+                  spec:
+                    connectorRef: account.gcpaccount
+                    image: harness/drone-git:1.0.6-rootless-linux-amd64
+                    shell: Sh
+                    command: ls -ltr *
+                  timeout: 1m
+          infrastructure:
+            type: VM
+            spec:
+              type: Pool
               spec:
-                  cloneCodebase: true
-                  infrastructure:
-                      type: KubernetesDirect
-                      spec:
-                          connectorRef: rajathak8
-                          namespace: xcvcxv
-                          automountServiceAccountToken: true
-                          nodeSelector: {}
-                          harnessImageConnectorRef: dockerrajatha
-                  execution:
-                      steps:
-                          - step:
-                                type: Run
-                                name: xzvzx
-                                identifier: xzvzx
-                                spec:
-                                    connectorRef: <+input>
-                                    image: <+input>
-                                    shell: Sh
-                                    command: cxvcxv
+                poolName: arm-pool
+                os: Linux
+        description: ""
+        variables:
+          - name: Standard_32
+            type: String
+            description: ""
+            required: false
+            value: "true"
+  allowStageExecutions: true
+  timeout: 1d
+  notificationRules:
+    - name: abc
+      identifier: abc
+      pipelineEvents:
+        - type: StageFailed
+          forStages:
+            - xcvvcx
+      notificationMethod:
+        type: Email
+        spec:
+          userGroups: []
+          recipients:
+            - rajatha.ranganath@harness.io
+      enabled: true

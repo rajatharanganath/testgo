@@ -1,0 +1,11 @@
+version: 1
+name: CodebaseTest_1671534953279
+stages:
+  - name: Build and test Java app
+    type: ci
+    spec:
+      steps:
+        - name: Build
+          type: script
+          spec:
+            run: echo "Hello world"

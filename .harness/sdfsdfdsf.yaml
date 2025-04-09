@@ -1,0 +1,20 @@
+inputSet:
+  name: sdfsdfdsf
+  identifier: sdfsdfdsf
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  pipeline:
+    identifier: xzcxzv
+    stages:
+      - stage:
+          identifier: xcvvcx
+          type: CI
+          spec:
+            execution:
+              steps:
+                - step:
+                    identifier: xzvzx
+                    type: Run
+                    spec:
+                      connectorRef: GCSConnector
+                      image: sdfdsf

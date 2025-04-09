@@ -1,0 +1,26 @@
+inputSet:
+  identifier: "testdinesh"
+  name: "testdinesh"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest3"
+  pipeline:
+    identifier: "TestGitExp"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "PR"
+            spec:
+              number: "<+trigger.prNumber>"
+    stages:
+    - stage:
+        identifier: "stage"
+        type: "CI"
+        spec:
+          execution:
+            steps:
+            - step:
+                identifier: "test1"
+                type: "Run"
+                spec:
+                  command: "echo foo"

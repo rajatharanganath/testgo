@@ -4,28 +4,13 @@ pipeline:
   projectIdentifier: RajathaTest2
   orgIdentifier: default
   tags: {}
-  properties:
-    ci:
-      codebase:
-        connectorRef: githubrajatha
-        build: <+input>
   stages:
     - stage:
         name: build
         identifier: build
         type: CI
         spec:
-          cloneCodebase: true
-          infrastructure:
-            type: KubernetesDirect
-            spec:
-              connectorRef: rajathak8
-              namespace: rajatha-delegate-april
-              automountServiceAccountToken: true
-              nodeSelector: {}
-              containerSecurityContext:
-                allowPrivilegeEscalation: false
-                runAsUser: "1000"
+          cloneCodebase: false
           execution:
             steps:
               - step:
@@ -36,7 +21,7 @@ pipeline:
                     connectorRef: dockerrajatha
                     image: alpine:latest
                     shell: Sh
-                    command: |-
+                    command: |
                       touch harnessDockerfileui
                       cat > harnessDockerfileui <<- EOM
                       FROM alpine:latest AS dev-env
@@ -50,30 +35,43 @@ pipeline:
                       ENTRYPOINT ["ls"]
                       EOM
                       cat harnessDockerfileui
-                    reports:
-                      type: JUnit
-                      spec:
-                        paths:
-                          - "*.xml"
-                    outputVariables:
-                      - name: LATEST_BRANCH
               - step:
                   type: BuildAndPushDockerRegistry
                   name: build and push
                   identifier: build_and_push
                   spec:
                     connectorRef: dockerrajatha
-                    repo: rajatharanganath/ciquickstart
+                    repo: <+input>
                     tags:
-                      - <+pipeline.sequenceId>
+                      - latest
+                    dockerfile: harnessDockerfileui
               - step:
-                  name: step2
-                  identifier: step2
-                  template:
-                    templateRef: new_step_template_name
-                    versionLabel: "1.0"
-                    templateInputs:
-                      type: BuildAndPushACR
-                      spec:
-                        connectorRef: <+input>
-                        repository: <+input>
+                  type: Run
+                  name: Run_2
+                  identifier: Run_2
+                  spec:
+                    shell: Sh
+                    command: ls -ltr *
+              - step:
+                  type: Security
+                  name: Security_1
+                  identifier: Security_1
+                  spec:
+                    privileged: true
+                    settings:
+                      policy_type: orchestratedScan
+                      scan_type: repository
+                      product_name: aqua-trivy
+                      product_config_name: aqua-trivy
+                    imagePullPolicy: Never
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+        variables:
+          - name: PLUGIN_DRY_RUN
+            type: String
+            description: ""
+            value: "true"

@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_rajatharanganath_testgo_1703240127905-pr-trigger-input-set
+  identifier: Build_rajatharanganath_testgo_1703240127905prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: SatyaTest
+  pipeline:
+    identifier: Build_rajatharanganath_testgo_1703240127905
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>

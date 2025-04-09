@@ -1,5 +1,5 @@
 # HelloWorldGoServer
-GO + Docker + unit tests
+GO + Docker + unit tests + + + ++
 
 
 ## Running the app locally
@@ -12,7 +12,7 @@ $ ./go-sample-app
 
 ```bash
 $ curl http://localhost:8080?name=Nofar
-Hello, Nofar 
+Hello, Nofar
 Test1
 ``` 
 

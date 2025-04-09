@@ -1,0 +1,17 @@
+inputSet:
+  name: InputSet2Sample
+  tags: {}
+  identifier: InputSet2Sample
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  pipeline:
+    identifier: pipeline2
+    template:
+      templateInputs:
+        properties:
+          ci:
+            codebase:
+              build:
+                type: branch
+                spec:
+                  branch: main

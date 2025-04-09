@@ -27,29 +27,36 @@ pipeline:
               os: Linux
           execution:
             steps:
-              - parallel:
-                  - step:
-                      type: Run
-                      name: lint
-                      identifier: lint
-                      spec:
-                        connectorRef: <+input>
-                        image: <+input>
-                        shell: Sh
-                        command: |-
-                          echo test
-                          sleep 100000
-                  - step:
-                      type: Run
-                      name: test
-                      identifier: test
-                      spec:
-                        connectorRef: <+input>
-                        image: <+input>
-                        shell: Sh
-                        command: |-
-                          echo test
-                          sleep 100000
+              - step:
+                  type: Run
+                  name: test1
+                  identifier: test1
+                  spec:
+                    connectorRef: dockerrajatha
+                    image: alpine:latest
+                    shell: Sh
+                    command: |-
+                      touch harnessDockerfileui
+                      cat > harnessDockerfileui <<- EOM
+                      FROM alpine:latest AS dev-env
+                      ARG foo
+                      RUN echo "$foo bar"
+                      ENTRYPOINT ["pwd"]
+
+                      FROM alpine:latest AS release-env
+                      ARG hello
+                      RUN echo "$hello world"
+                      ENTRYPOINT ["ls"]
+                      EOM
+                      cat harnessDockerfileui
+              - step:
+                  type: GCSUpload
+                  name: sdfdsaf
+                  identifier: sdfdsaf
+                  spec:
+                    connectorRef: GCPConnector
+                    bucket: abc
+                    sourcePath: dsfdsfg
         failureStrategies:
           - onFailure:
               errors:
