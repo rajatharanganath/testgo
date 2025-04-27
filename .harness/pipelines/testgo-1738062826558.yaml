@@ -1,0 +1,54 @@
+pipeline:
+  identifier: Build_testgo_1738062830911
+  name: Build testgo
+  orgIdentifier: default
+  projectIdentifier: ebtasamDevTest
+  properties:
+    ci:
+      codebase:
+        build: <+input>
+        connectorRef: account.DhirajGithubv2
+        repoName: testgo
+  stages:
+    - stage:
+        identifier: build
+        name: build
+        spec:
+          caching:
+            enabled: true
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  identifier: gobuild
+                  name: go_build
+                  spec:
+                    connectorRef: account.harnessImage
+                    image: alpine
+                    shell: Sh
+                    command: |-
+                      echo "FROM alpine:latest" >> Dockerfile
+                      cat Dockerfile
+                  timeout: ""
+                  type: Run
+              - step:
+                  identifier: dockerbuild
+                  name: docker_build
+                  spec:
+                    caching: true
+                    connectorRef: <+input>
+                    repo: hello/world
+                    tags:
+                      - latest
+                  timeout: ""
+                  type: BuildAndPushDockerRegistry
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: pod_test_name
+              namespace: default
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+        type: CI
+        description: ""
