@@ -1,0 +1,10 @@
+overlayInputSet:
+    name: OverlayInputSet
+    identifier: OverlayInputSet
+    orgIdentifier: default
+    projectIdentifier: RajathaTest3
+    pipelineIdentifier: TestGitExp
+    inputSetReferences:
+        - InputsetPart1
+        - InputsetGitexp
+    tags: {}

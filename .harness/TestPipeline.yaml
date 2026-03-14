@@ -1,0 +1,46 @@
+pipeline:
+    name: TestPipeline
+    identifier: TestPipeline
+    projectIdentifier: RajathaQA
+    orgIdentifier: default
+    tags: {}
+    stages:
+        - stage:
+              name: stg1
+              identifier: stg1
+              description: ""
+              type: Approval
+              spec:
+                  execution:
+                      steps:
+                          - step:
+                                name: approval1
+                                identifier: approval1
+                                type: HarnessApproval
+                                timeout: 1d
+                                spec:
+                                    approvalMessage: |-
+                                        Please review the following information
+                                        and approve the pipeline progression
+                                    includePipelineExecutionHistory: true
+                                    approvers:
+                                        minimumCount: 1
+                                        disallowPipelineExecutor: false
+                                        userGroups: <+input>
+                                    approverInputs: []
+                          - step:
+                                type: ShellScript
+                                name: step1
+                                identifier: step1
+                                spec:
+                                    shell: Bash
+                                    onDelegate: true
+                                    source:
+                                        type: Inline
+                                        spec:
+                                            script: echo test
+                                    environmentVariables: []
+                                    outputVariables: []
+                                    executionTarget: {}
+                                timeout: 10m
+              tags: {}

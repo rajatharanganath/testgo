@@ -1,0 +1,14 @@
+inputSet:
+  identifier: "dsfgfds"
+  name: "dsfgfds"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest2"
+  pipeline:
+    identifier: "DockerImagerCreationPipeline"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "PR"
+            spec:
+              number: "<+trigger.prNumber>"

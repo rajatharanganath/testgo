@@ -1,0 +1,38 @@
+pipeline:
+    name: TNHU-REMOTE2
+    identifier: TNHUREMOTE2
+    projectIdentifier: RajathaQA
+    orgIdentifier: default
+    storeType: REMOTE
+    remoteType: create
+    tags: {}
+    properties:
+        ci:
+            codebase:
+                connectorRef: RajathaGitHub
+                build: <+input>
+    stages:
+        - stage:
+              name: Build
+              identifier: Build
+              type: CI
+              spec:
+                  cloneCodebase: true
+                  infrastructure:
+                      type: KubernetesDirect
+                      spec:
+                          connectorRef: <+input>
+                          namespace: <+input>
+                          automountServiceAccountToken: true
+                          nodeSelector: {}
+                  execution:
+                      steps:
+                          - step:
+                                type: Run
+                                name: Run
+                                identifier: Run
+                                spec:
+                                    connectorRef: <+input>
+                                    image: <+input>
+                                    shell: Sh
+                                    command: echo 1

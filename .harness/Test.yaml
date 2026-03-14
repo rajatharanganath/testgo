@@ -1,0 +1,34 @@
+pipeline:
+  name: Test
+  identifier: Test
+  projectIdentifier: RajathaQA
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: RajathaGitHub
+        build: <+input>
+  stages:
+    - stage:
+        name: TEst
+        identifier: TEst
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run
+                  identifier: Run
+                  spec:
+                    shell: Sh
+                    command: echo hello
+          platform:
+            os: MacOS
+            arch: Arm64
+          runtime:
+            type: Cloud
+            spec: {}

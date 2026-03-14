@@ -1,0 +1,14 @@
+inputSet:
+  identifier: "MainBranch"
+  name: "MainBranch"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaTest2"
+  pipeline:
+    identifier: "GitCloneIssue"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "main"

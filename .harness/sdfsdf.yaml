@@ -1,0 +1,19 @@
+inputSet:
+  name: adsasfsfsaf
+  identifier: adsasfsfsaf
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  pipeline:
+    identifier: DockerImagerCreationPipeline
+    stages:
+      - stage:
+          identifier: build
+          type: CI
+          spec:
+            execution:
+              steps:
+                - step:
+                    identifier: build_and_push
+                    type: BuildAndPushDockerRegistry
+                    spec:
+                      repo: rajatharanganath/ciquickstart

@@ -1,0 +1,14 @@
+inputSet:
+  identifier: "new5"
+  name: "new5"
+  orgIdentifier: "default"
+  projectIdentifier: "RajathaQA"
+  pipeline:
+    identifier: "TNHUREMOTE2"
+    properties:
+      ci:
+        codebase:
+          build:
+            type: "branch"
+            spec:
+              branch: "mybranch"

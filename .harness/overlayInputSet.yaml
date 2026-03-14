@@ -1,0 +1,10 @@
+overlayInputSet:
+  name: overlayInputSet
+  identifier: overlayInputSet
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  pipelineIdentifier: GitCloneIssue
+  inputSetReferences:
+    - EnvInputSet
+    - MainBranch
+  tags: {}

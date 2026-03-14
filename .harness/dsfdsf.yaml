@@ -1,0 +1,27 @@
+inputSet:
+  name: sdafdsf
+  identifier: sdafdsf
+  orgIdentifier: default
+  projectIdentifier: RajathaTest2
+  pipeline:
+    identifier: xzcxzv
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
+    stages:
+      - stage:
+          identifier: xcvvcx
+          type: CI
+          spec:
+            execution:
+              steps:
+                - step:
+                    identifier: xzvzx
+                    type: Run
+                    spec:
+                      connectorRef: GithubDockerRegistry
+                      image: safdsfdsf
